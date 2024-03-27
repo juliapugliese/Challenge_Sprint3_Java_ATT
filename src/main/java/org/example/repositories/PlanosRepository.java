@@ -25,7 +25,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                             "RECURSOS VARCHAR2(150), " +
                             "PRECO DECIMAL(9,2))" ));
             stmt.executeUpdate();
-            System.out.println("Tabela criada com sucesso!");
+            System.out.println("Tabela "+ TB_NAME +" criada com sucesso!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -36,7 +36,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
-            System.out.println("Tabela excluída com sucesso!");
+            System.out.println("Tabela "+ TB_NAME +" excluída com sucesso!");
         } catch (SQLException e) {
             e.printStackTrace();
         }

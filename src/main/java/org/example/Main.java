@@ -1,6 +1,5 @@
 package org.example;
 
-import org.example.repositories.ProdutosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -49,6 +48,9 @@ public class Main {
 //        administradores.delete(7);
 //        administradores.readAll();
 //        System.out.println(administradores.read(2));
+//        new UsuariosRepository().shutdown();
+
+
 //
 //        new PlanosRepository().initialize();
 //        var planscss = new Plano("Premium", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
@@ -60,19 +62,30 @@ public class Main {
 //        repopl.update(2, planscss);
 //        repopl.readAll();
 //        System.out.println(repopl.read(2));
-
-
-        new ProdutosRepository().initialize();
-//        new ProdutosRepository().shutdown();
-
-//        var produto = new Produto("Sales Cloud",  "Venda mais rápido e com mais inteligência com qualquer uma das nossas edições de CRM totalmente personalizáveis.", new ArrayList<>(List.of(
+//        new PlanosRepository().shutdown();
+//
+//
+//        new ProdutosRepository().initialize();
+//
+//        var produto = new Produto("Sales Cloudy",  "Venda mais rápido e com mais inteligência com qualquer uma das nossas edições de CRM totalmente personalizáveis.", new ArrayList<>(List.of(
 //                new Plano("Starter", "Ferramentas de vendas e atendimento ao cliente em um app", 25),
 //                new Plano("Sales Professional", "Solução de vendas completa para equipes de qualquer tamanho",  80),
 //                new Plano("Enterprise", "CRM de vendas altamente personalizável para o seu negócio",  165),
 //                new Plano("Unlimited", "A plataforma definitiva para seu crescimento",  330)
 //        )));
+//
+//        var produto1 = new Produto("MuleSoft Automation",  "Combine o poder do MuleSoft RPA, MuleSoft Composer e Anypoint Platform para ajudar as equipes a automatizar.", new ArrayList<>(List.of(
+//                new Plano("MuleSoft Automation", "Capacite suas equipes para fazer mais, com menos.",  4750)
+//        )));
+//
 //        var prodrepo = new ProdutosRepository();
 //        prodrepo.create(produto);
+//        prodrepo.readAll();
+//        prodrepo.update(2, produto1);
+//        prodrepo.readAll();
+//        repopl.readAll();
+//        new ProdutosRepository().shutdown();
+
 
 
         final HttpServer server = startServer();

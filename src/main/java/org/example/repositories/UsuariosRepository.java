@@ -40,7 +40,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
     public UsuariosRepository() {
     }
 
-    private void Initialize() {
+    public void initialize() {
         try {
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement(

@@ -9,8 +9,39 @@ import java.util.List;
 import java.util.Optional;
 
 public class PlanosRepository implements _BaseRepository<Plano> {
+    public PlanosRepository() {
+    }
 
-    public static final String TB_NAME = "PLANO";
+    public static final String TB_NAME = "PLANOS";
+
+
+    public void initialize() {
+        try {
+            var conn =  new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement(
+                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PLANOS_PK PRIMARY KEY, " +
+                            "NOME VARCHAR2(60) NOT NULL, " +
+                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
+                            "RECURSOS VARCHAR2(150), " +
+                            "PRECO DECIMAL(9,2))" ));
+            stmt.executeUpdate();
+            System.out.println("Tabela criada com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void shutdown() {
+        try {
+            var conn =  new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
+            stmt.executeUpdate();
+            System.out.println("Tabela excluída com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public List<Plano> readAll(){
         var planos = new ArrayList<Plano>();
@@ -26,10 +57,11 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                         rs.getFloat("PRECO")));
             }
         }
+
         catch (Exception e){
             e.printStackTrace();
         }
-
+        System.out.println(planos);
         return planos;
     }
 

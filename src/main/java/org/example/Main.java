@@ -37,6 +37,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         //TESTE
+//        new UsuariosRepository().initialize();
 //        var adm2 = new Administrador("553427", "fiap2", "Julia Pugliese", "rm553427@fiap.com.br");
 //        var administradores = new UsuariosRepository();
 //        administradores.readAll();
@@ -47,14 +48,24 @@ public class Main {
 //        administradores.delete(7);
 //        administradores.readAll();
 //        System.out.println(administradores.read(2));
+//
+//        new PlanosRepository().initialize();
+//        var planscss = new Plano("Premium", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
+//        var repopl = new PlanosRepository();
+////        repopl.create(planscss);
+//        repopl.readAll();
+//        repopl.delete(4);
+//        repopl.readAll();
+//        repopl.update(2, planscss);
+//        repopl.readAll();
+//        System.out.println(repopl.read(2));
 
 
-
-        final HttpServer server = startServer();
-        System.out.println(String.format("Jersey app started with endpoints available at "
-                + "%s%nHit Ctrl-C to stop it...", BASE_URI));
-        System.in.read();
-        server.stop();
+//        final HttpServer server = startServer();
+//        System.out.println(String.format("Jersey app started with endpoints available at "
+//                + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+//        System.in.read();
+//        server.stop();
 
 
 

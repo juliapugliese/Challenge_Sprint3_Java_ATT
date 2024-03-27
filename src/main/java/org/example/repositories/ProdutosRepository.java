@@ -12,7 +12,36 @@ import java.util.Optional;
 
 public class ProdutosRepository implements _BaseRepository<Produto> {
 
-    public static final String TB_NAME = "PRODUTO";
+    public static final String TB_NAME = "PRODUTO_JAVA";
+
+    public void initialize() {
+        try {
+            var conn =  new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement(
+                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
+                            "NOME VARCHAR2(60) NOT NULL, " +
+                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
+                            "PLANO_PAGAMENTO VARCHAR2(1000), " +
+                            "SUCESS_PLANS VARCHAR2(1000))" ));
+            stmt.executeUpdate();
+            System.out.println("Tabela criada com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void shutdown() {
+        try {
+            var conn =  new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
+            stmt.executeUpdate();
+            System.out.println("Tabela excluída com sucesso!");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public List<Produto> readAll(){
         var produtos = new ArrayList<Produto>();
@@ -87,7 +116,6 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
         }
     }
 
-//VERIFICAR DELETE
     public void delete(int id){
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){

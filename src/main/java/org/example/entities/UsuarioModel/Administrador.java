@@ -1,5 +1,8 @@
 package org.example.entities.UsuarioModel;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class Administrador extends Usuario {
     private String nomeAdm;
     private String email;
@@ -36,6 +39,19 @@ public class Administrador extends Usuario {
                 email;
     }
 
+    public Map<Boolean, ArrayList<String>> validate() {
+        var errors = new ArrayList<String>();
+
+        if (nomeAdm == null || nomeAdm.isBlank())
+            errors.add("Nome de Administrador não pode ser vazio");
+
+        if (email == null || email.isBlank())
+            errors.add("Email não pode ser vazio");
+
+        return !errors.isEmpty() ?
+                Map.of(false, errors) :
+                Map.of(true, errors);
+    }
 
 }
 

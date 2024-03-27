@@ -1,5 +1,8 @@
 package org.example.entities.UsuarioModel;
 
+import java.util.ArrayList;
+import java.util.Map;
+
 public class Cliente extends Usuario {
     private String nomeCompleto;
     private int cpf;
@@ -143,6 +146,44 @@ public class Cliente extends Usuario {
     }
 
 
+    public Map<Boolean, ArrayList<String>> validate() {
+        var errors = new ArrayList<String>();
+
+        if (nomeCompleto == null || nomeCompleto.isBlank())
+            errors.add("O campo de nome completo deve ser preenchido");
+
+        if (!Integer.toString(cpf).matches("\\d{11}"))
+            errors.add("O CPF deve conter 11 caracteres");
+
+        if (telefone.replaceAll("[.-]", "").matches("\\d{11}") || telefone.replaceAll("[.-]", "").matches("\\d{10}") || telefone.isBlank() || telefone == null)
+            errors.add("O telefone deve ser composto por 11 números, incluindo o ddd");
+
+        if (empresa == null || empresa.isBlank())
+            errors.add("Nome da empresa não pode ser vazio");
+
+        if (!Integer.toString(cnpj).matches("\\d{14}"))
+            errors.add("O CNPJ deve conter 11 caracteres");
+
+        if (cargo == null || cargo.isBlank())
+            errors.add("Cargo não pode ser vazio");
+
+        if (segmento == null || segmento.isBlank())
+            errors.add("Segmento não pode ser vazio");
+
+        if (tamanhoEmpresa == null || tamanhoEmpresa.isBlank())
+            errors.add("Tamanho da empresa não pode ser vazio");
+
+        if (pais == null || pais.isBlank())
+            errors.add("País não pode ser vazio");
+
+        if (emailCorporativo == null || emailCorporativo.isBlank())
+            errors.add("Email corporativo não pode ser vazio");
+
+
+        return !errors.isEmpty() ?
+                Map.of(false, errors) :
+                Map.of(true, errors);
+    }
 
 }
 

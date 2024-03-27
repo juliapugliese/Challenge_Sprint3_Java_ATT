@@ -73,10 +73,7 @@ public class Produto extends _BaseEntity {
 
 
     public Map<Boolean, ArrayList<String>> validate() {
-        // trabalhar com uma lista de erros ao invés de fazer o throw de exceção direto no primeiro erro
-        // isso permite que o usuário veja todos os erros de uma vez
-        // e não apenas o primeiro erro que ocorreu
-        // assim ele pode corrigir todos os erros de uma vez
+
         var errors = new ArrayList<String>();
         if (nomeProduto == null || nomeProduto.isBlank())
             errors.add("Nome do produto não pode ser vazio");

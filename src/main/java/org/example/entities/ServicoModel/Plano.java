@@ -86,10 +86,7 @@ public class Plano extends _BaseEntity {
     }
 
     public Map<Boolean, ArrayList<String>> validate() {
-        // trabalhar com uma lista de erros ao invés de fazer o throw de exceção direto no primeiro erro
-        // isso permite que o usuário veja todos os erros de uma vez
-        // e não apenas o primeiro erro que ocorreu
-        // assim ele pode corrigir todos os erros de uma vez
+
         var errors = new ArrayList<String>();
         if (nomePlano == null || nomePlano.isBlank())
             errors.add("Nome do plano não pode ser vazio");

@@ -5,7 +5,7 @@ import org.example.repositories.ProdutosRepository;
 
 public class ProdutoService {
 
-    private ProdutosRepository produtoRepository;
+    private final ProdutosRepository produtoRepository;
 
     public ProdutoService(){
         produtoRepository = new ProdutosRepository();

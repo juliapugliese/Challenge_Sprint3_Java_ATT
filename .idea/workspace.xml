@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Atualização UsuariosRepository">
+    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Atualização Repositories">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/service/UsuarioService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Plano.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Plano.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Produto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Produto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Administrador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/PlanoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/PlanoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/ProdutoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/ProdutoService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,11 +94,20 @@
       <option name="project" value="LOCAL" />
       <updated>1711498102029</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Atualização Repositories">
+      <option name="closed" value="true" />
+      <created>1711509017791</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1711509017791</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Atualização UsuariosRepository" />
-    <option name="LAST_COMMIT_MESSAGE" value="Atualização UsuariosRepository" />
+    <MESSAGE value="Atualização Repositories" />
+    <option name="LAST_COMMIT_MESSAGE" value="Atualização Repositories" />
   </component>
 </project>

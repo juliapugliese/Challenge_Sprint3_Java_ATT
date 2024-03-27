@@ -20,7 +20,14 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
 //            "PASSWORD", "280603"
 //    );
 
-    public static final String TB_NAME = "USUARIO";
+//    private Connection getConnection() throws SQLException {
+//        return DriverManager.getConnection(
+//                CONNECTION_PROPERTIES.get("URL"),
+//                CONNECTION_PROPERTIES.get("USER"),
+//                CONNECTION_PROPERTIES.get("PASSWORD"));
+//    }
+
+    public static final String TB_NAME = "USUARIOS";
 
     public static final Map<String, String> TB_COLUMNS = Map.ofEntries(
                     Map.entry("ID", "ID"),
@@ -44,22 +51,14 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
 
 
     public UsuariosRepository() {
-        Initialize();
     }
-
-//    private Connection getConnection() throws SQLException {
-//        return DriverManager.getConnection(
-//                CONNECTION_PROPERTIES.get("URL"),
-//                CONNECTION_PROPERTIES.get("USER"),
-//                CONNECTION_PROPERTIES.get("PASSWORD"));
-//    }
 
     private void Initialize() {
         try {
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement(
                     ("CREATE TABLE %s (" +
-                            "%s NUMBER generated as identity constraint CONTA_PK PRIMARY KEY, " +
+                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
                             "%s VARCHAR2(20) NOT NULL, " +
                             "%s VARCHAR2(20) NOT NULL, " +
                             "%s VARCHAR2(3) NOT NULL, " +
@@ -75,7 +74,7 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
                             "%s VARCHAR2(10), " +
                             "%s VARCHAR2(25), " +
                             "%s VARCHAR2(20), " +
-                            "%s VARCHAR2(200), ")
+                            "%s VARCHAR2(200))")
                             .formatted(TB_NAME,
                                     TB_COLUMNS.get("ID"),
                                     TB_COLUMNS.get("NOME_USUARIO"),
@@ -116,8 +115,9 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
         try {
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement(
-                    "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                             .formatted(TB_NAME,
+//                                    TB_COLUMNS.get("ID"),
                                     TB_COLUMNS.get("NOME_USUARIO"),
                                     TB_COLUMNS.get("SENHA"),
                                     TB_COLUMNS.get("TIPO"),
@@ -134,6 +134,7 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
                                     TB_COLUMNS.get("PAIS"),
                                     TB_COLUMNS.get("EMAIL_CORPORATIVO"),
                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
+//            stmt.setInt(1, usuario.getId());
             stmt.setString(1, usuario.getNomeUsuario());
             stmt.setString(2, usuario.getSenha());
             if (usuario instanceof Administrador) {

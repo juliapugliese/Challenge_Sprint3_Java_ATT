@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.entities.UsuarioModel.Administrador;
+import org.example.repositories.UsuariosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -35,11 +37,20 @@ public class Main {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        final HttpServer server = startServer();
-        System.out.println(String.format("Jersey app started with endpoints available at "
-                + "%s%nHit Ctrl-C to stop it...", BASE_URI));
-        System.in.read();
-        server.stop();
+
+        var administradores = new UsuariosRepository();
+        administradores.create(new Administrador(553635, "553635", "fiap1", "Gabriel Torres", "rm553635@fiap.com.br"));
+
+
+
+//        final HttpServer server = startServer();
+//        System.out.println(String.format("Jersey app started with endpoints available at "
+//                + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+//        System.in.read();
+//        server.stop();
+
+
+
     }
 }
 

@@ -34,6 +34,20 @@ public class Cliente extends Usuario {
         this.emailCorporativo = emailCorporativo;
     }
 
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
+        super(nomeUsuario, senha);
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.empresa = empresa;
+        this.cnpj = cnpj;
+        this.cargo = cargo;
+        this.segmento = segmento;
+        this.tamanhoEmpresa = tamanhoEmpresa;
+        this.pais = pais;
+        this.emailCorporativo = emailCorporativo;
+    }
+
     public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
         super(id, nomeUsuario, senha);
         this.nomeCompleto = nomeCompleto;
@@ -48,6 +62,23 @@ public class Cliente extends Usuario {
         this.emailCorporativo = emailCorporativo;
         this.perguntasOuComentarios = perguntasOuComentarios;
     }
+
+
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+        super(nomeUsuario, senha);
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.empresa = empresa;
+        this.cnpj = cnpj;
+        this.cargo = cargo;
+        this.segmento = segmento;
+        this.tamanhoEmpresa = tamanhoEmpresa;
+        this.pais = pais;
+        this.emailCorporativo = emailCorporativo;
+        this.perguntasOuComentarios = perguntasOuComentarios;
+    }
+
 
     public String getNomeCompleto() {
         return nomeCompleto;

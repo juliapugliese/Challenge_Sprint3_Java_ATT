@@ -19,6 +19,11 @@ public class Usuario extends _BaseEntity{
         this.senha = senha;
     }
 
+    public Usuario(String nomeUsuario, String senha) {
+        this.nomeUsuario = nomeUsuario;
+        this.senha = senha;
+    }
+
     public String getNomeUsuario() {
         return nomeUsuario;
     }
@@ -47,9 +52,6 @@ public class Usuario extends _BaseEntity{
     public Map<Boolean, ArrayList<String>> validate() {
         var errors = new ArrayList<String>();
 
-        if (getId() <= 0) {
-            errors.add("ID não pode ser nulo ou menor que zero");
-        }
         if (getNomeUsuario() == null || getNomeUsuario().isBlank())
             errors.add("Nome de usuário não pode ser vazio");
 

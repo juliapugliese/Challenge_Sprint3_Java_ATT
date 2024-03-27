@@ -6,26 +6,13 @@ import org.example.entities.UsuarioModel.Usuario;
 import org.example.infrastructure.OracleDatabaseConnection;
 
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
-
-
-//    public static final Map<String, String> CONNECTION_PROPERTIES = of(
-//            "URL", "jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL",
-//            "USER", "rm553427",
-//            "PASSWORD", "280603"
-//    );
-
-//    private Connection getConnection() throws SQLException {
-//        return DriverManager.getConnection(
-//                CONNECTION_PROPERTIES.get("URL"),
-//                CONNECTION_PROPERTIES.get("USER"),
-//                CONNECTION_PROPERTIES.get("PASSWORD"));
-//    }
+public class UsuariosRepository implements _BaseRepository<Usuario>{
 
     public static final String TB_NAME = "USUARIOS";
 
@@ -117,7 +104,6 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
             var stmt = conn.prepareStatement(
                     "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                             .formatted(TB_NAME,
-//                                    TB_COLUMNS.get("ID"),
                                     TB_COLUMNS.get("NOME_USUARIO"),
                                     TB_COLUMNS.get("SENHA"),
                                     TB_COLUMNS.get("TIPO"),
@@ -134,15 +120,29 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
                                     TB_COLUMNS.get("PAIS"),
                                     TB_COLUMNS.get("EMAIL_CORPORATIVO"),
                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
-//            stmt.setInt(1, usuario.getId());
             stmt.setString(1, usuario.getNomeUsuario());
             stmt.setString(2, usuario.getSenha());
+
             if (usuario instanceof Administrador) {
                 stmt.setString(3, "ADM");
                 stmt.setString(4, ((Administrador) usuario).getNomeAdm());
                 stmt.setString(5, ((Administrador) usuario).getEmail());
+                stmt.setNull(6, Types.VARCHAR);
+                stmt.setNull(7, Types.NUMERIC);
+                stmt.setNull(8, Types.VARCHAR);
+                stmt.setNull(9, Types.VARCHAR);
+                stmt.setNull(10, Types.NUMERIC);
+                stmt.setNull(11, Types.VARCHAR);
+                stmt.setNull(12, Types.VARCHAR);
+                stmt.setNull(13, Types.VARCHAR);
+                stmt.setNull(14, Types.VARCHAR);
+                stmt.setNull(15, Types.VARCHAR);
+                stmt.setNull(16, Types.VARCHAR);
+
             } else if (usuario instanceof Cliente) {
                 stmt.setString(3, "CLT");
+                stmt.setNull(4, Types.VARCHAR);
+                stmt.setNull(5, Types.VARCHAR);
                 stmt.setString(6, ((Cliente) usuario).getNomeCompleto());
                 stmt.setInt(7, ((Cliente) usuario).getCpf());
                 stmt.setString(8, ((Cliente) usuario).getTelefone());
@@ -162,6 +162,17 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
         }
     }
 
+    public void delete(int id){
+        try(var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            System.out.println("Usuário deletado com sucesso!");
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public List<Usuario> readAll() {
         var usuarios = new ArrayList<Usuario>();
@@ -200,13 +211,11 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        System.out.println(usuarios);
         return usuarios;
     }
 
-
-    //TESTE - READ BY ID
-
-    public Optional<Usuario> get(int id){
+    public Optional<Usuario> read(int id){
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?")
         ){
@@ -239,51 +248,61 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
                             resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"))
                     ));
                 }
-
             }
         }
         catch (Exception e){
             e.printStackTrace();
         }
-
         return Optional.empty();
     }
 
-
-
-
-    //TESTE - UPDATE
     public void update(int id, Usuario usuario) {
-        try {
-            var conn =  new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement(
-                    "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, WHERE ID = ?"
-                            .formatted(TB_NAME,
-                                    TB_COLUMNS.get("NOME_USUARIO"),
-                                    TB_COLUMNS.get("SENHA"),
-                                    TB_COLUMNS.get("TIPO"),
-                                    TB_COLUMNS.get("NOME_ADM"),
-                                    TB_COLUMNS.get("EMAIL"),
-                                    TB_COLUMNS.get("NOME_COMPLETO"),
-                                    TB_COLUMNS.get("CPF"),
-                                    TB_COLUMNS.get("TELEFONE"),
-                                    TB_COLUMNS.get("EMPRESA"),
-                                    TB_COLUMNS.get("CNPJ"),
-                                    TB_COLUMNS.get("CARGO"),
-                                    TB_COLUMNS.get("SEGMENTO"),
-                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
-                                    TB_COLUMNS.get("PAIS"),
-                                    TB_COLUMNS.get("EMAIL_CORPORATIVO"),
-                                    TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
+        try (var conn =  new OracleDatabaseConnection().getConnection();
+             var stmt = conn.prepareStatement(
+                     "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE ID = ?"
+                             .formatted(TB_NAME,
+                                     TB_COLUMNS.get("NOME_USUARIO"),
+                                     TB_COLUMNS.get("SENHA"),
+                                     TB_COLUMNS.get("TIPO"),
+                                     TB_COLUMNS.get("NOME_ADM"),
+                                     TB_COLUMNS.get("EMAIL"),
+                                     TB_COLUMNS.get("NOME_COMPLETO"),
+                                     TB_COLUMNS.get("CPF"),
+                                     TB_COLUMNS.get("TELEFONE"),
+                                     TB_COLUMNS.get("EMPRESA"),
+                                     TB_COLUMNS.get("CNPJ"),
+                                     TB_COLUMNS.get("CARGO"),
+                                     TB_COLUMNS.get("SEGMENTO"),
+                                     TB_COLUMNS.get("TAMANHO_EMPRESA"),
+                                     TB_COLUMNS.get("PAIS"),
+                                     TB_COLUMNS.get("EMAIL_CORPORATIVO"),
+                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"))))
+
+        {
             stmt.setString(1, usuario.getNomeUsuario());
             stmt.setString(2, usuario.getSenha());
             stmt.setInt(17, id);
+
             if (usuario instanceof Administrador) {
                 stmt.setString(3, "ADM");
                 stmt.setString(4, ((Administrador) usuario).getNomeAdm());
                 stmt.setString(5, ((Administrador) usuario).getEmail());
+                stmt.setNull(6, Types.VARCHAR);
+                stmt.setNull(7, Types.NUMERIC);
+                stmt.setNull(8, Types.VARCHAR);
+                stmt.setNull(9, Types.VARCHAR);
+                stmt.setNull(10, Types.NUMERIC);
+                stmt.setNull(11, Types.VARCHAR);
+                stmt.setNull(12, Types.VARCHAR);
+                stmt.setNull(13, Types.VARCHAR);
+                stmt.setNull(14, Types.VARCHAR);
+                stmt.setNull(15, Types.VARCHAR);
+                stmt.setNull(16, Types.VARCHAR);
+
             } else if (usuario instanceof Cliente) {
                 stmt.setString(3, "CLT");
+                stmt.setNull(4, Types.VARCHAR);
+                stmt.setNull(5, Types.VARCHAR);
                 stmt.setString(6, ((Cliente) usuario).getNomeCompleto());
                 stmt.setInt(7, ((Cliente) usuario).getCpf());
                 stmt.setString(8, ((Cliente) usuario).getTelefone());
@@ -303,21 +322,5 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
         }
     }
 
-
-
-
-
-    //VERIFICAR DELETE
-    public void delete(Usuario usuario){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
-            stmt.setInt(1, usuario.getId());
-            stmt.executeUpdate();
-            System.out.println("Usuário deletado com sucesso!");
-        }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 }

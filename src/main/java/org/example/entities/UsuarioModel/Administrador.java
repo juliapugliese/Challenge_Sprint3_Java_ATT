@@ -16,6 +16,11 @@ public class Administrador extends Usuario {
         this.nomeAdm = nomeAdm;
         this.email = email;
     }
+    public Administrador(String nomeUsuario, String senha, String nomeAdm, String email) {
+        super(nomeUsuario, senha);
+        this.nomeAdm = nomeAdm;
+        this.email = email;
+    }
 
     public String getNomeAdm() {
         return nomeAdm;

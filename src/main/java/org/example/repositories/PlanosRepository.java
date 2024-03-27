@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PlanosRepository extends _BaseRepositoryImpl<Plano>{
+public class PlanosRepository implements _BaseRepository<Plano> {
 
     public static final String TB_NAME = "PLANO";
 
-    public List<Plano> getAll(){
+    public List<Plano> readAll(){
         var planos = new ArrayList<Plano>();
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID")){
@@ -33,7 +33,7 @@ public class PlanosRepository extends _BaseRepositoryImpl<Plano>{
         return planos;
     }
 
-    public Optional<Plano> get(int id){
+    public Optional<Plano> read(int id){
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?")
         ){
@@ -85,10 +85,10 @@ public class PlanosRepository extends _BaseRepositoryImpl<Plano>{
         }
     }
 
-    public void delete(Plano plano){
+    public void delete(int id){
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
-            stmt.setInt(1, plano.getId());
+            stmt.setInt(1, id);
             stmt.executeUpdate();
         }
         catch (SQLException e) {

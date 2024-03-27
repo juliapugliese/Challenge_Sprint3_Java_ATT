@@ -1,6 +1,8 @@
-package org.example.repositories;
+package org.example.testeDesabilitar;
 
 import org.example.entities._BaseEntity;
+import org.example.repositories._BaseRepository;
+import org.example.repositories._Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +19,13 @@ public abstract class _BaseRepositoryImpl<T extends _BaseEntity> implements _Bas
     }
 
     @Override
-    public List<T> read() {
+    public List<T> readAll() {
         logInfo("Consultando a lista de " + this.getClass());
         return entidades;
     }
 
     @Override
-    public void update(T obj) {
+    public void update(int id, T obj) {
         var index = entidades.stream().filter(e -> e.getId() == obj.getId()).findFirst();
         if(index.isPresent()){
             var entidadeAntiga = index.get();

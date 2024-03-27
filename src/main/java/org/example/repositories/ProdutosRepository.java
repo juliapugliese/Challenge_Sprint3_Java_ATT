@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ProdutosRepository extends _BaseRepositoryImpl<Produto> {
+public class ProdutosRepository implements _BaseRepository<Produto> {
 
     public static final String TB_NAME = "PRODUTO";
 
-    public List<Produto> getAll(){
+    public List<Produto> readAll(){
         var produtos = new ArrayList<Produto>();
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID")){
@@ -35,7 +35,7 @@ public class ProdutosRepository extends _BaseRepositoryImpl<Produto> {
         return produtos;
     }
 
-    public Optional<Produto> get(int id){
+    public Optional<Produto> read(int id){
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?")
         ){
@@ -88,10 +88,10 @@ public class ProdutosRepository extends _BaseRepositoryImpl<Produto> {
     }
 
 //VERIFICAR DELETE
-    public void delete(Produto produto){
+    public void delete(int id){
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
-            stmt.setInt(1, produto.getId());
+            stmt.setInt(1, id);
             stmt.executeUpdate();
         }
         catch (SQLException e) {

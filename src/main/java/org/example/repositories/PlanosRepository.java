@@ -85,4 +85,15 @@ public class PlanosRepository extends _BaseRepositoryImpl<Plano>{
         }
     }
 
+    public void delete(Plano plano){
+        try(var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
+            stmt.setInt(1, plano.getId());
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

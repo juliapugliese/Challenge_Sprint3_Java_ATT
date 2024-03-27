@@ -87,6 +87,17 @@ public class ProdutosRepository extends _BaseRepositoryImpl<Produto> {
         }
     }
 
+//VERIFICAR DELETE
+    public void delete(Produto produto){
+        try(var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
+            stmt.setInt(1, produto.getId());
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

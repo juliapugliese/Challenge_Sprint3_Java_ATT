@@ -1,12 +1,15 @@
 package org.example.repositories;
 
 import org.example.entities.UsuarioModel.Administrador;
+import org.example.entities.UsuarioModel.Cliente;
 import org.example.entities.UsuarioModel.Usuario;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import static java.util.Map.of;
@@ -139,13 +142,22 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
             stmt.setString(1, usuario.getNomeUsuario());
             stmt.setString(2, usuario.getSenha());
             if (usuario instanceof Administrador) {
-                stmt.setString(4, ((Administrador) usuario).getNomeAdm());
                 stmt.setString(3, "ADM");
-                stmt.setNull(5, Types.DOUBLE);
-            } else if (conta instanceof ContaPoupanca) {
-                stmt.setNull(3, Types.NUMERIC);
-                stmt.setString(4, "CP");
-                stmt.setDouble(5, ((ContaPoupanca) conta).getTaxa());
+                stmt.setString(4, ((Administrador) usuario).getNomeAdm());
+                stmt.setString(5, ((Administrador) usuario).getEmail());
+            } else if (usuario instanceof Cliente) {
+                stmt.setString(3, "CLT");
+                stmt.setString(6, ((Cliente) usuario).getNomeCompleto());
+                stmt.setInt(7, ((Cliente) usuario).getCpf());
+                stmt.setString(8, ((Cliente) usuario).getTelefone());
+                stmt.setString(9, ((Cliente) usuario).getEmpresa());
+                stmt.setInt(10, ((Cliente) usuario).getCnpj());
+                stmt.setString(11, ((Cliente) usuario).getCargo());
+                stmt.setString(12, ((Cliente) usuario).getSegmento());
+                stmt.setString(13, ((Cliente) usuario).getTamanhoEmpresa());
+                stmt.setString(14, ((Cliente) usuario).getPais());
+                stmt.setString(15, ((Cliente) usuario).getEmailCorporativo());
+                stmt.setString(16, ((Cliente) usuario).getPerguntasOuComentarios());
             }
             var result = stmt.executeUpdate();
             System.out.println("Conta criada com sucesso!");
@@ -155,33 +167,44 @@ public class UsuariosRepository extends _BaseRepositoryImpl<Usuario> {
     }
 
 
-    public List<Conta> readAll() {
-        var contas = new ArrayList<Conta>();
+    public List<Usuario> readAll() {
+        var usuarios = new ArrayList<Usuario>();
         try {
             var conn = getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
             var resultSet = stmt.executeQuery();
             while (resultSet.next()) {
-                if (resultSet.getString(TB_COLUMNS.get("TIPO")).equals("CC")) {
-                    contas.add(new ContaCorrente(
+                if (resultSet.getString(TB_COLUMNS.get("TIPO")).equals("ADM")) {
+                    usuarios.add(new Administrador(
                             resultSet.getInt(TB_COLUMNS.get("ID")),
-                            resultSet.getString(TB_COLUMNS.get("NUMERO")),
-                            resultSet.getDouble(TB_COLUMNS.get("SALDO")),
-                            resultSet.getBoolean(TB_COLUMNS.get("CHEQUE_ESPECIAL_HABILITADO"))
+                            resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
+                            resultSet.getString(TB_COLUMNS.get("SENHA")),
+                            resultSet.getString(TB_COLUMNS.get("NOME_ADM")),
+                            resultSet.getString(TB_COLUMNS.get("EMAIL"))
                     ));
                 } else {
-                    contas.add(new ContaPoupanca(
+                    usuarios.add(new Cliente(
                             resultSet.getInt(TB_COLUMNS.get("ID")),
-                            resultSet.getString(TB_COLUMNS.get("NUMERO")),
-                            resultSet.getDouble(TB_COLUMNS.get("SALDO")),
-                            resultSet.getDouble(TB_COLUMNS.get("TAXA"))
+                            resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
+                            resultSet.getString(TB_COLUMNS.get("SENHA")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("NOME_COMPLETO")),
+                            resultSet.getInt(TB_CLIENTE_COLUMNS.get("CPF")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("TELEFONE")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("EMPRESA")),
+                            resultSet.getInt(TB_CLIENTE_COLUMNS.get("CNPJ")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("CARGO")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("SEGMENTO")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("TAMANHO_EMPRESA")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("PAIS")),
+                            resultSet.getString(TB_CLIENTE_COLUMNS.get("EMAIL_CORPORATIVO")),
+                            resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"))
                     ));
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return contas;
+        return usuarios;
     }
 
 }

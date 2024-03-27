@@ -31,11 +31,13 @@ public class Cliente extends Usuario {
         this.emailCorporativo = emailCorporativo;
     }
 
-    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, String telefone, String empresa, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
         super(id, nomeUsuario, senha);
         this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
         this.telefone = telefone;
         this.empresa = empresa;
+        this.cnpj = cnpj;
         this.cargo = cargo;
         this.segmento = segmento;
         this.tamanhoEmpresa = tamanhoEmpresa;

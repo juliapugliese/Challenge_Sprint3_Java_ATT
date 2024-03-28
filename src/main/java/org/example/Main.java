@@ -40,7 +40,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         //TESTE
-//        new UsuariosRepository().initialize();
+        new UsuariosRepository().initialize();
         var adm2 = new Administrador("553427", "fiap2", "Julia Ribeiro", "rm553427@fiap.com.br");
         var cli = new Cliente("juliana", "juliana789", "juliana G. P. Ribeiro", 14451445751L, "11456699887", "fiap", 14563201478965L, "Aluno", "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil", "rm553427@fiap.com.br");
         var administradores = new UsuariosRepository();

@@ -3,14 +3,12 @@ package org.example.repositories;
 import org.example.entities.UsuarioModel.Administrador;
 import org.example.entities.UsuarioModel.Cliente;
 import org.example.entities.UsuarioModel.Usuario;
+import org.example.entities._BaseEntity;
 import org.example.infrastructure.OracleDatabaseConnection;
 
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class UsuariosRepository implements _BaseRepository<Usuario>{
 
@@ -49,18 +47,18 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                             "%s VARCHAR2(20) NOT NULL, " +
                             "%s VARCHAR2(20) NOT NULL, " +
                             "%s VARCHAR2(3) NOT NULL, " +
-                            "%s VARCHAR2(20), " +
-                            "%s VARCHAR2(20), " +
+                            "%s VARCHAR2(50), " +
+                            "%s VARCHAR2(60), " +
                             "%s VARCHAR2(40), " +
                             "%s NUMBER(11), " +
                             "%s NUMBER(11), " +
-                            "%s VARCHAR2(30), " +
+                            "%s VARCHAR2(70), " +
                             "%s NUMBER(14), " +
-                            "%s VARCHAR2(20), " +
+                            "%s VARCHAR2(50), " +
                             "%s VARCHAR2(70), " +
                             "%s VARCHAR2(10), " +
-                            "%s VARCHAR2(25), " +
-                            "%s VARCHAR2(20), " +
+                            "%s VARCHAR2(40), " +
+                            "%s VARCHAR2(60), " +
                             "%s VARCHAR2(200))")
                             .formatted(TB_NAME,
                                     TB_COLUMNS.get("ID"),
@@ -214,6 +212,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                 }
             }
             conn.close();
+            usuarios.sort(Comparator.comparingInt(_BaseEntity::getId));
         } catch (SQLException e) {
             e.printStackTrace();
         }

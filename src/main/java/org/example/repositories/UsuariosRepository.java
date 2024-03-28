@@ -57,7 +57,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                             "%s VARCHAR2(30), " +
                             "%s NUMBER(14), " +
                             "%s VARCHAR2(20), " +
-                            "%s VARCHAR2(20), " +
+                            "%s VARCHAR2(70), " +
                             "%s VARCHAR2(10), " +
                             "%s VARCHAR2(25), " +
                             "%s VARCHAR2(20), " +
@@ -146,10 +146,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                 stmt.setNull(4, Types.VARCHAR);
                 stmt.setNull(5, Types.VARCHAR);
                 stmt.setString(6, ((Cliente) usuario).getNomeCompleto());
-                stmt.setInt(7, ((Cliente) usuario).getCpf());
+                stmt.setLong(7, ((Cliente) usuario).getCpf());
                 stmt.setString(8, ((Cliente) usuario).getTelefone());
                 stmt.setString(9, ((Cliente) usuario).getEmpresa());
-                stmt.setInt(10, ((Cliente) usuario).getCnpj());
+                stmt.setLong(10, ((Cliente) usuario).getCnpj());
                 stmt.setString(11, ((Cliente) usuario).getCargo());
                 stmt.setString(12, ((Cliente) usuario).getSegmento());
                 stmt.setString(13, ((Cliente) usuario).getTamanhoEmpresa());
@@ -200,10 +200,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
                             resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
-                            resultSet.getInt(TB_COLUMNS.get("CPF")),
+                            resultSet.getLong(TB_COLUMNS.get("CPF")),
                             resultSet.getString(TB_COLUMNS.get("TELEFONE")),
                             resultSet.getString(TB_COLUMNS.get("EMPRESA")),
-                            resultSet.getInt(TB_COLUMNS.get("CNPJ")),
+                            resultSet.getLong(TB_COLUMNS.get("CNPJ")),
                             resultSet.getString(TB_COLUMNS.get("CARGO")),
                             resultSet.getString(TB_COLUMNS.get("SEGMENTO")),
                             resultSet.getString(TB_COLUMNS.get("TAMANHO_EMPRESA")),
@@ -241,10 +241,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
                             resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
-                            resultSet.getInt(TB_COLUMNS.get("CPF")),
+                            resultSet.getLong(TB_COLUMNS.get("CPF")),
                             resultSet.getString(TB_COLUMNS.get("TELEFONE")),
                             resultSet.getString(TB_COLUMNS.get("EMPRESA")),
-                            resultSet.getInt(TB_COLUMNS.get("CNPJ")),
+                            resultSet.getLong(TB_COLUMNS.get("CNPJ")),
                             resultSet.getString(TB_COLUMNS.get("CARGO")),
                             resultSet.getString(TB_COLUMNS.get("SEGMENTO")),
                             resultSet.getString(TB_COLUMNS.get("TAMANHO_EMPRESA")),
@@ -310,10 +310,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                 stmt.setNull(4, Types.VARCHAR);
                 stmt.setNull(5, Types.VARCHAR);
                 stmt.setString(6, ((Cliente) usuario).getNomeCompleto());
-                stmt.setInt(7, ((Cliente) usuario).getCpf());
+                stmt.setLong(7, ((Cliente) usuario).getCpf());
                 stmt.setString(8, ((Cliente) usuario).getTelefone());
                 stmt.setString(9, ((Cliente) usuario).getEmpresa());
-                stmt.setInt(10, ((Cliente) usuario).getCnpj());
+                stmt.setLong(10, ((Cliente) usuario).getCnpj());
                 stmt.setString(11, ((Cliente) usuario).getCargo());
                 stmt.setString(12, ((Cliente) usuario).getSegmento());
                 stmt.setString(13, ((Cliente) usuario).getTamanhoEmpresa());

@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class Cliente extends Usuario {
     private String nomeCompleto;
-    private int cpf;
+    private long cpf;
     private String telefone;
     private String empresa;
-    private int cnpj;
+    private long cnpj;
     private String cargo;
     private String segmento;
     private String tamanhoEmpresa;
@@ -16,25 +16,7 @@ public class Cliente extends Usuario {
     private String emailCorporativo;
     private String perguntasOuComentarios;
 
-
-    public Cliente() {}
-
-
-    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
-        super(id, nomeUsuario, senha);
-        this.nomeCompleto = nomeCompleto;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.empresa = empresa;
-        this.cnpj = cnpj;
-        this.cargo = cargo;
-        this.segmento = segmento;
-        this.tamanhoEmpresa = tamanhoEmpresa;
-        this.pais = pais;
-        this.emailCorporativo = emailCorporativo;
-    }
-
-    public Cliente(String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
         super(nomeUsuario, senha);
         this.nomeCompleto = nomeCompleto;
         this.cpf = cpf;
@@ -48,7 +30,7 @@ public class Cliente extends Usuario {
         this.emailCorporativo = emailCorporativo;
     }
 
-    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
         super(id, nomeUsuario, senha);
         this.nomeCompleto = nomeCompleto;
         this.cpf = cpf;
@@ -60,11 +42,9 @@ public class Cliente extends Usuario {
         this.tamanhoEmpresa = tamanhoEmpresa;
         this.pais = pais;
         this.emailCorporativo = emailCorporativo;
-        this.perguntasOuComentarios = perguntasOuComentarios;
     }
 
-
-    public Cliente(String nomeUsuario, String senha, String nomeCompleto, int cpf, String telefone, String empresa, int cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
         super(nomeUsuario, senha);
         this.nomeCompleto = nomeCompleto;
         this.cpf = cpf;
@@ -79,6 +59,20 @@ public class Cliente extends Usuario {
         this.perguntasOuComentarios = perguntasOuComentarios;
     }
 
+    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+        super(id, nomeUsuario, senha);
+        this.nomeCompleto = nomeCompleto;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.empresa = empresa;
+        this.cnpj = cnpj;
+        this.cargo = cargo;
+        this.segmento = segmento;
+        this.tamanhoEmpresa = tamanhoEmpresa;
+        this.pais = pais;
+        this.emailCorporativo = emailCorporativo;
+        this.perguntasOuComentarios = perguntasOuComentarios;
+    }
 
     public String getNomeCompleto() {
         return nomeCompleto;
@@ -86,6 +80,14 @@ public class Cliente extends Usuario {
 
     public void setNomeCompleto(String nomeCompleto) {
         this.nomeCompleto = nomeCompleto;
+    }
+
+    public long getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(long cpf) {
+        this.cpf = cpf;
     }
 
     public String getTelefone() {
@@ -102,6 +104,14 @@ public class Cliente extends Usuario {
 
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
+    }
+
+    public long getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(long cnpj) {
+        this.cnpj = cnpj;
     }
 
     public String getCargo() {
@@ -152,22 +162,6 @@ public class Cliente extends Usuario {
         this.perguntasOuComentarios = perguntasOuComentarios;
     }
 
-    public int getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(int cpf) {
-        this.cpf = cpf;
-    }
-
-    public int getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(int cnpj) {
-        this.cnpj = cnpj;
-    }
-
     @Override
     public String toString() {
         return   nomeCompleto + " " +
@@ -183,7 +177,7 @@ public class Cliente extends Usuario {
         if (nomeCompleto == null || nomeCompleto.isBlank())
             errors.add("O campo de nome completo deve ser preenchido");
 
-        if (!Integer.toString(cpf).matches("\\d{11}"))
+        if (!Long.toString(cpf).matches("\\d{11}"))
             errors.add("O CPF deve conter 11 caracteres");
 
         if (telefone.replaceAll("[.-]", "").matches("\\d{11}") || telefone.replaceAll("[.-]", "").matches("\\d{10}") || telefone.isBlank() || telefone == null)
@@ -192,7 +186,7 @@ public class Cliente extends Usuario {
         if (empresa == null || empresa.isBlank())
             errors.add("Nome da empresa não pode ser vazio");
 
-        if (!Integer.toString(cnpj).matches("\\d{14}"))
+        if (!Long.toString(cnpj).matches("\\d{14}"))
             errors.add("O CNPJ deve conter 11 caracteres");
 
         if (cargo == null || cargo.isBlank())

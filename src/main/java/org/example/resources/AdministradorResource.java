@@ -26,7 +26,7 @@ public class AdministradorResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Usuario> readAll(){
-        return usuariosRepository.readAll();
+        return usuariosRepository.readAllADM();
     }
 
     @GET

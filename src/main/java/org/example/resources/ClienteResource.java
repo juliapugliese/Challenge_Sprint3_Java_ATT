@@ -25,7 +25,7 @@ public class ClienteResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Usuario> readAll(){
-        return usuariosRepository.readAll();
+        return usuariosRepository.readAllCLT();
     }
 
     @GET

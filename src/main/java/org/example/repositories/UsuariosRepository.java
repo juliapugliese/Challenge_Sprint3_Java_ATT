@@ -352,12 +352,12 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        administradores.sort(Comparator.comparingInt(_BaseEntity::getId));
         System.out.println(administradores);
         return administradores;
     }
 
     public List<Usuario> readAllCLT() {
-        var administradores = new ArrayList<Usuario>();
         var clientes = new ArrayList<Usuario>();
         try {
             var conn =  new OracleDatabaseConnection().getConnection();
@@ -388,7 +388,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        clientes.sort(Comparator.comparingInt(_BaseEntity::getId));
         System.out.println(clientes);
         return clientes;
     }

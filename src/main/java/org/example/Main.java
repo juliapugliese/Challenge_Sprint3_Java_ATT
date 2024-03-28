@@ -46,7 +46,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         //TESTE
-        new UsuariosRepository().initialize();
+//        new UsuariosRepository().initialize();
         var adm2 = new Administrador("553427", "fiap2", "Julia Ribeiro", "rm553427@fiap.com.br");
         var cli = new Cliente("juliana", "juliana789", "juliana G. P. Ribeiro", 14451445751L, "11456699887", "fiap", 14563201478965L, "Aluno", "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil", "rm553427@fiap.com.br");
         var administradores = new UsuariosRepository();
@@ -56,27 +56,27 @@ public class Main {
 //        clientes.readAll();
 //        administradores.readAll();
         administradores.create(adm2);
-        administradores.readAll();
+//        administradores.readAll();
 //        administradores.update(7, adm2);
 //        administradores.readAll();
-//        administradores.delete(7);
+        administradores.delete(2);
 //        administradores.readAll();
 //        System.out.println(administradores.read(2));
 //        new UsuariosRepository().shutdown();
 //
-        new PlanosRepository().initialize();
+//        new PlanosRepository().initialize();
         var planscss = new Plano("Premium", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
         var repopl = new PlanosRepository();
         repopl.create(planscss);
 //        repopl.readAll();
-//        repopl.delete(4);
+        repopl.delete(2);
 //        repopl.readAll();
 //        repopl.update(2, planscss);
 //        repopl.readAll();
 //        System.out.println(repopl.read(2));
 //        new PlanosRepository().shutdown();
 //
-        new ProdutosRepository().initialize();
+//        new ProdutosRepository().initialize();
         var produto = new Produto("Sales Cloudy",  "Venda mais rápido e com mais inteligência com qualquer uma das nossas edições de CRM totalmente personalizáveis.", new ArrayList<>(List.of(
                 new Plano("Starter", "Ferramentas de vendas e atendimento ao cliente em um app", 25),
                 new Plano("Sales Professional", "Solução de vendas completa para equipes de qualquer tamanho",  80),
@@ -90,7 +90,7 @@ public class Main {
 //
         var prodrepo = new ProdutosRepository();
         prodrepo.create(produto);
-//        prodrepo.delete(7);
+        prodrepo.delete(2);
 //        prodrepo.readAll();
 //        prodrepo.update(2, produto1);
 //        prodrepo.readAll();

@@ -56,7 +56,16 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             }
             else {
                 produto.getPlanoPagamento().forEach(new PlanosRepository()::create);
-                stmt.setString(3, gson.toJson(produto.getPlanoPagamento()));
+                ArrayList<Plano> planosRepositoryAtt = new ArrayList<>();
+                produto.getPlanoPagamento().forEach(pln -> {
+                    Optional<Plano> planoOptional = new PlanosRepository().readByName(pln);
+                    if (planoOptional.isPresent()) {
+                        Plano plano = planoOptional.get();
+                        planosRepositoryAtt.add(plano);
+                    }
+                });
+                stmt.setString(3, gson.toJson(planosRepositoryAtt));
+
             }
 
             if (produto.getSucessPlans()==null){

@@ -86,6 +86,7 @@ public class Main {
 //
         var prodrepo = new ProdutosRepository();
         prodrepo.create(produto);
+        prodrepo.delete(7);
         prodrepo.readAll();
 //        prodrepo.update(2, produto1);
 //        prodrepo.readAll();

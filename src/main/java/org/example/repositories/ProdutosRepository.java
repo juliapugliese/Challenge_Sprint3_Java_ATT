@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.example.entities.ServicoModel.Plano;
 import org.example.entities.ServicoModel.Produto;
+import org.example.entities._BaseEntity;
 import org.example.infrastructure.OracleDatabaseConnection;
 
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,6 +129,7 @@ public List<Produto> readAll(){
     catch (SQLException e) {
         System.err.println("Erro ao ler produtos: " + e.getMessage());
     }
+    produtos.sort(Comparator.comparingInt(_BaseEntity::getId));
     System.out.println(produtos);
     return produtos;
 }

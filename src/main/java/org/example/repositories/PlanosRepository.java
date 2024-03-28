@@ -1,10 +1,12 @@
 package org.example.repositories;
 
 import org.example.entities.ServicoModel.Plano;
+import org.example.entities._BaseEntity;
 import org.example.infrastructure.OracleDatabaseConnection;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +66,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
         catch (Exception e){
             e.printStackTrace();
         }
+        planos.sort(Comparator.comparingInt(_BaseEntity::getId));
         System.out.println(planos);
         return planos;
     }

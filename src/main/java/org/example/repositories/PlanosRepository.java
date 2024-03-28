@@ -87,6 +87,27 @@ public class PlanosRepository implements _BaseRepository<Plano> {
         return Optional.empty();
     }
 
+    public Optional<Plano> readByName(Plano plano){
+        try(var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE NOME = ?")
+        ){
+            stmt.setString(1, plano.getNomePlano());
+            var rs = stmt.executeQuery();
+            if(rs.next()){
+                return Optional.of(new Plano(
+                        rs.getInt("ID"),
+                        rs.getString("NOME"),
+                        rs.getString("DESCRICAO"),
+                        rs.getString("RECURSOS"),
+                        rs.getFloat("PRECO")));
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
     public void create(Plano plano){
         try(var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, RECURSOS, PRECO) VALUES (?,?,?,?)")){

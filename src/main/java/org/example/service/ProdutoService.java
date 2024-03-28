@@ -38,4 +38,13 @@ public class ProdutoService {
         else
             produtoRepository.delete(produto.getId());
     }
+
+    public void delete(int id){
+        var validation = produtoRepository.read(id).get().validate();
+
+        if(validation.containsKey(false))
+            throw new IllegalArgumentException(validation.get(false).toString());
+        else
+            produtoRepository.delete(id);
+    }
 }

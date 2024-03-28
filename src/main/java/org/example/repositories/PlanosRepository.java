@@ -26,6 +26,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                             "PRECO DECIMAL(9,2))" ));
             stmt.executeUpdate();
             System.out.println("Tabela "+ TB_NAME +" criada com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,6 +38,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
             System.out.println("Tabela "+ TB_NAME +" excluída com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,8 +47,8 @@ public class PlanosRepository implements _BaseRepository<Plano> {
 
     public List<Plano> readAll(){
         var planos = new ArrayList<Plano>();
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID")){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
             var rs = stmt.executeQuery();
             while(rs.next()){
                 planos.add(new Plano(
@@ -56,6 +58,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                         rs.getString("RECURSOS"),
                         rs.getFloat("PRECO")));
             }
+            conn.close();
         }
 
         catch (Exception e){
@@ -66,9 +69,9 @@ public class PlanosRepository implements _BaseRepository<Plano> {
     }
 
     public Optional<Plano> read(int id){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?")
-        ){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
+
             stmt.setInt(1, id);
             var rs = stmt.executeQuery();
             if(rs.next()){
@@ -79,6 +82,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                         rs.getString("RECURSOS"),
                         rs.getFloat("PRECO")));
             }
+            conn.close();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -88,9 +92,9 @@ public class PlanosRepository implements _BaseRepository<Plano> {
     }
 
     public Optional<Plano> readByName(Plano plano){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE NOME = ?")
-        ){
+        try {var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE NOME = ?");
+
             stmt.setString(1, plano.getNomePlano());
             var rs = stmt.executeQuery();
             if(rs.next()){
@@ -101,6 +105,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                         rs.getString("RECURSOS"),
                         rs.getFloat("PRECO")));
             }
+            conn.close();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -109,13 +114,15 @@ public class PlanosRepository implements _BaseRepository<Plano> {
         return Optional.empty();
     }
     public void create(Plano plano){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, RECURSOS, PRECO) VALUES (?,?,?,?)")){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, RECURSOS, PRECO) VALUES (?,?,?,?)");
             stmt.setString(1, plano.getNomePlano());
             stmt.setString(2, plano.getDescricaoPlano());
             stmt.setString(3, plano.getRecursosPlano());
             stmt.setFloat(4, plano.getPrecoPlano());
             stmt.executeUpdate();
+
+            conn.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -123,15 +130,17 @@ public class PlanosRepository implements _BaseRepository<Plano> {
     }
 
     public void update(int id, Plano plano){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?, RECURSOS = ?, PRECO = ? WHERE ID = ?");)
-        {
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?, RECURSOS = ?, PRECO = ? WHERE ID = ?");
+
             stmt.setString(1, plano.getNomePlano());
             stmt.setString(2, plano.getDescricaoPlano());
             stmt.setString(3, plano.getRecursosPlano());
             stmt.setFloat(4, plano.getPrecoPlano());
             stmt.setInt(5, id);
             stmt.executeUpdate();
+
+            conn.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -139,10 +148,12 @@ public class PlanosRepository implements _BaseRepository<Plano> {
     }
 
     public void delete(int id){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
+
+            conn.close();
         }
         catch (SQLException e) {
             e.printStackTrace();

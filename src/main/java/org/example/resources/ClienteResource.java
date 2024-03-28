@@ -1,22 +1,23 @@
-package org.example;
+package org.example.resources;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.example.entities.UsuarioModel.Cliente;
 import org.example.entities.UsuarioModel.Usuario;
 import org.example.repositories.UsuariosRepository;
 import org.example.service.UsuarioService;
 
 import java.util.List;
 
-@Path("usuario")
+@Path("cliente")
 
-public class UsuarioResource {
+public class ClienteResource {
 
     public UsuariosRepository usuariosRepository;
     public UsuarioService usuarioService;
 
-    public UsuarioResource(){
+    public ClienteResource(){
         usuariosRepository = new UsuariosRepository();
         usuarioService = new UsuarioService();
     }
@@ -31,15 +32,15 @@ public class UsuarioResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response read(@PathParam("id") int id){
-        var produto = usuariosRepository.read(id);
-        return produto.isPresent() ?
-                Response.ok(produto.get()).build() :
+        var cliente = usuariosRepository.read(id);
+        return cliente.isPresent() ?
+                Response.ok(cliente.get()).build() :
                 Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Usuario usuario){
+    public Response create(Cliente usuario){
         try{
             usuarioService.create(usuario);
             return Response.status(Response.Status.CREATED).build();
@@ -52,7 +53,7 @@ public class UsuarioResource {
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") int id, Usuario usuario){
+    public Response update(@PathParam("id") int id, Cliente usuario){
         try{
             usuarioService.update(id, usuario);
             return Response.status(Response.Status.NO_CONTENT).build();

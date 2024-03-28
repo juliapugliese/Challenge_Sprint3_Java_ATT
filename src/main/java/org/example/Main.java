@@ -38,7 +38,7 @@ public class Main {
 
         //TESTE
 //        new UsuariosRepository().initialize();
-//        var adm2 = new Administrador("553427", "fiap2", "Julia Pugliese", "rm553427@fiap.com.br");
+//        var adm2 = new Administrador("553427", "fiap2", "Julia Ribeiro", "rm553427@fiap.com.br");
 //        var cli = new Cliente();
 //        var administradores = new UsuariosRepository();
 //        administradores.readAll();

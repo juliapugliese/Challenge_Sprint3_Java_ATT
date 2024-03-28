@@ -1,4 +1,4 @@
-package org.example;
+package org.example.resources;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -29,9 +29,9 @@ public class PlanoResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response read(@PathParam("id") int id){
-        var produto = planoRepository.read(id);
-        return produto.isPresent() ?
-                Response.ok(produto.get()).build() :
+        var plano = planoRepository.read(id);
+        return plano.isPresent() ?
+                Response.ok(plano.get()).build() :
                 Response.status(Response.Status.NOT_FOUND).build();
     }
 

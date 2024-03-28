@@ -1,39 +1,36 @@
-package org.example;
+package org.example.resources;
 
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.example.entities.UsuarioModel.Administrador;
-import org.example.entities.UsuarioModel.Usuario;
-import org.example.repositories.UsuariosRepository;
-import org.example.service.UsuarioService;
+import org.example.entities.ServicoModel.Produto;
+import org.example.repositories.ProdutosRepository;
+import org.example.service.ProdutoService;
 
 import java.util.List;
 
-@Path("administrador")
+@Path("produto")
+public class ProdutoResource {
 
-public class AdministradorResource {
+    public ProdutosRepository produtoRepository;
+    public ProdutoService produtoService;
 
-
-    public UsuariosRepository usuariosRepository;
-    public UsuarioService usuarioService;
-
-    public AdministradorResource(){
-        usuariosRepository = new UsuariosRepository();
-        usuarioService = new UsuarioService();
+    public ProdutoResource(){
+        produtoRepository = new ProdutosRepository();
+        produtoService = new ProdutoService();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Usuario> readAll(){
-        return usuariosRepository.readAll();
+    public List<Produto> readAll(){
+       return produtoRepository.readAll();
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response read(@PathParam("id") int id){
-        var produto = usuariosRepository.read(id);
+        var produto = produtoRepository.read(id);
         return produto.isPresent() ?
                 Response.ok(produto.get()).build() :
                 Response.status(Response.Status.NOT_FOUND).build();
@@ -41,9 +38,9 @@ public class AdministradorResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Administrador usuario){
+    public Response create(Produto produto){
         try{
-            usuarioService.create(usuario);
+            produtoService.create(produto);
             return Response.status(Response.Status.CREATED).build();
         }
         catch(IllegalArgumentException e){
@@ -54,9 +51,9 @@ public class AdministradorResource {
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") int id, Administrador usuario){
+    public Response update(@PathParam("id") int id, Produto produto){
         try{
-            usuarioService.update(id, usuario);
+            produtoService.update(id, produto);
             return Response.status(Response.Status.NO_CONTENT).build();
         }
         catch(IllegalArgumentException e){
@@ -69,7 +66,7 @@ public class AdministradorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id){
         try{
-            usuarioService.delete(id);
+            produtoService.delete(id);
             return Response.status(Response.Status.NO_CONTENT).build();
         }
         catch(IllegalArgumentException e){

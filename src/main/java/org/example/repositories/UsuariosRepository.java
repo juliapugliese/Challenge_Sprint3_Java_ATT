@@ -82,6 +82,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
             stmt.executeUpdate();
             System.out.println("Tabela "+ TB_NAME +" criada com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -93,6 +94,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
             System.out.println("Tabela "+ TB_NAME +" excluída com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -157,17 +159,19 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             }
             stmt.executeUpdate();
             System.out.println("Usuário criado com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void delete(int id){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
             System.out.println("Usuário deletado com sucesso!");
+            conn.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -180,6 +184,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
             var resultSet = stmt.executeQuery();
+
             while (resultSet.next()) {
                 if (resultSet.getString(TB_COLUMNS.get("TIPO")).equals("ADM")) {
                     usuarios.add(new Administrador(
@@ -208,6 +213,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                     ));
                 }
             }
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -216,9 +222,8 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
     }
 
     public Optional<Usuario> read(int id){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?")
-        ){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             var resultSet = stmt.executeQuery();
             if(resultSet.next()) {
@@ -249,6 +254,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                     ));
                 }
             }
+            conn.close();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -257,7 +263,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
     }
 
     public void update(int id, Usuario usuario) {
-        try (var conn =  new OracleDatabaseConnection().getConnection();
+        try {var conn =  new OracleDatabaseConnection().getConnection();
              var stmt = conn.prepareStatement(
                      "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE ID = ?"
                              .formatted(TB_NAME,
@@ -276,9 +282,9 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                                      TB_COLUMNS.get("TAMANHO_EMPRESA"),
                                      TB_COLUMNS.get("PAIS"),
                                      TB_COLUMNS.get("EMAIL_CORPORATIVO"),
-                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"))))
+                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
 
-        {
+
             stmt.setString(1, usuario.getNomeUsuario());
             stmt.setString(2, usuario.getSenha());
             stmt.setInt(17, id);
@@ -317,6 +323,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             }
             stmt.executeUpdate();
             System.out.println("Usuário atualizado com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

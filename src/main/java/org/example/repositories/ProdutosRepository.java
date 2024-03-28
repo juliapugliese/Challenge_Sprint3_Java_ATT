@@ -28,6 +28,7 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
                             "SUCESS_PLANS CLOB)" ));
             stmt.executeUpdate();
             System.out.println("Tabela "+ TB_NAME +" criada com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,6 +40,7 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
             System.out.println("Tabela "+ TB_NAME +" excluída com sucesso!");
+            conn.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,8 +48,8 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
 
 
     public void create(Produto produto){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, PLANO_PAGAMENTO, SUCESS_PLANS) VALUES (?,?,?,?)")){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, PLANO_PAGAMENTO, SUCESS_PLANS) VALUES (?,?,?,?)");
             stmt.setString(1, produto.getNomeProduto());
             stmt.setString(2, produto.getDescricaoProduto());
 
@@ -77,6 +79,7 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             }
 
             stmt.executeUpdate();
+            conn.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -84,10 +87,12 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
     }
 
     public void delete(int id){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?")){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
+
+            conn.close();
         }
         catch (SQLException e) {
             e.printStackTrace();
@@ -96,8 +101,8 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
 
 public List<Produto> readAll(){
     var produtos = new ArrayList<Produto>();
-    try(var conn = new OracleDatabaseConnection().getConnection();
-        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID")){
+    try{var conn = new OracleDatabaseConnection().getConnection();
+        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
         var rs = stmt.executeQuery();
         while(rs.next()){
             Produto produto = new Produto();
@@ -117,6 +122,7 @@ public List<Produto> readAll(){
 
             produtos.add(produto);
         }
+        conn.close();
     }
     catch (SQLException e) {
         System.err.println("Erro ao ler produtos: " + e.getMessage());
@@ -126,9 +132,9 @@ public List<Produto> readAll(){
 }
 
     public Optional<Produto> read(int id){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?")
-        ){
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
+
             stmt.setInt(1, id);
             var rs = stmt.executeQuery();
             if(rs.next()){
@@ -148,6 +154,7 @@ public List<Produto> readAll(){
                 }
                 return Optional.of(produto);
             }
+            conn.close();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -158,9 +165,9 @@ public List<Produto> readAll(){
 
 
     public void update(int id, Produto produto){
-        try(var conn = new OracleDatabaseConnection().getConnection();
-            var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?, PLANO_PAGAMENTO = ?, SUCESS_PLANS = ?  WHERE ID = ?"))
-        {
+        try{var conn = new OracleDatabaseConnection().getConnection();
+            var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?, PLANO_PAGAMENTO = ?, SUCESS_PLANS = ?  WHERE ID = ?");
+
             stmt.setString(1, produto.getNomeProduto());
             stmt.setString(2, produto.getDescricaoProduto());
 
@@ -182,6 +189,8 @@ public List<Produto> readAll(){
 
             stmt.setInt(5, id);
             stmt.executeUpdate();
+
+            conn.close();
         }
         catch (SQLException e) {
             e.printStackTrace();

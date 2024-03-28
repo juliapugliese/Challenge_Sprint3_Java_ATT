@@ -1,17 +1,14 @@
 package org.example;
 
-import org.example.entities.ServicoModel.Plano;
-import org.example.entities.ServicoModel.Produto;
-import org.example.repositories.PlanosRepository;
-import org.example.repositories.ProdutosRepository;
+import org.example.entities.UsuarioModel.Administrador;
+import org.example.entities.UsuarioModel.Cliente;
+import org.example.repositories.UsuariosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Main class.
@@ -43,12 +40,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         //TESTE
-//        new UsuariosRepository().initialize();
-//        var adm2 = new Administrador("553427", "fiap2", "Julia Pugliese", "rm553427@fiap.com.br");
-//        var administradores = new UsuariosRepository();
+        new UsuariosRepository().initialize();
+        var adm2 = new Administrador("553427", "fiap2", "Julia Pugliese", "rm553427@fiap.com.br");
+        var cli = new Cliente();
+        var administradores = new UsuariosRepository();
 //        administradores.readAll();
-//        administradores.create(adm2);
-//        administradores.readAll();
+        administradores.create(adm2);
+        administradores.readAll();
 //        administradores.update(7, adm2);
 //        administradores.readAll();
 //        administradores.delete(7);
@@ -58,7 +56,7 @@ public class Main {
 //
 //        new PlanosRepository().initialize();
 //        var planscss = new Plano("Premium", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
-        var repopl = new PlanosRepository();
+//        var repopl = new PlanosRepository();
 //        repopl.create(planscss);
 //        repopl.readAll();
 //        repopl.delete(4);
@@ -71,21 +69,21 @@ public class Main {
 //
 //        new ProdutosRepository().initialize();
 
-        var produto = new Produto("Sales Cloudy",  "Venda mais rápido e com mais inteligência com qualquer uma das nossas edições de CRM totalmente personalizáveis.", new ArrayList<>(List.of(
-                new Plano("Starter", "Ferramentas de vendas e atendimento ao cliente em um app", 25),
-                new Plano("Sales Professional", "Solução de vendas completa para equipes de qualquer tamanho",  80),
-                new Plano("Enterprise", "CRM de vendas altamente personalizável para o seu negócio",  165),
-                new Plano("Unlimited", "A plataforma definitiva para seu crescimento",  330)
-        )));
-
-        var produto1 = new Produto("MuleSoft Automation",  "Combine o poder do MuleSoft RPA, MuleSoft Composer e Anypoint Platform para ajudar as equipes a automatizar.", new ArrayList<>(List.of(
-                new Plano("MuleSoft Automation", "Capacite suas equipes para fazer mais, com menos.",  4750)
-        )));
-
-        var prodrepo = new ProdutosRepository();
-        prodrepo.create(produto);
+//        var produto = new Produto("Sales Cloudy",  "Venda mais rápido e com mais inteligência com qualquer uma das nossas edições de CRM totalmente personalizáveis.", new ArrayList<>(List.of(
+//                new Plano("Starter", "Ferramentas de vendas e atendimento ao cliente em um app", 25),
+//                new Plano("Sales Professional", "Solução de vendas completa para equipes de qualquer tamanho",  80),
+//                new Plano("Enterprise", "CRM de vendas altamente personalizável para o seu negócio",  165),
+//                new Plano("Unlimited", "A plataforma definitiva para seu crescimento",  330)
+//        )));
+//
+//        var produto1 = new Produto("MuleSoft Automation",  "Combine o poder do MuleSoft RPA, MuleSoft Composer e Anypoint Platform para ajudar as equipes a automatizar.", new ArrayList<>(List.of(
+//                new Plano("MuleSoft Automation", "Capacite suas equipes para fazer mais, com menos.",  4750)
+//        )));
+//
+//        var prodrepo = new ProdutosRepository();
+//        prodrepo.create(produto);
 //        prodrepo.delete(7);
-        prodrepo.readAll();
+//        prodrepo.readAll();
 //        prodrepo.update(2, produto1);
 //        prodrepo.readAll();
 //        repopl.readAll();

@@ -30,13 +30,15 @@ public class UsuarioService {
             usuariosRepository.update(id, usuario);
     }
 
-
-    public void delete(Usuario usuario){
-        var validation = usuario.validate();
-
-        if(validation.containsKey(false))
-            throw new IllegalArgumentException(validation.get(false).toString());
-        else
-            usuariosRepository.delete(usuario.getId());
+    public void delete(int id){
+        usuariosRepository.delete(id);
     }
+//    public void delete(Usuario usuario){
+//        var validation = usuario.validate();
+//
+//        if(validation.containsKey(false))
+//            throw new IllegalArgumentException(validation.get(false).toString());
+//        else
+//            usuariosRepository.delete(usuario.getId());
+//    }
 }

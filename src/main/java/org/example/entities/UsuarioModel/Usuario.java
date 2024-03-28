@@ -51,11 +51,10 @@ public class Usuario extends _BaseEntity{
 
     public Map<Boolean, ArrayList<String>> validate() {
         var errors = new ArrayList<String>();
-
-        if (getNomeUsuario() == null || getNomeUsuario().isBlank())
+        if (nomeUsuario == null || nomeUsuario.isBlank())
             errors.add("Nome de usuário não pode ser vazio");
 
-        if (getSenha() == null || getSenha().isBlank())
+        if (senha == null || senha.isBlank())
             errors.add("Senha não pode ser vazia");
 
         return !errors.isEmpty() ?

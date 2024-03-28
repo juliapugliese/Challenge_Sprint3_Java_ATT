@@ -27,14 +27,25 @@ public class PlanoService {
         else
             planoRepository.update(id, plano);
     }
-
-
-    public void delete(Plano plano){
-        var validation = plano.validate();
-
-        if(validation.containsKey(false))
-            throw new IllegalArgumentException(validation.get(false).toString());
-        else
-            planoRepository.delete(plano.getId());
+    public void delete(int id){
+        planoRepository.delete(id);
     }
+
+//    public void delete(Plano plano){
+//        var validation = plano.validate();
+//
+//        if(validation.containsKey(false))
+//            throw new IllegalArgumentException(validation.get(false).toString());
+//        else
+//            planoRepository.delete(plano.getId());
+//    }
+//
+//    public void delete(int id){
+//        var validation = planoRepository.read(id).get().validate();
+//
+//        if(validation.containsKey(false))
+//            throw new IllegalArgumentException(validation.get(false).toString());
+//        else
+//            planoRepository.delete(id);
+//    }
 }

@@ -4,10 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Adição do entregavel word">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/ProdutoResource.java" afterDir="false" />
+    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Adição da classe ProdutoResource">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/PlanoResource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/UsuarioResource.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/PlanoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/PlanoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/ProdutoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/ProdutoService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/service/UsuarioService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/service/UsuarioService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +50,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Julia Pugliese/Downloads/PrimeiraAPi_1TDSPC/PrimeiraAPi_1TDSPC",
+    "last_opened_file_path": "C:/Users/Julia Pugliese/Downloads/CHALLENGE/Challenge-SalesForce_Sprint3-JAVA",
     "project.structure.last.edited": "SDKs",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -183,7 +187,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711630499860</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Adição da classe ProdutoResource">
+      <option name="closed" value="true" />
+      <created>1711639691757</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1711639691757</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -197,7 +209,8 @@
     <MESSAGE value="Alterações na classe PlanosRepository" />
     <MESSAGE value="Alterações na classe ProdutosRepository" />
     <MESSAGE value="Adição do entregavel word" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adição do entregavel word" />
+    <MESSAGE value="Adição da classe ProdutoResource" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adição da classe ProdutoResource" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

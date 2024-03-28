@@ -81,6 +81,7 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             }
 
             stmt.executeUpdate();
+            System.out.println("Produto criado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {
@@ -93,7 +94,7 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
-
+            System.out.println("Produto deletado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {
@@ -192,7 +193,7 @@ public List<Produto> readAll(){
 
             stmt.setInt(5, id);
             stmt.executeUpdate();
-
+            System.out.println("Produto atualizado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {

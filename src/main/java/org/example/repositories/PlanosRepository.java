@@ -124,7 +124,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             stmt.setString(3, plano.getRecursosPlano());
             stmt.setFloat(4, plano.getPrecoPlano());
             stmt.executeUpdate();
-
+            System.out.println("Plano criado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {
@@ -142,7 +142,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             stmt.setFloat(4, plano.getPrecoPlano());
             stmt.setInt(5, id);
             stmt.executeUpdate();
-
+            System.out.println("Plano atualizado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {
@@ -155,7 +155,7 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
-
+            System.out.println("Plano deletado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {

@@ -58,6 +58,7 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             if (produto.getPlanoPagamento()==null){
                 stmt.setNull(3, Types.CLOB);
             }
+            //Planos de pagamento nao devem conter o mesmo nome
             else {
                 produto.getPlanoPagamento().forEach(new PlanosRepository()::create);
                 ArrayList<Plano> planosRepositoryAtt = new ArrayList<>();
@@ -178,8 +179,9 @@ public List<Produto> readAll(){
             if (produto.getPlanoPagamento()==null){
                 stmt.setNull(3, Types.CLOB);
             }
+            //manter o id dos planos ao atualizar o produto, caso contrario o plano não vai ser atualizado
             else {
-                produto.getPlanoPagamento().forEach(new PlanosRepository()::create);
+                produto.getPlanoPagamento().forEach(pln -> new PlanosRepository().update(pln.getId(), pln));
                 stmt.setString(3, gson.toJson(produto.getPlanoPagamento()));
             }
 
@@ -187,7 +189,7 @@ public List<Produto> readAll(){
                 stmt.setNull(4, Types.CLOB);
             }
             else {
-                new PlanosRepository().create(produto.getSucessPlans());
+                new PlanosRepository().update(produto.getSucessPlans().getId(), produto.getSucessPlans());
                 stmt.setString(4, gson.toJson(produto.getSucessPlans()));
             }
 

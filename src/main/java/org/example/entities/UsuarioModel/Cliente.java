@@ -16,6 +16,9 @@ public class Cliente extends Usuario {
     private String emailCorporativo;
     private String perguntasOuComentarios;
 
+    public Cliente() {
+    }
+
     public Cliente(String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
         super(nomeUsuario, senha);
         this.nomeCompleto = nomeCompleto;
@@ -180,8 +183,9 @@ public class Cliente extends Usuario {
         if (!Long.toString(cpf).matches("\\d{11}"))
             errors.add("O CPF deve conter 11 caracteres");
 
-        if (telefone.replaceAll("[.-]", "").matches("\\d{11}") || telefone.replaceAll("[.-]", "").matches("\\d{10}") || telefone.isBlank() || telefone == null)
+        if (telefone == null || telefone.isBlank() || !telefone.replaceAll("[.-]", "").matches("\\d{11}"))
             errors.add("O telefone deve ser composto por 11 números, incluindo o ddd");
+
 
         if (empresa == null || empresa.isBlank())
             errors.add("Nome da empresa não pode ser vazio");

@@ -51,15 +51,15 @@ public class Main {
         var cli = new Cliente("juliana", "juliana789", "juliana G. P. Ribeiro", 14451445751L, "11456699887", "fiap", 14563201478965L, "Aluno", "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil", "rm553427@fiap.com.br");
         var administradores = new UsuariosRepository();
         var clientes = new UsuariosRepository();
-        clientes.create(cli);
+//        clientes.create(cli);
 //        administradores.create(adm2);
 //        clientes.readAll();
 //        administradores.readAll();
-        administradores.create(adm2);
+//        administradores.create(adm2);
 //        administradores.readAll();
 //        administradores.update(7, adm2);
 //        administradores.readAll();
-        administradores.delete(2);
+//        administradores.delete(2);
 //        administradores.readAll();
 //        System.out.println(administradores.read(2));
 //        new UsuariosRepository().shutdown();
@@ -67,9 +67,9 @@ public class Main {
 //        new PlanosRepository().initialize();
         var planscss = new Plano("Premium", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
         var repopl = new PlanosRepository();
-        repopl.create(planscss);
+//        repopl.create(planscss);
 //        repopl.readAll();
-        repopl.delete(2);
+//        repopl.delete(2);
 //        repopl.readAll();
 //        repopl.update(2, planscss);
 //        repopl.readAll();
@@ -89,8 +89,8 @@ public class Main {
         )));
 //
         var prodrepo = new ProdutosRepository();
-        prodrepo.create(produto);
-        prodrepo.delete(2);
+//        prodrepo.create(produto);
+//        prodrepo.delete(2);
 //        prodrepo.readAll();
 //        prodrepo.update(2, produto1);
 //        prodrepo.readAll();

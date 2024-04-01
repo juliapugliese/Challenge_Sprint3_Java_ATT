@@ -41,7 +41,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
-            logInfo("Tabela "+ TB_NAME +" excluída com sucesso!");
+            logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
             logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
@@ -197,7 +197,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
 
             stmt.setInt(5, id);
             stmt.executeUpdate();
-            logInfo("Produto atualizado com sucesso!");
+            logWarn("Produto atualizado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {

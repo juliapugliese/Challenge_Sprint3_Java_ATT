@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.*;
 
-public class UsuariosRepository implements _BaseRepository<Usuario>{
+public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<String>{
 
     public static final String TB_NAME = "USUARIOS";
 
@@ -79,10 +79,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                                     TB_COLUMNS.get("EMAIL_CORPORATIVO"),
                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
             stmt.executeUpdate();
-            System.out.println("Tabela "+ TB_NAME +" criada com sucesso!");
+            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -91,10 +91,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
-            System.out.println("Tabela "+ TB_NAME +" excluída com sucesso!");
+            logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -156,10 +156,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                 stmt.setString(16, ((Cliente) usuario).getPerguntasOuComentarios());
             }
             stmt.executeUpdate();
-            System.out.println("Usuário criado com sucesso!");
+            logInfo("Usuário adicionado com sucesso");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -223,10 +223,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                 stmt.setString(16, ((Cliente) usuario).getPerguntasOuComentarios());
             }
             stmt.executeUpdate();
-            System.out.println("Usuário atualizado com sucesso!");
+            logWarn("Usuário atualizado com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -236,11 +236,11 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("Usuário deletado com sucesso!");
+            logWarn("Usuário deletado com sucesso");
             conn.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -282,12 +282,13 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             conn.close();
             usuarios.sort(Comparator.comparingInt(_BaseEntity::getId));
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
-        System.out.println(usuarios);
+        logInfo("Lendo usuários: " + usuarios);
         return usuarios;
     }
 
+    //testar read
     public Optional<Usuario> read(int id){
         try{var conn = new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
@@ -295,15 +296,17 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             var resultSet = stmt.executeQuery();
             if(resultSet.next()) {
                 if (resultSet.getString(TB_COLUMNS.get("TIPO")).equals("ADM")) {
-                    return Optional.of(new Administrador(
+                    var administrador = new Administrador(
                             resultSet.getInt(TB_COLUMNS.get("ID")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
                             resultSet.getString(TB_COLUMNS.get("NOME_ADM")),
                             resultSet.getString(TB_COLUMNS.get("EMAIL"))
-                    ));
+                    );
+                    logInfo("Lendo administrador: " + administrador);
+                    return Optional.of(administrador);
                 } else {
-                    return Optional.of(new Cliente(
+                    var cliente = new Cliente(
                             resultSet.getInt(TB_COLUMNS.get("ID")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
@@ -318,13 +321,15 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
                             resultSet.getString(TB_COLUMNS.get("PAIS")),
                             resultSet.getString(TB_COLUMNS.get("EMAIL_CORPORATIVO")),
                             resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"))
-                    ));
+                    );
+                    logInfo("Lendo cliente: " + cliente);
+                    return Optional.of(cliente);
                 }
             }
             conn.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
         return Optional.empty();
     }
@@ -350,10 +355,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             }
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
         administradores.sort(Comparator.comparingInt(_BaseEntity::getId));
-        System.out.println(administradores);
+        logInfo("Lendo usuários: " + administradores);
         return administradores;
     }
 
@@ -386,10 +391,10 @@ public class UsuariosRepository implements _BaseRepository<Usuario>{
             }
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
         clientes.sort(Comparator.comparingInt(_BaseEntity::getId));
-        System.out.println(clientes);
+        logInfo("Lendo usuários: " + clientes);
         return clientes;
     }
 

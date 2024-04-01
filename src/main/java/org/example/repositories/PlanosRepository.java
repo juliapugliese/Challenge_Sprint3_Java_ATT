@@ -39,7 +39,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
-            logInfo("Tabela "+ TB_NAME +" excluída com sucesso!");
+            logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
             logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
@@ -147,7 +147,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
             stmt.setInt(5, id);
             stmt.executeUpdate();
 
-            logInfo("Plano atualizado com sucesso!");
+            logWarn("Plano atualizado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {

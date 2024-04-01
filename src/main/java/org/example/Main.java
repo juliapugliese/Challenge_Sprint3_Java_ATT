@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.entities.ServicoModel.Plano;
+import org.example.repositories.PlanosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -56,15 +58,17 @@ public class Main {
 //        new UsuariosRepository().shutdown();
 //
 //        new PlanosRepository().initialize();
-//        var planscss = new Plano("Premium", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
-//        var repopl = new PlanosRepository();
-//        repopl.create(planscss);
+        var planscss = new Plano("Premium", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
+        var planscss1 = new Plano("PP", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico");
+        var repopl = new PlanosRepository();
+        repopl.create(planscss);
+        repopl.readAll();
+        repopl.delete(4);
+        repopl.read(6);
+        repopl.readByName(planscss);
 //        repopl.readAll();
-//        repopl.delete(2);
-//        repopl.readAll();
-//        repopl.update(2, planscss);
-//        repopl.readAll();
-//        System.out.println(repopl.read(2));
+        repopl.update(7, planscss1);
+        repopl.readAll();
 //        new PlanosRepository().shutdown();
 //
 //        new ProdutosRepository().initialize();

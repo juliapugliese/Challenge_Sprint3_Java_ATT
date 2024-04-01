@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class _BaseRepositoryImpl<T extends _BaseEntity> implements _BaseRepository<T>, _Logger<T> {
+public abstract class _BaseRepositoryImpl<T extends _BaseEntity> implements _BaseRepository<T>, _Logger<String> {
     protected List<T> entidades = new ArrayList<T>();
     static Scanner scanner = new Scanner(System.in);
 

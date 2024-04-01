@@ -14,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class ProdutosRepository implements _BaseRepository<Produto> {
+public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<String> {
     Gson gson = new Gson();
 
     public static final String TB_NAME = "PRODUTO_JAVA";
@@ -29,10 +29,10 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
                             "PLANO_PAGAMENTO CLOB, " +
                             "SUCESS_PLANS CLOB)" ));
             stmt.executeUpdate();
-            System.out.println("Tabela "+ TB_NAME +" criada com sucesso!");
+            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -41,10 +41,10 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
-            System.out.println("Tabela "+ TB_NAME +" excluída com sucesso!");
+            logInfo("Tabela "+ TB_NAME +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -82,11 +82,11 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             }
 
             stmt.executeUpdate();
-            System.out.println("Produto criado com sucesso!");
+            logInfo("Produto adicionado com sucesso");
             conn.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -95,15 +95,14 @@ public class ProdutosRepository implements _BaseRepository<Produto> {
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("Produto deletado com sucesso!");
+            logWarn("Produto deletado com sucesso");
             conn.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
-
-public List<Produto> readAll(){
+    public List<Produto> readAll(){
     var produtos = new ArrayList<Produto>();
     try{var conn = new OracleDatabaseConnection().getConnection();
         var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
@@ -129,10 +128,11 @@ public List<Produto> readAll(){
         conn.close();
     }
     catch (SQLException e) {
-        System.err.println("Erro ao ler produtos: " + e.getMessage());
+//        System.err.println("Erro ao ler produtos: " + e.getMessage());
+        logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
     }
     produtos.sort(Comparator.comparingInt(_BaseEntity::getId));
-    System.out.println(produtos);
+    logInfo("Lendo produtos: " + produtos);
     return produtos;
 }
 
@@ -157,12 +157,14 @@ public List<Produto> readAll(){
                 if (jsonSuccessPlans != null) {
                     produto.setSucessPlans(gson.fromJson(jsonSuccessPlans, Plano.class));
                 }
+                logInfo("Lendo produto: " + produto);
                 return Optional.of(produto);
+
             }
             conn.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
 
         return Optional.empty();
@@ -195,11 +197,11 @@ public List<Produto> readAll(){
 
             stmt.setInt(5, id);
             stmt.executeUpdate();
-            System.out.println("Produto atualizado com sucesso!");
+            logInfo("Produto atualizado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 

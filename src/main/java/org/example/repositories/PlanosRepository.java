@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class PlanosRepository implements _BaseRepository<Plano> {
+public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String> {
     public PlanosRepository() {
     }
 
@@ -27,10 +27,10 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                             "RECURSOS VARCHAR2(150), " +
                             "PRECO DECIMAL(9,2))" ));
             stmt.executeUpdate();
-            System.out.println("Tabela "+ TB_NAME +" criada com sucesso!");
+            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -39,10 +39,10 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             var conn =  new OracleDatabaseConnection().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
-            System.out.println("Tabela "+ TB_NAME +" excluída com sucesso!");
+            logInfo("Tabela "+ TB_NAME +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -60,14 +60,15 @@ public class PlanosRepository implements _BaseRepository<Plano> {
                         rs.getString("RECURSOS"),
                         rs.getFloat("PRECO")));
             }
+
             conn.close();
         }
 
         catch (Exception e){
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
         planos.sort(Comparator.comparingInt(_BaseEntity::getId));
-        System.out.println(planos);
+        logInfo("Lendo planos: " + planos);
         return planos;
     }
 
@@ -78,19 +79,20 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             stmt.setInt(1, id);
             var rs = stmt.executeQuery();
             if(rs.next()){
-                return Optional.of(new Plano(
+                var plano = new Plano(
                         rs.getInt("ID"),
                         rs.getString("NOME"),
                         rs.getString("DESCRICAO"),
                         rs.getString("RECURSOS"),
-                        rs.getFloat("PRECO")));
+                        rs.getFloat("PRECO"));
+                logInfo("Lendo plano: " + plano);
+                return Optional.of(plano);
             }
             conn.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
-
         return Optional.empty();
     }
 
@@ -101,19 +103,20 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             stmt.setString(1, plano.getNomePlano());
             var rs = stmt.executeQuery();
             if(rs.next()){
-                return Optional.of(new Plano(
+                var optional = Optional.of(new Plano(
                         rs.getInt("ID"),
                         rs.getString("NOME"),
                         rs.getString("DESCRICAO"),
                         rs.getString("RECURSOS"),
                         rs.getFloat("PRECO")));
+                logInfo("Lendo plano: " + optional.get());
+                return optional;
             }
             conn.close();
         }
         catch (Exception e){
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
-
         return Optional.empty();
     }
     public void create(Plano plano){
@@ -124,11 +127,12 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             stmt.setString(3, plano.getRecursosPlano());
             stmt.setFloat(4, plano.getPrecoPlano());
             stmt.executeUpdate();
-            System.out.println("Plano criado com sucesso!");
+
+            logInfo("Plano adicionado com sucesso");
             conn.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -142,11 +146,12 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             stmt.setFloat(4, plano.getPrecoPlano());
             stmt.setInt(5, id);
             stmt.executeUpdate();
-            System.out.println("Plano atualizado com sucesso!");
+
+            logInfo("Plano atualizado com sucesso!");
             conn.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 
@@ -155,11 +160,11 @@ public class PlanosRepository implements _BaseRepository<Plano> {
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("Plano deletado com sucesso!");
+            logWarn("Plano deletado com sucesso");
             conn.close();
         }
         catch (SQLException e) {
-            e.printStackTrace();
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
         }
     }
 

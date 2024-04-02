@@ -1,7 +1,5 @@
 package org.example;
 
-import org.example.entities.UsuarioModel.Administrador;
-import org.example.repositories.UsuariosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -40,11 +38,11 @@ public class Main {
 
         //TESTE
 //        new UsuariosRepository().initialize();
-        var adm2 = new Administrador("553427", "fiap2", "Julia Ribeiro", "rm553427@fiap.com.br");
+//        var adm2 = new Administrador("553427", "fiap2", "Julia Ribeiro", "rm553427@fiap.com.br");
 //        var cli = new Cliente("juliana", "juliana789", "juliana G. P. Ribeiro", 14451445751L, "11456699887", "fiap", 14563201478965L, "Aluno", "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil", "rm553427@fiap.com.br");
-        var administradores = new UsuariosRepository();
+//        var administradores = new UsuariosRepository();
 //        var clientes = new UsuariosRepository();
-        administradores.read(2);
+//        administradores.read(2);
 //        clientes.create(cli);
 //        administradores.create(adm2);
 //        clientes.readAll();

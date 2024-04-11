@@ -1,4 +1,4 @@
-package org.example.service;
+package org.example.services;
 
 import org.example.entities.ServicoModel.Produto;
 import org.example.repositories.ProdutosRepository;

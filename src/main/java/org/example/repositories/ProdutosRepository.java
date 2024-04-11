@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import org.example.entities.ServicoModel.Plano;
 import org.example.entities.ServicoModel.Produto;
 import org.example.entities._BaseEntity;
-import org.example.infrastructure.OracleDatabaseConnection;
+import org.example.infrastructure.OracleDatabaseConfiguration;
 
 import java.sql.SQLException;
 import java.sql.Types;
@@ -21,7 +21,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
 
     public void initialize() {
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement(
                     ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
                             "NOME VARCHAR2(60) NOT NULL, " +
@@ -38,7 +38,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
 
     public void shutdown() {
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
             logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
@@ -50,7 +50,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
 
 
     public void create(Produto produto){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, PLANO_PAGAMENTO, SUCESS_PLANS) VALUES (?,?,?,?)");
             stmt.setString(1, produto.getNomeProduto());
             stmt.setString(2, produto.getDescricaoProduto());
@@ -91,7 +91,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
     }
 
     public void delete(int id){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -104,7 +104,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
     }
     public List<Produto> readAll(){
     var produtos = new ArrayList<Produto>();
-    try{var conn = new OracleDatabaseConnection().getConnection();
+    try{var conn = new OracleDatabaseConfiguration().getConnection();
         var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
         var rs = stmt.executeQuery();
         while(rs.next()){
@@ -136,8 +136,43 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
     return produtos;
 }
 
+//TESTAR FUNCAO
+    public List<Produto> getAllByPlano(int idPlano){
+        var produtos = new ArrayList<Produto>();
+        try(var conn = new OracleDatabaseConfiguration().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE IDPLANO = ?");){
+            stmt.setInt(1, idPlano);
+            var rs = stmt.executeQuery();
+            while (rs.next()){
+
+                Produto produto = new Produto();
+                produto.setId(rs.getInt("ID"));
+                produto.setNomeProduto(rs.getString("NOME"));
+                produto.setDescricaoProduto(rs.getString("DESCRICAO"));
+
+                String jsonPlanoPagamento = rs.getString("PLANO_PAGAMENTO");
+                if (jsonPlanoPagamento != null) {
+                    produto.setPlanoPagamento(gson.fromJson(jsonPlanoPagamento, new TypeToken<ArrayList<Plano>>(){}.getType()));
+                }
+
+                String jsonSuccessPlans = rs.getString("SUCESS_PLANS");
+                if (jsonSuccessPlans != null) {
+                    produto.setSucessPlans(gson.fromJson(jsonSuccessPlans, Plano.class));
+                }
+                produtos.add(produto);
+                logInfo("Lendo produto: " + produto);
+            }
+        }
+        catch (SQLException e) {
+            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+        }
+        return produtos;
+    }
+
+
+
     public Optional<Produto> read(int id){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
 
             stmt.setInt(1, id);
@@ -172,7 +207,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
 
 
     public void update(int id, Produto produto){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?, PLANO_PAGAMENTO = ?, SUCESS_PLANS = ?  WHERE ID = ?");
 
             stmt.setString(1, produto.getNomeProduto());

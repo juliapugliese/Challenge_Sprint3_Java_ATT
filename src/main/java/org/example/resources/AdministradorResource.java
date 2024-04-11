@@ -6,7 +6,7 @@ import jakarta.ws.rs.core.Response;
 import org.example.entities.UsuarioModel.Administrador;
 import org.example.entities.UsuarioModel.Usuario;
 import org.example.repositories.UsuariosRepository;
-import org.example.service.UsuarioService;
+import org.example.services.UsuarioService;
 
 import java.util.List;
 

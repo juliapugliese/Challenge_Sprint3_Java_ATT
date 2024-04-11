@@ -5,7 +5,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.entities.ServicoModel.Produto;
 import org.example.repositories.ProdutosRepository;
-import org.example.service.ProdutoService;
+import org.example.services.ProdutoService;
 
 import java.util.List;
 
@@ -34,6 +34,14 @@ public class ProdutoResource {
         return produto.isPresent() ?
                 Response.ok(produto.get()).build() :
                 Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    //TESTAR GETALLBYPLANO
+    @GET
+    @Path("plano/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllByPlano(@PathParam("id") int idPlano){
+        return Response.ok(produtoRepository.getAllByPlano(idPlano)).build();
     }
 
     @POST

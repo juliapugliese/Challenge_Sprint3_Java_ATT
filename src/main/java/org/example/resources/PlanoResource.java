@@ -5,7 +5,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.entities.ServicoModel.Plano;
 import org.example.repositories.PlanosRepository;
-import org.example.service.PlanoService;
+import org.example.services.PlanoService;
 
 import java.util.List;
 @Path("plano")

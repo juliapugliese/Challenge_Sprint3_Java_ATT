@@ -2,7 +2,7 @@ package org.example.repositories;
 
 import org.example.entities.ServicoModel.Plano;
 import org.example.entities._BaseEntity;
-import org.example.infrastructure.OracleDatabaseConnection;
+import org.example.infrastructure.OracleDatabaseConfiguration;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
 
     public void initialize() {
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement(
                     ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PLANOS_PK PRIMARY KEY, " +
                             "NOME VARCHAR2(60) NOT NULL, " +
@@ -36,7 +36,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
 
     public void shutdown() {
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
             logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
@@ -49,7 +49,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
 
     public List<Plano> readAll(){
         var planos = new ArrayList<Plano>();
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
             var rs = stmt.executeQuery();
             while(rs.next()){
@@ -73,7 +73,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
     }
 
     public Optional<Plano> read(int id){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
 
             stmt.setInt(1, id);
@@ -97,7 +97,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
     }
 
     public Optional<Plano> readByName(Plano plano){
-        try {var conn = new OracleDatabaseConnection().getConnection();
+        try {var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE NOME = ?");
 
             stmt.setString(1, plano.getNomePlano());
@@ -120,7 +120,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
         return Optional.empty();
     }
     public void create(Plano plano){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, RECURSOS, PRECO) VALUES (?,?,?,?)");
             stmt.setString(1, plano.getNomePlano());
             stmt.setString(2, plano.getDescricaoPlano());
@@ -137,7 +137,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
     }
 
     public void update(int id, Plano plano){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?, RECURSOS = ?, PRECO = ? WHERE ID = ?");
 
             stmt.setString(1, plano.getNomePlano());
@@ -156,7 +156,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
     }
 
     public void delete(int id){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();

@@ -4,7 +4,7 @@ import org.example.entities.UsuarioModel.Administrador;
 import org.example.entities.UsuarioModel.Cliente;
 import org.example.entities.UsuarioModel.Usuario;
 import org.example.entities._BaseEntity;
-import org.example.infrastructure.OracleDatabaseConnection;
+import org.example.infrastructure.OracleDatabaseConfiguration;
 
 import java.sql.SQLException;
 import java.sql.Types;
@@ -40,7 +40,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
 
     public void initialize() {
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement(
                     ("CREATE TABLE %s (" +
                             "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
@@ -88,7 +88,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
 
     public void shutdown() {
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
             stmt.executeUpdate();
             logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
@@ -100,7 +100,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
 
     public void create(Usuario usuario) {
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement(
                     "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                             .formatted(TB_NAME,
@@ -164,7 +164,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
     }
 
     public void update(int id, Usuario usuario) {
-        try {var conn =  new OracleDatabaseConnection().getConnection();
+        try {var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement(
                     "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE ID = ?"
                             .formatted(TB_NAME,
@@ -232,7 +232,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
 
 
     public void delete(int id){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
@@ -247,7 +247,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
     public List<Usuario> readAll() {
         var usuarios = new ArrayList<Usuario>();
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
             var resultSet = stmt.executeQuery();
 
@@ -290,7 +290,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
 
     //testar read
     public Optional<Usuario> read(int id){
-        try{var conn = new OracleDatabaseConnection().getConnection();
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
             stmt.setInt(1, id);
             var resultSet = stmt.executeQuery();
@@ -338,7 +338,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
     public List<Usuario> readAllADM() {
         var administradores = new ArrayList<Usuario>();
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
             var resultSet = stmt.executeQuery();
 
@@ -365,7 +365,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
     public List<Usuario> readAllCLT() {
         var clientes = new ArrayList<Usuario>();
         try {
-            var conn =  new OracleDatabaseConnection().getConnection();
+            var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
             var resultSet = stmt.executeQuery();
 

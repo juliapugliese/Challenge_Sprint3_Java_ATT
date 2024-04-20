@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Adição de nova função no ProdutosRepository">
+    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Alteração no pom">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +44,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Julia Pugliese/Downloads/cp4_rm553427 1/cp4_rm553427/cp4_rm553427",
+    "last_opened_file_path": "C:/Users/Julia Pugliese/Downloads/Challenge_Sprint3_Java_ATT",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -299,7 +299,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712794798549</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Alteração no pom">
+      <option name="closed" value="true" />
+      <created>1713571005236</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1713571005236</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -336,7 +344,8 @@
     <MESSAGE value="Atualizações" />
     <MESSAGE value="Finaliação do projeto" />
     <MESSAGE value="Adição de nova função no ProdutosRepository" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adição de nova função no ProdutosRepository" />
+    <MESSAGE value="Alteração no pom" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alteração no pom" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

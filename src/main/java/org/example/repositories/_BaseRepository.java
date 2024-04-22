@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface _BaseRepository<T extends _BaseEntity> {
+    void initialize();
     void create(T obj);
     List<T> readAll();
     Optional<T> read(int id);

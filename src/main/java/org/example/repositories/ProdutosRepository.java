@@ -63,7 +63,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
                 produto.getPlanoPagamento().forEach(new PlanosRepository()::create);
                 ArrayList<Plano> planosRepositoryAtt = new ArrayList<>();
                 produto.getPlanoPagamento().forEach(pln -> {
-                    Optional<Plano> planoOptional = new PlanosRepository().readByName(pln);
+                    Optional<Plano> planoOptional = new PlanosRepository().getByName(pln);
                     if (planoOptional.isPresent()) {
                         Plano plano = planoOptional.get();
                         planosRepositoryAtt.add(plano);
@@ -137,7 +137,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
 }
 
 //TESTAR FUNCAO
-    public List<Produto> getAllByPlano(int idPlano){
+    public List<Produto> readAllByPlano(int idPlano){
         var produtos = new ArrayList<Produto>();
         try(var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE IDPLANO = ?");){

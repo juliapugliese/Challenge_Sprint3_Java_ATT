@@ -41,7 +41,7 @@ public class ProdutoResource {
     @Path("plano/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllByPlano(@PathParam("id") int idPlano){
-        return Response.ok(produtoRepository.getAllByPlano(idPlano)).build();
+        return Response.ok(produtoRepository.readAllByPlano(idPlano)).build();
     }
 
     @POST

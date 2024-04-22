@@ -44,7 +44,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Julia Pugliese/Downloads/Challenge_Sprint3_Java_ATT",
+    "last_opened_file_path": "C:/Users/Julia Pugliese/Downloads/cp4_rm553427 1/cp4_rm553427/cp4_rm553427",
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
@@ -307,7 +307,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713571005236</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Alteração no pom">
+      <option name="closed" value="true" />
+      <created>1713571395396</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1713571395396</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

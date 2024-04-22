@@ -96,7 +96,7 @@ public class PlanosRepository implements _BaseRepository<Plano>, _Logger<String>
         return Optional.empty();
     }
 
-    public Optional<Plano> readByName(Plano plano){
+    public Optional<Plano> getByName(Plano plano){
         try {var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE NOME = ?");
 

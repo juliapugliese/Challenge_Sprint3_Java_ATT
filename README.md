@@ -96,6 +96,6 @@ A partir de agora o objetivo é inserir melhorias no código como a verificaçã
 
 Gabriel Torres Fernandes - [gabrieltf1901](https://github.com/gabrieltf1901)
 
-Julia Gonzalez Pugliese Ribeiro - [JuliaPugliese](https://github.com/JuliaPugliese) 
+Julia Gonzalez Pugliese Ribeiro - [juliapugliese](https://github.com/juliapugliese) 
 
 Lucas Ponciani Marinelli - [LucasMarinelli](https://github.com/LucasMarinelli)

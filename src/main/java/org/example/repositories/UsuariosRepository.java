@@ -10,81 +10,81 @@ import java.sql.SQLException;
 import java.sql.Types;
 import java.util.*;
 
-public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<String>{
+public class UsuariosRepository extends Starter implements _BaseRepository<Usuario>, _Logger<String>{
 
     public static final String TB_NAME = "USUARIOS";
 
-    public static final Map<String, String> TB_COLUMNS = Map.ofEntries(
-                    Map.entry("ID", "ID"),
-                    Map.entry("NOME_USUARIO", "NOME_USUARIO"),
-                    Map.entry("SENHA", "SENHA"),
-                    Map.entry("TIPO", "TIPO"),
-                    Map.entry("NOME_ADM", "NOME_ADM"),
-                    Map.entry("EMAIL", "EMAIL"),
-                    Map.entry("PERGUNTAS_COMENTARIOS", "PERGUNTAS_COMENTARIOS"),
-                    Map.entry("NOME_COMPLETO", "NOME_COMPLETO"),
-                    Map.entry("CPF", "CPF"),
-                    Map.entry("TELEFONE", "TELEFONE"),
-                    Map.entry("EMPRESA", "EMPRESA"),
-                    Map.entry("CNPJ", "CNPJ"),
-                    Map.entry("CARGO", "CARGO"),
-                    Map.entry("SEGMENTO", "SEGMENTO"),
-                    Map.entry("TAMANHO_EMPRESA", "TAMANHO_EMPRESA"),
-                    Map.entry("PAIS", "PAIS"),
-                    Map.entry("EMAIL_CORPORATIVO", "EMAIL_CORPORATIVO")
-            );
-
+//    public static final Map<String, String> TB_COLUMNS = Map.ofEntries(
+//                    Map.entry("ID", "ID"),
+//                    Map.entry("NOME_USUARIO", "NOME_USUARIO"),
+//                    Map.entry("SENHA", "SENHA"),
+//                    Map.entry("TIPO", "TIPO"),
+//                    Map.entry("NOME_ADM", "NOME_ADM"),
+//                    Map.entry("EMAIL", "EMAIL"),
+//                    Map.entry("PERGUNTAS_COMENTARIOS", "PERGUNTAS_COMENTARIOS"),
+//                    Map.entry("NOME_COMPLETO", "NOME_COMPLETO"),
+//                    Map.entry("CPF", "CPF"),
+//                    Map.entry("TELEFONE", "TELEFONE"),
+//                    Map.entry("EMPRESA", "EMPRESA"),
+//                    Map.entry("CNPJ", "CNPJ"),
+//                    Map.entry("CARGO", "CARGO"),
+//                    Map.entry("SEGMENTO", "SEGMENTO"),
+//                    Map.entry("TAMANHO_EMPRESA", "TAMANHO_EMPRESA"),
+//                    Map.entry("PAIS", "PAIS"),
+//                    Map.entry("EMAIL_CORPORATIVO", "EMAIL_CORPORATIVO")
+//            );
+//
 
     public UsuariosRepository() {
     }
 
-    public void initialize() {
-        try {
-            var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement(
-                    ("CREATE TABLE %s (" +
-                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
-                            "%s VARCHAR2(20) NOT NULL, " +
-                            "%s VARCHAR2(20) NOT NULL, " +
-                            "%s VARCHAR2(3) NOT NULL, " +
-                            "%s VARCHAR2(50), " +
-                            "%s VARCHAR2(60), " +
-                            "%s VARCHAR2(40), " +
-                            "%s NUMBER(11), " +
-                            "%s NUMBER(11), " +
-                            "%s VARCHAR2(70), " +
-                            "%s NUMBER(14), " +
-                            "%s VARCHAR2(50), " +
-                            "%s VARCHAR2(70), " +
-                            "%s VARCHAR2(10), " +
-                            "%s VARCHAR2(40), " +
-                            "%s VARCHAR2(60), " +
-                            "%s VARCHAR2(200))")
-                            .formatted(TB_NAME,
-                                    TB_COLUMNS.get("ID"),
-                                    TB_COLUMNS.get("NOME_USUARIO"),
-                                    TB_COLUMNS.get("SENHA"),
-                                    TB_COLUMNS.get("TIPO"),
-                                    TB_COLUMNS.get("NOME_ADM"),
-                                    TB_COLUMNS.get("EMAIL"),
-                                    TB_COLUMNS.get("NOME_COMPLETO"),
-                                    TB_COLUMNS.get("CPF"),
-                                    TB_COLUMNS.get("TELEFONE"),
-                                    TB_COLUMNS.get("EMPRESA"),
-                                    TB_COLUMNS.get("CNPJ"),
-                                    TB_COLUMNS.get("CARGO"),
-                                    TB_COLUMNS.get("SEGMENTO"),
-                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
-                                    TB_COLUMNS.get("PAIS"),
-                                    TB_COLUMNS.get("EMAIL_CORPORATIVO"),
-                                    TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
-            stmt.executeUpdate();
-            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
-            conn.close();
-        } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
-        }
-    }
+//    public void initialize() {
+//        try {
+//            var conn =  new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement(
+//                    ("CREATE TABLE %s (" +
+//                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
+//                            "%s VARCHAR2(20) NOT NULL, " +
+//                            "%s VARCHAR2(20) NOT NULL, " +
+//                            "%s VARCHAR2(3) NOT NULL, " +
+//                            "%s VARCHAR2(50), " +
+//                            "%s VARCHAR2(60), " +
+//                            "%s VARCHAR2(40), " +
+//                            "%s NUMBER(11), " +
+//                            "%s NUMBER(11), " +
+//                            "%s VARCHAR2(70), " +
+//                            "%s NUMBER(14), " +
+//                            "%s VARCHAR2(50), " +
+//                            "%s VARCHAR2(70), " +
+//                            "%s VARCHAR2(10), " +
+//                            "%s VARCHAR2(40), " +
+//                            "%s VARCHAR2(60), " +
+//                            "%s VARCHAR2(200))")
+//                            .formatted(TB_NAME,
+//                                    TB_COLUMNS.get("ID"),
+//                                    TB_COLUMNS.get("NOME_USUARIO"),
+//                                    TB_COLUMNS.get("SENHA"),
+//                                    TB_COLUMNS.get("TIPO"),
+//                                    TB_COLUMNS.get("NOME_ADM"),
+//                                    TB_COLUMNS.get("EMAIL"),
+//                                    TB_COLUMNS.get("NOME_COMPLETO"),
+//                                    TB_COLUMNS.get("CPF"),
+//                                    TB_COLUMNS.get("TELEFONE"),
+//                                    TB_COLUMNS.get("EMPRESA"),
+//                                    TB_COLUMNS.get("CNPJ"),
+//                                    TB_COLUMNS.get("CARGO"),
+//                                    TB_COLUMNS.get("SEGMENTO"),
+//                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
+//                                    TB_COLUMNS.get("PAIS"),
+//                                    TB_COLUMNS.get("EMAIL_CORPORATIVO"),
+//                                    TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
+//            stmt.executeUpdate();
+//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
+//            conn.close();
+//        } catch (SQLException e) {
+//            logError(e);
+//        }
+//    }
 
     public void shutdown() {
         try {
@@ -94,7 +94,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
 
@@ -159,7 +159,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             logInfo("Usuário adicionado com sucesso");
             conn.close();
         } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
 
@@ -226,7 +226,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             logWarn("Usuário atualizado com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
 
@@ -240,7 +240,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             conn.close();
         }
         catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
 
@@ -282,7 +282,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             conn.close();
             usuarios.sort(Comparator.comparingInt(_BaseEntity::getId));
         } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
         logInfo("Lendo usuários: " + usuarios);
         return usuarios;
@@ -328,8 +328,8 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             }
             conn.close();
         }
-        catch (Exception e){
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+        catch (SQLException e) {
+            logError(e);
         }
         return Optional.empty();
     }
@@ -355,7 +355,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             }
             conn.close();
         } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
         administradores.sort(Comparator.comparingInt(_BaseEntity::getId));
         logInfo("Lendo usuários: " + administradores);
@@ -391,7 +391,7 @@ public class UsuariosRepository implements _BaseRepository<Usuario>, _Logger<Str
             }
             conn.close();
         } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
         clientes.sort(Comparator.comparingInt(_BaseEntity::getId));
         logInfo("Lendo usuários: " + clientes);

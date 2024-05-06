@@ -14,27 +14,27 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<String> {
+public class ProdutosRepository extends Starter implements _BaseRepository<Produto>, _Logger<String> {
     Gson gson = new Gson();
 
     public static final String TB_NAME = "PRODUTO_JAVA";
 
-    public void initialize() {
-        try {
-            var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement(
-                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
-                            "NOME VARCHAR2(60) NOT NULL, " +
-                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
-                            "PLANO_PAGAMENTO CLOB, " +
-                            "SUCESS_PLANS CLOB)" ));
-            stmt.executeUpdate();
-            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
-            conn.close();
-        } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
-        }
-    }
+//    public void initialize() {
+//        try {
+//            var conn =  new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement(
+//                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
+//                            "NOME VARCHAR2(60) NOT NULL, " +
+//                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
+//                            "PLANO_PAGAMENTO CLOB, " +
+//                            "SUCESS_PLANS CLOB)" ));
+//            stmt.executeUpdate();
+//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
+//            conn.close();
+//        } catch (SQLException e) {
+//            logError(e);
+//        }
+//    }
 
     public void shutdown() {
         try {
@@ -44,7 +44,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
             logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
 
@@ -86,7 +86,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
             conn.close();
         }
         catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
 
@@ -99,7 +99,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
             conn.close();
         }
         catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
     public List<Produto> readAll(){
@@ -129,7 +129,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
     }
     catch (SQLException e) {
 //        System.err.println("Erro ao ler produtos: " + e.getMessage());
-        logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+        logError(e);
     }
     produtos.sort(Comparator.comparingInt(_BaseEntity::getId));
     logInfo("Lendo produtos: " + produtos);
@@ -164,7 +164,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
             }
         }
         catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
         return produtos;
     }
@@ -198,8 +198,8 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
             }
             conn.close();
         }
-        catch (Exception e){
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+        catch (SQLException e) {
+            logError(e);
         }
 
         return Optional.empty();
@@ -236,7 +236,7 @@ public class ProdutosRepository implements _BaseRepository<Produto>, _Logger<Str
             conn.close();
         }
         catch (SQLException e) {
-            logError("%s - %s".formatted(e.getMessage(), e.getStackTrace()));
+            logError(e);
         }
     }
 

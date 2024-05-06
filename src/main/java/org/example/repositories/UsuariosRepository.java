@@ -12,7 +12,9 @@ import java.util.*;
 
 public class UsuariosRepository extends Starter implements _BaseRepository<Usuario>, _Logger<String>{
 
-    public static final String TB_NAME = "USUARIOS";
+    public static final String TB_NAME_U = "USUARIO_JAVA";
+    public static final String TB_NAME_C = "CLIENTE_JAVA";
+    public static final String TB_NAME_P = "PERFIL_JAVA";
 
 //    public static final Map<String, String> TB_COLUMNS = Map.ofEntries(
 //                    Map.entry("ID", "ID"),
@@ -89,9 +91,9 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
     public void shutdown() {
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
+            var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME_U));
             stmt.executeUpdate();
-            logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
+            logWarn("Tabela "+ TB_NAME_U +" excluída com sucesso!");
             conn.close();
         } catch (SQLException e) {
             logError(e);
@@ -103,7 +105,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement(
                     "INSERT INTO %s(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
-                            .formatted(TB_NAME,
+                            .formatted(TB_NAME_U,
                                     TB_COLUMNS.get("NOME_USUARIO"),
                                     TB_COLUMNS.get("SENHA"),
                                     TB_COLUMNS.get("TIPO"),
@@ -167,7 +169,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         try {var conn =  new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement(
                     "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE ID = ?"
-                            .formatted(TB_NAME,
+                            .formatted(TB_NAME_U,
                                     TB_COLUMNS.get("NOME_USUARIO"),
                                     TB_COLUMNS.get("SENHA"),
                                     TB_COLUMNS.get("TIPO"),
@@ -233,7 +235,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 
     public void delete(int id){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
+            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_U + " WHERE ID = ?");
             stmt.setInt(1, id);
             stmt.executeUpdate();
             logWarn("Usuário deletado com sucesso");
@@ -248,7 +250,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         var usuarios = new ArrayList<Usuario>();
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
+            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U));
             var resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
@@ -291,7 +293,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
     //testar read
     public Optional<Usuario> read(int id){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME_U + " WHERE ID = ?");
             stmt.setInt(1, id);
             var resultSet = stmt.executeQuery();
             if(resultSet.next()) {
@@ -339,7 +341,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         var administradores = new ArrayList<Usuario>();
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
+            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U));
             var resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
@@ -366,7 +368,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         var clientes = new ArrayList<Usuario>();
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME));
+            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U));
             var resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {

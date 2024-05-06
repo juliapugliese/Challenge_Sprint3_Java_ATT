@@ -18,6 +18,7 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
     Gson gson = new Gson();
 
     public static final String TB_NAME = "PRODUTO_JAVA";
+    public static final String TB_NAME_I = "ITEM_COMPRA_JAVA";
 
 //    public void initialize() {
 //        try {

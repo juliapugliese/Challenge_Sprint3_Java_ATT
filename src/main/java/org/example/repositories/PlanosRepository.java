@@ -14,7 +14,7 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
     public PlanosRepository() {
     }
 
-    public static final String TB_NAME = "PLANOS";
+    public static final String TB_NAME = "PLANO_JAVA";
 
 
 //    public void initialize() {

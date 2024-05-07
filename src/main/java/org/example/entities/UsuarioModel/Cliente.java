@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 public class Cliente extends Usuario {
-    private String nomeCompleto;
     private long cpf;
     private String telefone;
     private String empresa;
@@ -13,15 +12,13 @@ public class Cliente extends Usuario {
     private String segmento;
     private String tamanhoEmpresa;
     private String pais;
-    private String emailCorporativo;
     private String perguntasOuComentarios;
 
     public Cliente() {
     }
 
-    public Cliente(String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
-        super(nomeUsuario, senha);
-        this.nomeCompleto = nomeCompleto;
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais) {
+        super(nomeUsuario, senha, nomeCompleto, email);
         this.cpf = cpf;
         this.telefone = telefone;
         this.empresa = empresa;
@@ -30,12 +27,10 @@ public class Cliente extends Usuario {
         this.segmento = segmento;
         this.tamanhoEmpresa = tamanhoEmpresa;
         this.pais = pais;
-        this.emailCorporativo = emailCorporativo;
     }
 
-    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
-        super(id, nomeUsuario, senha);
-        this.nomeCompleto = nomeCompleto;
+    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
+        super(id, nomeUsuario, senha, nomeCompleto, email);
         this.cpf = cpf;
         this.telefone = telefone;
         this.empresa = empresa;
@@ -44,12 +39,11 @@ public class Cliente extends Usuario {
         this.segmento = segmento;
         this.tamanhoEmpresa = tamanhoEmpresa;
         this.pais = pais;
-        this.emailCorporativo = emailCorporativo;
+
     }
 
-    public Cliente(String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
-        super(nomeUsuario, senha);
-        this.nomeCompleto = nomeCompleto;
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+        super(nomeUsuario, senha, nomeCompleto, email);
         this.cpf = cpf;
         this.telefone = telefone;
         this.empresa = empresa;
@@ -58,13 +52,11 @@ public class Cliente extends Usuario {
         this.segmento = segmento;
         this.tamanhoEmpresa = tamanhoEmpresa;
         this.pais = pais;
-        this.emailCorporativo = emailCorporativo;
         this.perguntasOuComentarios = perguntasOuComentarios;
     }
 
-    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
-        super(id, nomeUsuario, senha);
-        this.nomeCompleto = nomeCompleto;
+    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+        super(id, nomeUsuario, senha, nomeCompleto, email);
         this.cpf = cpf;
         this.telefone = telefone;
         this.empresa = empresa;
@@ -73,17 +65,10 @@ public class Cliente extends Usuario {
         this.segmento = segmento;
         this.tamanhoEmpresa = tamanhoEmpresa;
         this.pais = pais;
-        this.emailCorporativo = emailCorporativo;
         this.perguntasOuComentarios = perguntasOuComentarios;
     }
 
-    public String getNomeCompleto() {
-        return nomeCompleto;
-    }
 
-    public void setNomeCompleto(String nomeCompleto) {
-        this.nomeCompleto = nomeCompleto;
-    }
 
     public long getCpf() {
         return cpf;
@@ -149,13 +134,6 @@ public class Cliente extends Usuario {
         this.pais = pais;
     }
 
-    public String getEmailCorporativo() {
-        return emailCorporativo;
-    }
-
-    public void setEmailCorporativo(String emailCorporativo) {
-        this.emailCorporativo = emailCorporativo;
-    }
 
     public String getPerguntasOuComentarios() {
         return perguntasOuComentarios;
@@ -167,7 +145,7 @@ public class Cliente extends Usuario {
 
     @Override
     public String toString() {
-        return   nomeCompleto + " " +
+        return   super.getNomeCompleto() + " " +
                 cargo +
                 " da empresa " + empresa +
                 " na sede do(a) " + pais;
@@ -176,9 +154,6 @@ public class Cliente extends Usuario {
 
     public Map<Boolean, ArrayList<String>> validate() {
         var errors = new ArrayList<String>();
-
-        if (nomeCompleto == null || nomeCompleto.isBlank())
-            errors.add("O campo de nome completo deve ser preenchido");
 
         if (!Long.toString(cpf).matches("\\d{11}"))
             errors.add("O CPF deve conter 11 caracteres");
@@ -204,10 +179,6 @@ public class Cliente extends Usuario {
 
         if (pais == null || pais.isBlank())
             errors.add("País não pode ser vazio");
-
-        if (emailCorporativo == null || emailCorporativo.isBlank())
-            errors.add("Email corporativo não pode ser vazio");
-
 
         return !errors.isEmpty() ?
                 Map.of(false, errors) :

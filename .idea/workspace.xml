@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Alteração no pom">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Finalização da classe Starter">
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Administrador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Usuario.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/Starter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/Starter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -316,7 +319,15 @@
       <option name="project" value="LOCAL" />
       <updated>1713571395396</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="Finalização da classe Starter">
+      <option name="closed" value="true" />
+      <created>1715082642956</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1715082642957</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -354,7 +365,8 @@
     <MESSAGE value="Finaliação do projeto" />
     <MESSAGE value="Adição de nova função no ProdutosRepository" />
     <MESSAGE value="Alteração no pom" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alteração no pom" />
+    <MESSAGE value="Finalização da classe Starter" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalização da classe Starter" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

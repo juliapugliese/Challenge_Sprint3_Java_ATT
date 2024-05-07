@@ -88,18 +88,6 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 //        }
 //    }
 
-    public void shutdown() {
-        try {
-            var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME_U));
-            stmt.executeUpdate();
-            logWarn("Tabela "+ TB_NAME_U +" excluída com sucesso!");
-            conn.close();
-        } catch (SQLException e) {
-            logError(e);
-        }
-    }
-
     public void create(Usuario usuario) {
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();

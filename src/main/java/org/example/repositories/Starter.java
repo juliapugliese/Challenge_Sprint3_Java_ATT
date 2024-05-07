@@ -215,4 +215,15 @@ public class Starter implements _Logger<String>{
 
 
     }
+//    public void shutdown() {
+//        try {
+//            var conn =  new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement("DROP TABLE %s".formatted(TB_NAME));
+//            stmt.executeUpdate();
+//            logWarn("Tabela "+ TB_NAME +" excluída com sucesso!");
+//            conn.close();
+//        } catch (SQLException e) {
+//            logError(e);
+//        }
+//    }
 }

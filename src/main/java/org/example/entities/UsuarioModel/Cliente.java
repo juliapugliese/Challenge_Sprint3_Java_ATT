@@ -6,69 +6,29 @@ import java.util.Map;
 public class Cliente extends Usuario {
     private long cpf;
     private String telefone;
-    private String empresa;
-    private long cnpj;
     private String cargo;
-    private String segmento;
-    private String tamanhoEmpresa;
-    private String pais;
+    private Empresa empresa;
     private String perguntasOuComentarios;
 
     public Cliente() {
     }
 
-    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais) {
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String cargo, Empresa empresa, String perguntasOuComentarios) {
         super(nomeUsuario, senha, nomeCompleto, email);
         this.cpf = cpf;
         this.telefone = telefone;
-        this.empresa = empresa;
-        this.cnpj = cnpj;
         this.cargo = cargo;
-        this.segmento = segmento;
-        this.tamanhoEmpresa = tamanhoEmpresa;
-        this.pais = pais;
+        this.empresa = empresa;
+        this.perguntasOuComentarios = perguntasOuComentarios;
     }
 
-    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo) {
-        super(id, nomeUsuario, senha, nomeCompleto, email);
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.empresa = empresa;
-        this.cnpj = cnpj;
-        this.cargo = cargo;
-        this.segmento = segmento;
-        this.tamanhoEmpresa = tamanhoEmpresa;
-        this.pais = pais;
-
-    }
-
-    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String cargo, Empresa empresa) {
         super(nomeUsuario, senha, nomeCompleto, email);
         this.cpf = cpf;
         this.telefone = telefone;
-        this.empresa = empresa;
-        this.cnpj = cnpj;
         this.cargo = cargo;
-        this.segmento = segmento;
-        this.tamanhoEmpresa = tamanhoEmpresa;
-        this.pais = pais;
-        this.perguntasOuComentarios = perguntasOuComentarios;
-    }
-
-    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String empresa, long cnpj, String cargo, String segmento, String tamanhoEmpresa, String pais, String emailCorporativo, String perguntasOuComentarios) {
-        super(id, nomeUsuario, senha, nomeCompleto, email);
-        this.cpf = cpf;
-        this.telefone = telefone;
         this.empresa = empresa;
-        this.cnpj = cnpj;
-        this.cargo = cargo;
-        this.segmento = segmento;
-        this.tamanhoEmpresa = tamanhoEmpresa;
-        this.pais = pais;
-        this.perguntasOuComentarios = perguntasOuComentarios;
     }
-
-
 
     public long getCpf() {
         return cpf;
@@ -86,21 +46,6 @@ public class Cliente extends Usuario {
         this.telefone = telefone;
     }
 
-    public String getEmpresa() {
-        return empresa;
-    }
-
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
-    }
-
-    public long getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(long cnpj) {
-        this.cnpj = cnpj;
-    }
 
     public String getCargo() {
         return cargo;
@@ -110,30 +55,13 @@ public class Cliente extends Usuario {
         this.cargo = cargo;
     }
 
-    public String getSegmento() {
-        return segmento;
+    public Empresa getEmpresa() {
+        return empresa;
     }
 
-    public void setSegmento(String segmento) {
-        this.segmento = segmento;
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
     }
-
-    public String getTamanhoEmpresa() {
-        return tamanhoEmpresa;
-    }
-
-    public void setTamanhoEmpresa(String tamanhoEmpresa) {
-        this.tamanhoEmpresa = tamanhoEmpresa;
-    }
-
-    public String getPais() {
-        return pais;
-    }
-
-    public void setPais(String pais) {
-        this.pais = pais;
-    }
-
 
     public String getPerguntasOuComentarios() {
         return perguntasOuComentarios;
@@ -148,7 +76,7 @@ public class Cliente extends Usuario {
         return   super.getNomeCompleto() + " " +
                 cargo +
                 " da empresa " + empresa +
-                " na sede do(a) " + pais;
+                " na sede do(a) " + empresa.getPais();
     }
 
 
@@ -161,24 +89,8 @@ public class Cliente extends Usuario {
         if (telefone == null || telefone.isBlank() || !telefone.replaceAll("[.-]", "").matches("\\d{11}"))
             errors.add("O telefone deve ser composto por 11 números, incluindo o ddd");
 
-
-        if (empresa == null || empresa.isBlank())
-            errors.add("Nome da empresa não pode ser vazio");
-
-        if (!Long.toString(cnpj).matches("\\d{14}"))
-            errors.add("O CNPJ deve conter 11 caracteres");
-
         if (cargo == null || cargo.isBlank())
             errors.add("Cargo não pode ser vazio");
-
-        if (segmento == null || segmento.isBlank())
-            errors.add("Segmento não pode ser vazio");
-
-        if (tamanhoEmpresa == null || tamanhoEmpresa.isBlank())
-            errors.add("Tamanho da empresa não pode ser vazio");
-
-        if (pais == null || pais.isBlank())
-            errors.add("País não pode ser vazio");
 
         return !errors.isEmpty() ?
                 Map.of(false, errors) :

@@ -4,12 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Finalização da classe Starter">
+    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Atualização das classes Usuario e classes herdeiras">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Empresa.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Plano.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Plano.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Produto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/ServicoModel/Produto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Administrador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Administrador.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Usuario.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Usuario.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/_BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/_BaseEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/Starter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/Starter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/resources/AdministradorResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/resources/AdministradorResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/resources/ClienteResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/resources/ClienteResource.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -327,7 +336,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715082642957</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Atualização das classes Usuario e classes herdeiras">
+      <option name="closed" value="true" />
+      <created>1715085145161</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1715085145161</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -366,7 +383,8 @@
     <MESSAGE value="Adição de nova função no ProdutosRepository" />
     <MESSAGE value="Alteração no pom" />
     <MESSAGE value="Finalização da classe Starter" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finalização da classe Starter" />
+    <MESSAGE value="Atualização das classes Usuario e classes herdeiras" />
+    <option name="LAST_COMMIT_MESSAGE" value="Atualização das classes Usuario e classes herdeiras" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

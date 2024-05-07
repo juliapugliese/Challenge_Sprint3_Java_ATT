@@ -15,14 +15,6 @@ public class Usuario extends _BaseEntity{
 
     public Usuario () {}
 
-    public Usuario(int id, String nomeUsuario, String senha, String nomeCompleto, String email) {
-        super(id);
-        this.nomeUsuario = nomeUsuario;
-        this.senha = senha;
-        this.nomeCompleto = nomeCompleto;
-        this.email = email;
-    }
-
     public Usuario(String nomeUsuario, String senha, String nomeCompleto, String email) {
         this.nomeUsuario = nomeUsuario;
         this.senha = senha;

@@ -54,7 +54,6 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
             var rs = stmt.executeQuery();
             while(rs.next()){
                 planos.add(new Plano(
-                        rs.getInt("ID"),
                         rs.getString("NOME"),
                         rs.getString("DESCRICAO"),
                         rs.getString("RECURSOS"),
@@ -80,7 +79,6 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
             var rs = stmt.executeQuery();
             if(rs.next()){
                 var plano = new Plano(
-                        rs.getInt("ID"),
                         rs.getString("NOME"),
                         rs.getString("DESCRICAO"),
                         rs.getString("RECURSOS"),
@@ -104,7 +102,6 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
             var rs = stmt.executeQuery();
             if(rs.next()){
                 var optional = Optional.of(new Plano(
-                        rs.getInt("ID"),
                         rs.getString("NOME"),
                         rs.getString("DESCRICAO"),
                         rs.getString("RECURSOS"),

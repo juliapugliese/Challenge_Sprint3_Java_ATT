@@ -14,19 +14,17 @@ public class Starter implements _Logger<String>{
             Map.entry("COD_PERFIL", "COD_PERFIL"),
             Map.entry("NOME_USUARIO", "NOME_USUARIO"),
             Map.entry("SENHA", "SENHA"),
-            Map.entry("NOME_ADM", "NOME_ADM"),
             Map.entry("EMAIL", "EMAIL"),
             Map.entry("PERGUNTAS_COMENTARIOS", "PERGUNTAS_COMENTARIOS"),
             Map.entry("NOME_COMPLETO", "NOME_COMPLETO"),
             Map.entry("CPF", "CPF"),
             Map.entry("TELEFONE", "TELEFONE"),
-            Map.entry("EMPRESA", "EMPRESA"),
+            Map.entry("NOME_EMPRESA", "NOME_EMPRESA"),
             Map.entry("CNPJ", "CNPJ"),
             Map.entry("CARGO", "CARGO"),
             Map.entry("SEGMENTO", "SEGMENTO"),
             Map.entry("TAMANHO_EMPRESA", "TAMANHO_EMPRESA"),
-            Map.entry("PAIS", "PAIS"),
-            Map.entry("EMAIL_CORPORATIVO", "EMAIL_CORPORATIVO")
+            Map.entry("PAIS", "PAIS")
     );
 
     public void initialize() {
@@ -64,19 +62,18 @@ public class Starter implements _Logger<String>{
             }
 
 
-
-
             try (var stmt = conn.prepareStatement(
                             ("CREATE TABLE %s (" +
                                     "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
                                     "%s VARCHAR2(20) NOT NULL, " +
                                     "%s VARCHAR2(20) NOT NULL, " +
-                                    "%s VARCHAR2(60), " +
-                                    "%s VARCHAR2(60), " +
+                                    "%s VARCHAR2(60) NOT NULL, " +
+                                    "%s VARCHAR2(60) NOT NULL, " +
                                     "%s NUMBER(11), " +
                                     "%s NUMBER(11), " +
+                                    "%s VARCHAR2(50), " +
                                     "%s VARCHAR2(200), " +
-                                    "%s NUMBER, " +
+                                    "%s NUMBER NOT NULL, " +
                                     "%s NUMBER)")
                                     .formatted(UsuariosRepository.TB_NAME_U,
                                             TB_COLUMNS.get("COD_USUARIO"),
@@ -86,6 +83,7 @@ public class Starter implements _Logger<String>{
                                             TB_COLUMNS.get("NOME_COMPLETO"),
                                             TB_COLUMNS.get("CPF"),
                                             TB_COLUMNS.get("TELEFONE"),
+                                            TB_COLUMNS.get("CARGO"),
                                             TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"),
                                             TB_COLUMNS.get("COD_PERFIL"),
                                             TB_COLUMNS.get("COD_CLIENTE")
@@ -100,20 +98,16 @@ public class Starter implements _Logger<String>{
                             "%s NUMBER GENERATED AS IDENTITY CONSTRAINT CLIENTE_JAVA_PK PRIMARY KEY, " +
                             "%s VARCHAR2(70), " +
                             "%s NUMBER(14), " +
-                            "%s VARCHAR2(50), " +
                             "%s VARCHAR2(70), " +
                             "%s VARCHAR2(10), " +
-                            "%s VARCHAR2(40), " +
-                            "%s VARCHAR2(60))")
+                            "%s VARCHAR2(40))")
                             .formatted(UsuariosRepository.TB_NAME_C,
                                     TB_COLUMNS.get("COD_CLIENTE"),
-                                    TB_COLUMNS.get("EMPRESA"),
+                                    TB_COLUMNS.get("NOME_EMPRESA"),
                                     TB_COLUMNS.get("CNPJ"),
-                                    TB_COLUMNS.get("CARGO"),
                                     TB_COLUMNS.get("SEGMENTO"),
                                     TB_COLUMNS.get("TAMANHO_EMPRESA"),
-                                    TB_COLUMNS.get("PAIS"),
-                                    TB_COLUMNS.get("EMAIL_CORPORATIVO")))){
+                                    TB_COLUMNS.get("PAIS")))){
                 stmt.executeUpdate();
                 logInfo("Tabela "+ UsuariosRepository.TB_NAME_C +" criada com sucesso!");
 
@@ -137,7 +131,7 @@ public class Starter implements _Logger<String>{
             try {
                 var stmt = conn.prepareStatement(
                         ("CREATE TABLE " + UsuariosRepository.TB_NAME_P + " (COD_PERFIL NUMBER GENERATED AS IDENTITY CONSTRAINT PERFIL_JAVA_PK PRIMARY KEY, " +
-                                "TIPO VARCHAR2(60) NOT NULL)" ));
+                                "TIPO VARCHAR2(30) NOT NULL)" ));
                 stmt.executeUpdate();
                 logInfo("Tabela "+ UsuariosRepository.TB_NAME_P +" criada com sucesso!");
 
@@ -203,6 +197,21 @@ public class Starter implements _Logger<String>{
             }
             try (var stmt = conn.prepareStatement("ALTER TABLE "+ ProdutosRepository.TB_NAME_I +" ADD CONSTRAINT ITEM_COMPRA_CLIENTE_FK FOREIGN KEY(COD_CLIENTE) REFERENCES "+ UsuariosRepository.TB_NAME_C +"(COD_CLIENTE)")) {
                 stmt.executeUpdate();
+            } catch (SQLException e) {
+                logError(e);
+            }
+
+            try {var stmt = conn.prepareStatement("INSERT INTO " + UsuariosRepository.TB_NAME_P + "(TIPO) VALUES (?)");
+                stmt.setString(1, "ADMINISTRADOR");
+                stmt.executeUpdate();
+                logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_P +" com sucesso!");
+            } catch (SQLException e) {
+                logError(e);
+            }
+            try {var stmt = conn.prepareStatement("INSERT INTO " + UsuariosRepository.TB_NAME_P + "(TIPO) VALUES (?)");
+                stmt.setString(1, "CLIENTE");
+                stmt.executeUpdate();
+                logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_P +" com sucesso!");
             } catch (SQLException e) {
                 logError(e);
             }

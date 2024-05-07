@@ -6,13 +6,12 @@ import java.util.StringJoiner;
 
 public abstract class _BaseEntity {
     private int id;
+    int contador = 1;
 
 
     public _BaseEntity() {
-    }
-
-    public _BaseEntity(int id) {
-        this.id = id;
+        id = contador;
+        contador += 1;
     }
 
     public int getId() {

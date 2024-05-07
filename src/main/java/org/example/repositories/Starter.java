@@ -32,32 +32,32 @@ public class Starter implements _Logger<String>{
     public void initialize() {
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
 
-            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + PlanosRepository.TB_NAME + "'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + PlanosRepository.TB_NAME + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + ProdutosRepository.TB_NAME + "'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + ProdutosRepository.TB_NAME + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + UsuariosRepository.TB_NAME_U + "'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + UsuariosRepository.TB_NAME_U + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + UsuariosRepository.TB_NAME_C + "'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + UsuariosRepository.TB_NAME_C + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + UsuariosRepository.TB_NAME_P + "'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + UsuariosRepository.TB_NAME_P + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + ProdutosRepository.TB_NAME_I + "'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + ProdutosRepository.TB_NAME_I + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
@@ -68,16 +68,16 @@ public class Starter implements _Logger<String>{
 
             try (var stmt = conn.prepareStatement(
                             ("CREATE TABLE %s (" +
-                                    "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USUARIO_PK PRIMARY KEY, " +
+                                    "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
                                     "%s VARCHAR2(20) NOT NULL, " +
                                     "%s VARCHAR2(20) NOT NULL, " +
-                                    "%s VARCHAR2(3) NOT NULL, " +
-                                    "%s VARCHAR2(50), " +
                                     "%s VARCHAR2(60), " +
-                                    "%s VARCHAR2(40), " +
+                                    "%s VARCHAR2(60), " +
                                     "%s NUMBER(11), " +
                                     "%s NUMBER(11), " +
-                                    "%s VARCHAR2(200))")
+                                    "%s VARCHAR2(200), " +
+                                    "%s NUMBER, " +
+                                    "%s NUMBER)")
                                     .formatted(UsuariosRepository.TB_NAME_U,
                                             TB_COLUMNS.get("COD_USUARIO"),
                                             TB_COLUMNS.get("NOME_USUARIO"),
@@ -97,7 +97,7 @@ public class Starter implements _Logger<String>{
             }
             try (var stmt = conn.prepareStatement(
                     ("CREATE TABLE %s (" +
-                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT CLIENTE_PK PRIMARY KEY, " +
+                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT CLIENTE_JAVA_PK PRIMARY KEY, " +
                             "%s VARCHAR2(70), " +
                             "%s NUMBER(14), " +
                             "%s VARCHAR2(50), " +
@@ -123,7 +123,7 @@ public class Starter implements _Logger<String>{
 
             try {
                 var stmt = conn.prepareStatement(
-                        ("CREATE TABLE " + ProdutosRepository.TB_NAME + " (COD_PRODUTO NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
+                        ("CREATE TABLE " + ProdutosRepository.TB_NAME + " (COD_PRODUTO NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_JAVA_PK PRIMARY KEY, " +
                                 "NOME VARCHAR2(60) NOT NULL, " +
                                 "DESCRICAO VARCHAR2(150) NOT NULL, " +
                                 "PLANO_PAGAMENTO NUMBER, " +
@@ -136,7 +136,7 @@ public class Starter implements _Logger<String>{
 
             try {
                 var stmt = conn.prepareStatement(
-                        ("CREATE TABLE " + UsuariosRepository.TB_NAME_P + " (COD_PERFIL NUMBER GENERATED AS IDENTITY CONSTRAINT PERFIL_PK PRIMARY KEY, " +
+                        ("CREATE TABLE " + UsuariosRepository.TB_NAME_P + " (COD_PERFIL NUMBER GENERATED AS IDENTITY CONSTRAINT PERFIL_JAVA_PK PRIMARY KEY, " +
                                 "TIPO VARCHAR2(60) NOT NULL)" ));
                 stmt.executeUpdate();
                 logInfo("Tabela "+ UsuariosRepository.TB_NAME_P +" criada com sucesso!");
@@ -147,7 +147,7 @@ public class Starter implements _Logger<String>{
 
             try {
                 var stmt = conn.prepareStatement(
-                        ("CREATE TABLE " + PlanosRepository.TB_NAME + " (COD_PLANO NUMBER GENERATED AS IDENTITY CONSTRAINT PLANOS_PK PRIMARY KEY, " +
+                        ("CREATE TABLE " + PlanosRepository.TB_NAME + " (COD_PLANO NUMBER GENERATED AS IDENTITY CONSTRAINT PLANOS_JAVA_PK PRIMARY KEY, " +
                                 "NOME VARCHAR2(60) NOT NULL, " +
                                 "DESCRICAO VARCHAR2(150) NOT NULL, " +
                                 "RECURSOS VARCHAR2(150), " +

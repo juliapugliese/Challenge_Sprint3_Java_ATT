@@ -73,20 +73,20 @@ public class Starter implements _Logger<String>{
                                     "%s NUMBER(11), " +
                                     "%s VARCHAR2(50), " +
                                     "%s VARCHAR2(200), " +
-                                    "%s NUMBER NOT NULL, " +
-                                    "%s NUMBER)")
+                                    "%s NUMBER, " +
+                                    "%s NUMBER NOT NULL)")
                                     .formatted(UsuariosRepository.TB_NAME_U,
                                             TB_COLUMNS.get("COD_USUARIO"),
                                             TB_COLUMNS.get("NOME_USUARIO"),
                                             TB_COLUMNS.get("SENHA"),
-                                            TB_COLUMNS.get("EMAIL"),
                                             TB_COLUMNS.get("NOME_COMPLETO"),
+                                            TB_COLUMNS.get("EMAIL"),
                                             TB_COLUMNS.get("CPF"),
                                             TB_COLUMNS.get("TELEFONE"),
                                             TB_COLUMNS.get("CARGO"),
                                             TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"),
-                                            TB_COLUMNS.get("COD_PERFIL"),
-                                            TB_COLUMNS.get("COD_CLIENTE")
+                                            TB_COLUMNS.get("COD_CLIENTE"),
+                                            TB_COLUMNS.get("COD_PERFIL")
                                             ))){
                 stmt.executeUpdate();
                 logInfo("Tabela "+ UsuariosRepository.TB_NAME_U +" criada com sucesso!");

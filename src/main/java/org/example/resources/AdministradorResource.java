@@ -4,8 +4,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.entities.UsuarioModel.Administrador;
+import org.example.entities.UsuarioModel.Usuario;
 import org.example.repositories.UsuariosRepository;
 import org.example.services.UsuarioService;
+
+import java.util.List;
 
 @Path("administrador")
 
@@ -20,11 +23,11 @@ public class AdministradorResource {
         usuarioService = new UsuarioService();
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<Usuario> readAll(){
-//        return usuariosRepository.readAllADM();
-//    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Usuario> readAll(){
+        return usuariosRepository.readAllADM();
+    }
 
     @GET
     @Path("{id}")

@@ -7,19 +7,20 @@ public class Cliente extends Usuario {
     private long cpf;
     private String telefone;
     private String cargo;
-    private Empresa empresa;
     private String perguntasOuComentarios;
+
+    private Empresa empresa;
 
     public Cliente() {
     }
 
-    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String cargo, Empresa empresa, String perguntasOuComentarios) {
+    public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String cargo, String perguntasOuComentarios, Empresa empresa) {
         super(nomeUsuario, senha, nomeCompleto, email);
         this.cpf = cpf;
         this.telefone = telefone;
         this.cargo = cargo;
-        this.empresa = empresa;
         this.perguntasOuComentarios = perguntasOuComentarios;
+        this.empresa = empresa;
     }
 
     public Cliente(String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String cargo, Empresa empresa) {

@@ -90,26 +90,30 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 
     public void create(Usuario usuario) {
 
+
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
-            try (var stmt = conn.prepareStatement(
-                    ("INSERT INTO %s(%s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?)")
-                            .formatted(UsuariosRepository.TB_NAME_C,
-                                    TB_COLUMNS.get("NOME_EMPRESA"),
-                                    TB_COLUMNS.get("CNPJ"),
-                                    TB_COLUMNS.get("SEGMENTO"),
-                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
-                                    TB_COLUMNS.get("PAIS")))){
-                stmt.setString(1, ((Cliente) usuario).getEmpresa().getNomeEmpresa());
-                stmt.setLong(2,((Cliente) usuario).getEmpresa().getCnpj());
-                stmt.setString(3, ((Cliente) usuario).getEmpresa().getSegmento());
-                stmt.setString(4, ((Cliente) usuario).getEmpresa().getTamanhoEmpresa());
-                stmt.setString(5, ((Cliente) usuario).getEmpresa().getPais());
 
-                stmt.executeUpdate();
-                logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_C +"  com sucesso!");
+            if (usuario instanceof Cliente){
+                try (var stmt = conn.prepareStatement(
+                        ("INSERT INTO %s(%s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?)")
+                                .formatted(UsuariosRepository.TB_NAME_C,
+                                        TB_COLUMNS.get("NOME_EMPRESA"),
+                                        TB_COLUMNS.get("CNPJ"),
+                                        TB_COLUMNS.get("SEGMENTO"),
+                                        TB_COLUMNS.get("TAMANHO_EMPRESA"),
+                                        TB_COLUMNS.get("PAIS")))){
+                    stmt.setString(1, ((Cliente) usuario).getEmpresa().getNomeEmpresa());
+                    stmt.setLong(2,((Cliente) usuario).getEmpresa().getCnpj());
+                    stmt.setString(3, ((Cliente) usuario).getEmpresa().getSegmento());
+                    stmt.setString(4, ((Cliente) usuario).getEmpresa().getTamanhoEmpresa());
+                    stmt.setString(5, ((Cliente) usuario).getEmpresa().getPais());
 
-            } catch (SQLException e) {
-                logError(e);
+                    stmt.executeUpdate();
+                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_C +"  com sucesso!");
+
+                } catch (SQLException e) {
+                    logError(e);
+                }
             }
 
             try (var stmt = conn.prepareStatement(

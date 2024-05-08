@@ -96,11 +96,11 @@ public class Starter implements _Logger<String>{
             try (var stmt = conn.prepareStatement(
                     ("CREATE TABLE %s (" +
                             "%s NUMBER GENERATED AS IDENTITY CONSTRAINT CLIENTE_JAVA_PK PRIMARY KEY, " +
-                            "%s VARCHAR2(70), " +
-                            "%s NUMBER(14), " +
-                            "%s VARCHAR2(70), " +
-                            "%s VARCHAR2(10), " +
-                            "%s VARCHAR2(40))")
+                            "%s VARCHAR2(70) NOT NULL, " +
+                            "%s NUMBER(14) NOT NULL, " +
+                            "%s VARCHAR2(70) NOT NULL, " +
+                            "%s VARCHAR2(10) NOT NULL, " +
+                            "%s VARCHAR2(40) NOT NULL)")
                             .formatted(UsuariosRepository.TB_NAME_C,
                                     TB_COLUMNS.get("COD_CLIENTE"),
                                     TB_COLUMNS.get("NOME_EMPRESA"),

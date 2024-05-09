@@ -11,7 +11,7 @@ public abstract class _BaseEntity {
 
     public _BaseEntity() {
         id = contador;
-//        contador += 1;
+        contador += 1;
     }
 
     public int getId() {

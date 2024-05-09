@@ -45,11 +45,11 @@ public class Main {
         //TESTE
 //        new UsuariosRepository().initialize();
         var empresa = new Empresa("fiap", 14563201478965L, "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil");
-        var cli = new Cliente("Giuliana", "giuliana789", "Giuliana R. Silva", "rm553536@fiap.com.br", 14451445751L, "11456699887", "Aluno", empresa);
-        var adm2 = new Administrador("553427", "fiap2", "Julia Ribeiro", "rm553427@fiap.com.br");
+        var cli = new Cliente("Giuliana", "giuliana789", "Giuliana R. Silva", "rm553536@fiap.com.br",  14451445751L, "11456699887", "Aluno", empresa);
+        var adm2 = new Administrador("553427", "fiap2",  "Julia Ribeiro","rm553427@fiap.com.br");
 
         var empresa1 = new Empresa("sabesp", 1454256481475L, "Administrativo", "Grande", "Brasil");
-        var cli1 = new Cliente("Henrique", "henrique123", "Henriqua J. Diaz", "rm554585@fiap.com.br", 14451445751L, "11456699887", "Estagiario", empresa1);
+        var cli1 = new Cliente("Henrique", "henrique123",  "Henriqua J. Diaz","rm554585@fiap.com.br", 14451445751L, "11456699887", "Estagiario", empresa1);
 
         System.out.println(cli);
         System.out.println(cli1);

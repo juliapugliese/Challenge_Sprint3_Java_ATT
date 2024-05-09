@@ -74,10 +74,12 @@ public class Cliente extends Usuario {
 
     @Override
     public String toString() {
-        return  super.getId() + super.getNomeCompleto() + " " +
-                cargo +
+
+
+        return super.getNomeCompleto() + "(" + super.getId() +") " + cargo +
                 " da empresa " + empresa.getNomeEmpresa() +
                 " na sede do(a) " + empresa.getPais();
+
     }
 
 

@@ -63,13 +63,15 @@ public class Main {
         clientes.create(cli);
         clientes.create(cli1);
 //        administradores.create(adm2);
-//        clientes.readAll();
 //        clientes.read(1);
         clientes.readAllCLT();
         System.out.println("-----------------------");
         administradores.create(adm2);
         administradores.readAllADM();
         System.out.println("-----------------------");
+
+        System.out.println("------------***-----------");
+        clientes.readAll();
 //        administradores.readAll();
 //        administradores.readAll();
 //        administradores.update(7, adm2);

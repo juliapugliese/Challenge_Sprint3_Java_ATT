@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Criação do método readAllADM()">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/UsuarioModel/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/entities/_BaseEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/entities/_BaseEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

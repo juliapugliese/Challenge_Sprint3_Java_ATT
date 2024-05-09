@@ -74,9 +74,9 @@ public class Cliente extends Usuario {
 
     @Override
     public String toString() {
-        return   super.getNomeCompleto() + " " +
+        return  super.getId() + super.getNomeCompleto() + " " +
                 cargo +
-                " da empresa " + empresa +
+                " da empresa " + empresa.getNomeEmpresa() +
                 " na sede do(a) " + empresa.getPais();
     }
 

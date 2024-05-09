@@ -2,6 +2,7 @@ package org.example.repositories;
 
 import org.example.entities.UsuarioModel.Administrador;
 import org.example.entities.UsuarioModel.Cliente;
+import org.example.entities.UsuarioModel.Empresa;
 import org.example.entities.UsuarioModel.Usuario;
 import org.example.entities._BaseEntity;
 import org.example.infrastructure.OracleDatabaseConfiguration;
@@ -440,7 +441,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             var resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                if (resultSet.getString(TB_COLUMNS.get("TIPO")).equals("ADM")) {
+                if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==1) {
                     administradores.add(new Administrador(
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
@@ -458,35 +459,95 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         return administradores;
     }
 
-//    public List<Usuario> readAllCLT() {
-//        var clientes = new ArrayList<Usuario>();
-//        try {
-//            var conn =  new OracleDatabaseConfiguration().getConnection();
-//            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U));
-//            var resultSet = stmt.executeQuery();
+    public List<Usuario> readAllCLT() {
+        var clientes = new ArrayList<Usuario>();
+        try {
+            var conn =  new OracleDatabaseConfiguration().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U));
+            var resultSet = stmt.executeQuery();
+
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==2) {
+
+                    var empresa = new ArrayList<Empresa>();
+                    var stmt2 = conn.prepareStatement("SELECT * FROM %s WHERE COD_CLIENTE = %s".formatted(TB_NAME_C, resultSet.getString(TB_COLUMNS.get("COD_CLIENTE"))));
+                    var resultSet2 = stmt2.executeQuery();
+                    while (resultSet2.next()) {
+                        empresa.add(new Empresa(
+                                resultSet2.getString(TB_COLUMNS.get("NOME_EMPRESA")),
+                                resultSet2.getLong(TB_COLUMNS.get("CNPJ")),
+                                resultSet2.getString(TB_COLUMNS.get("SEGMENTO")),
+                                resultSet2.getString(TB_COLUMNS.get("TAMANHO_EMPRESA")),
+                                resultSet2.getString(TB_COLUMNS.get("PAIS"))
+                        ));
+                    }
+
+                    clientes.add(new Cliente(
+                            resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
+                            resultSet.getString(TB_COLUMNS.get("SENHA")),
+                            resultSet.getString(TB_COLUMNS.get("EMAIL")),
+                            resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
+                            resultSet.getLong(TB_COLUMNS.get("CPF")),
+                            resultSet.getString(TB_COLUMNS.get("TELEFONE")),
+                            resultSet.getString(TB_COLUMNS.get("CARGO")),
+                            resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")),
+                            empresa.getFirst()
+                    ));
+                }
+            }
+            conn.close();
+        } catch (SQLException e) {
+            logError(e);
+        }
+        clientes.sort(Comparator.comparingInt(_BaseEntity::getId));
+        logInfo("Lendo usuários: " + clientes);
+        return clientes;
+
+
+//        try (var conn = new OracleDatabaseConfiguration().getConnection()) {
+//            var clientes = new ArrayList<Usuario>();
 //
-//            while (resultSet.next()) {
-//                if (resultSet.getString(TB_COLUMNS.get("TIPO")).equals("CLT")) {
+//            try (var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME_U + " ORDER BY COD_USUARIO")) {
+//                var rs = stmt.executeQuery();
+//                while (rs.next()) {
+//                    int codColecao = rs.getInt("COD_CLIENTE");
+//
+//                    var listaEmpresas = new ArrayList<Empresa>();
+//                    try (var stmtEmpresa = conn.prepareStatement("SELECT * FROM " + TB_NAME_C + " WHERE COD_CLIENTE = ?")) {
+//                        stmtEmpresa.setInt(1, codColecao);
+//                        var rsEmpresa = stmtEmpresa.executeQuery();
+//                        while (rsEmpresa.next()) {
+//                            listaEmpresas.add(new Empresa(
+//                                    rsEmpresa.getString(TB_COLUMNS.get("NOME_EMPRESA")),
+//                                    rsEmpresa.getLong(TB_COLUMNS.get("CNPJ")),
+//                                    rsEmpresa.getString(TB_COLUMNS.get("SEGMENTO")),
+//                                    rsEmpresa.getString(TB_COLUMNS.get("TAMANHO_EMPRESA")),
+//                                    rsEmpresa.getString(TB_COLUMNS.get("PAIS"))
+//                            ));
+//                        }
+//
+//                    }
 //                    clientes.add(new Cliente(
-//                            resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
-//                            resultSet.getString(TB_COLUMNS.get("SENHA")),
-//                            resultSet.getString(TB_COLUMNS.get("EMAIL")),
-//                            resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
-//                            resultSet.getLong(TB_COLUMNS.get("CPF")),
-//                            resultSet.getString(TB_COLUMNS.get("TELEFONE")),
-//                            resultSet.getString(TB_COLUMNS.get("CARGO")),
-//                            resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")),
-//                            resultSet.getString(TB_COLUMNS.get("EMPRESA")))
-//                    );
+//                            rs.getString(TB_COLUMNS.get("NOME_USUARIO")),
+//                            rs.getString(TB_COLUMNS.get("SENHA")),
+//                            rs.getString(TB_COLUMNS.get("EMAIL")),
+//                            rs.getString(TB_COLUMNS.get("NOME_COMPLETO")),
+//                            rs.getLong(TB_COLUMNS.get("CPF")),
+//                            rs.getString(TB_COLUMNS.get("TELEFONE")),
+//                            rs.getString(TB_COLUMNS.get("CARGO")),
+//                            rs.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")),
+//                            listaEmpresas.getFirst()
+//                    ));
 //                }
+//                logInfo("lendo clientes" + clientes);
+//            } catch (SQLException e) {
+//                logError(e);
 //            }
-//            conn.close();
+//            return clientes;
 //        } catch (SQLException e) {
 //            logError(e);
 //        }
-//        clientes.sort(Comparator.comparingInt(_BaseEntity::getId));
-//        logInfo("Lendo usuários: " + clientes);
-//        return clientes;
-//    }
-
+//        return null;
+    }
 }

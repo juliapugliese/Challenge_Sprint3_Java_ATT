@@ -6,12 +6,12 @@ import java.util.StringJoiner;
 
 public abstract class _BaseEntity {
     private int id;
-    int contador = 1;
+    private static int contador = 1;
 
 
     public _BaseEntity() {
         id = contador;
-        contador += 1;
+//        contador += 1;
     }
 
     public int getId() {

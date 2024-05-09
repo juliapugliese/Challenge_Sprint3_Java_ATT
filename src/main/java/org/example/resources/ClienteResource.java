@@ -4,8 +4,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.example.entities.UsuarioModel.Cliente;
+import org.example.entities.UsuarioModel.Usuario;
 import org.example.repositories.UsuariosRepository;
 import org.example.services.UsuarioService;
+
+import java.util.List;
 
 @Path("cliente")
 
@@ -19,11 +22,11 @@ public class ClienteResource {
         usuarioService = new UsuarioService();
     }
 
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public List<Usuario> readAll(){
-//        return usuariosRepository.readAllCLT();
-//    }
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Usuario> readAll(){
+        return usuariosRepository.readAllCLT();
+    }
 
     @GET
     @Path("{id}")

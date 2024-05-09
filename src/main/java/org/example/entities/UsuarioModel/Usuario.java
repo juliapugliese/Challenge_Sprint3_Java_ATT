@@ -57,6 +57,7 @@ public class Usuario extends _BaseEntity{
     @Override
     public String toString() {
         return new StringJoiner(", ", Usuario.class.getSimpleName() + "[", "]")
+                .add("id=" + getId())
                 .add("nomeUsuario='" + nomeUsuario + "'")
                 .add("senha='" + senha + "'")
                 .add("nomeCompleto='" + nomeCompleto + "'")

@@ -4,6 +4,7 @@ import org.example.entities._BaseEntity;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.StringJoiner;
 
 public class Empresa extends _BaseEntity {
     private String nomeEmpresa;
@@ -65,6 +66,17 @@ public class Empresa extends _BaseEntity {
         this.pais = pais;
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Empresa.class.getSimpleName() + "[", "]")
+                .add("nomeEmpresa='" + nomeEmpresa + "'")
+                .add("cnpj=" + cnpj)
+                .add("segmento='" + segmento + "'")
+                .add("tamanhoEmpresa='" + tamanhoEmpresa + "'")
+                .add("pais='" + pais + "'")
+                .add("id=" + getId())
+                .toString();
+    }
 
     public Map<Boolean, ArrayList<String>> validate() {
         var errors = new ArrayList<String>();

@@ -167,18 +167,44 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 }
                 stmt.executeUpdate();
 
-                conn.close();
             } catch (SQLException e) {
                 logError(e);
             }
-
+            conn.close();
             logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_U +"  com sucesso!");
         } catch (SQLException e) {
             logError(e);
         }
 
     }
+    public void delete(int id){
+        try (var conn = new OracleDatabaseConfiguration().getConnection()) {
+            try {
+                var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_C + " WHERE COD_CLIENTE IN (SELECT c.COD_CLIENTE FROM " + TB_NAME_C + " c INNER JOIN "
+                        + TB_NAME_U +" u ON c.COD_CLIENTE = u.COD_CLIENTE WHERE u.COD_USUARIO = ?)");
 
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                logWarn("Empresa deletado com sucesso");
+            } catch (SQLException e) {
+                logError(e);
+            }
+
+            try {
+                var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_U + " WHERE COD_USUARIO = ?");
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                logWarn("Cliente deletado com sucesso");
+            } catch (SQLException e) {
+                logError(e);
+            }
+
+
+            conn.close();
+        }catch (SQLException e){
+            logError(e);
+        }
+    }
     public List<Usuario> readAllADM() {
         var administradores = new ArrayList<Usuario>();
         try {
@@ -189,6 +215,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             while (resultSet.next()) {
                 if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==1) {
                     administradores.add(new Administrador(
+                            resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
                             resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
@@ -221,6 +248,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     var resultSet2 = stmt2.executeQuery();
                     while (resultSet2.next()) {
                         empresa.add(new Empresa(
+                                resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")),
                                 resultSet2.getString(TB_COLUMNS.get("NOME_EMPRESA")),
                                 resultSet2.getLong(TB_COLUMNS.get("CNPJ")),
                                 resultSet2.getString(TB_COLUMNS.get("SEGMENTO")),
@@ -230,6 +258,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     }
 
                     clientes.add(new Cliente(
+                            resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
                             resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
@@ -262,6 +291,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             while (resultSet.next()) {
                 if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==1) {
                     usuarios.add(new Administrador(
+                            resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
                             resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
@@ -273,6 +303,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     var resultSet2 = stmt2.executeQuery();
                     while (resultSet2.next()) {
                         empresa.add(new Empresa(
+                                resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")),
                                 resultSet2.getString(TB_COLUMNS.get("NOME_EMPRESA")),
                                 resultSet2.getLong(TB_COLUMNS.get("CNPJ")),
                                 resultSet2.getString(TB_COLUMNS.get("SEGMENTO")),
@@ -282,6 +313,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     }
 
                     usuarios.add(new Cliente(
+                            resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("SENHA")),
                             resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
@@ -310,18 +342,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         return Optional.empty();
     }
 
-    public void delete(int id){
-        try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_U + " WHERE ID = ?");
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-            logWarn("Usuário deletado com sucesso");
-            conn.close();
-        }
-        catch (SQLException e) {
-            logError(e);
-        }
-    }
+
 
     public void update(int id, Usuario usuario) {
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {

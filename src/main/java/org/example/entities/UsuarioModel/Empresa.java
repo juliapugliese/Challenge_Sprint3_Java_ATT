@@ -25,6 +25,14 @@ public class Empresa extends _BaseEntity {
         this.pais = pais;
     }
 
+    public Empresa(int id, String nomeEmpresa, long cnpj, String segmento, String tamanhoEmpresa, String pais) {
+        super(id);
+        this.nomeEmpresa = nomeEmpresa;
+        this.cnpj = cnpj;
+        this.segmento = segmento;
+        this.tamanhoEmpresa = tamanhoEmpresa;
+        this.pais = pais;
+    }
 
     public String getNomeEmpresa() {
         return nomeEmpresa;

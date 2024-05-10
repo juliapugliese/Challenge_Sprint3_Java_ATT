@@ -31,6 +31,23 @@ public class Cliente extends Usuario {
         this.empresa = empresa;
     }
 
+    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String cargo, String perguntasOuComentarios, Empresa empresa) {
+        super(id, nomeUsuario, senha, nomeCompleto, email);
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.cargo = cargo;
+        this.perguntasOuComentarios = perguntasOuComentarios;
+        this.empresa = empresa;
+    }
+
+    public Cliente(int id, String nomeUsuario, String senha, String nomeCompleto, String email, long cpf, String telefone, String cargo, Empresa empresa) {
+        super(id, nomeUsuario, senha, nomeCompleto, email);
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.cargo = cargo;
+        this.empresa = empresa;
+    }
+
     public long getCpf() {
         return cpf;
     }

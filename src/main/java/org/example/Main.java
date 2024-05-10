@@ -42,36 +42,44 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         new Starter().initialize();
+        var administradores = new UsuariosRepository();
+        var clientes = new UsuariosRepository();
         //TESTE
-//        new UsuariosRepository().initialize();
         var empresa = new Empresa("fiap", 14563201478965L, "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil");
         var cli = new Cliente("Giuliana", "giuliana789", "Giuliana R. Silva", "rm553536@fiap.com.br",  14451445751L, "11456699887", "Aluno", empresa);
-        var adm2 = new Administrador("553427", "fiap2",  "Julia Ribeiro","rm553427@fiap.com.br");
+        clientes.create(cli);
 
         var empresa1 = new Empresa("sabesp", 1454256481475L, "Administrativo", "Grande", "Brasil");
         var cli1 = new Cliente("Henrique", "henrique123",  "Henriqua J. Diaz","rm554585@fiap.com.br", 14451445751L, "11456699887", "Estagiario", empresa1);
-
-        System.out.println(cli);
-        System.out.println(cli1);
-        System.out.println(empresa);
-        System.out.println(empresa1);
-
-
-        var administradores = new UsuariosRepository();
-        var clientes = new UsuariosRepository();
-//        administradores.read(2);
-        clientes.create(cli);
         clientes.create(cli1);
+
+        var adm2 = new Administrador("553427", "fiap2",  "Julia Ribeiro","rm553427@fiap.com.br");
+        administradores.create(adm2);
+
+
+
+//        System.out.println(cli);
+//        System.out.println(cli1);
+//        System.out.println(empresa);
+//        System.out.println(empresa1);
+
+
+
+//        administradores.read(2);
 //        administradores.create(adm2);
 //        clientes.read(1);
-        clientes.readAllCLT();
-        System.out.println("-----------------------");
-        administradores.create(adm2);
-        administradores.readAllADM();
-        System.out.println("-----------------------");
 
-        System.out.println("------------***-----------");
-        clientes.readAll();
+
+
+//        System.out.println("-----------------------");
+//        clientes.readAllCLT();
+//        System.out.println("-----------------------");
+//        administradores.readAllADM();
+//        System.out.println("------------***-----------");
+//        clientes.readAll();
+
+
+
 //        administradores.readAll();
 //        administradores.readAll();
 //        administradores.update(7, adm2);

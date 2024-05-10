@@ -22,6 +22,14 @@ public class Usuario extends _BaseEntity{
         this.email = email;
     }
 
+    public Usuario(int id, String nomeUsuario, String senha, String nomeCompleto, String email) {
+        super(id);
+        this.nomeUsuario = nomeUsuario;
+        this.senha = senha;
+        this.nomeCompleto = nomeCompleto;
+        this.email = email;
+    }
+
     public String getNomeUsuario() {
         return nomeUsuario;
     }

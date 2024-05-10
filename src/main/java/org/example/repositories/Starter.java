@@ -175,7 +175,7 @@ public class Starter implements _Logger<String>{
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CLIENTE_FK FOREIGN KEY(COD_CLIENTE) REFERENCES "+ UsuariosRepository.TB_NAME_C +"(COD_CLIENTE)")) {
+            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CLIENTE_FK FOREIGN KEY(COD_CLIENTE) REFERENCES "+ UsuariosRepository.TB_NAME_C +"(COD_CLIENTE) ON DELETE CASCADE")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);

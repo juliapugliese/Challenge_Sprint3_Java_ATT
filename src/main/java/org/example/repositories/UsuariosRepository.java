@@ -446,7 +446,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     stmt.setNull(8, Types.VARCHAR);
                     stmt.setInt(9, 1);
                     stmt.setNull(10, Types.NUMERIC);
-                    logInfo("Administrador adicionado com sucesso");
+                    logInfo("Administrador atualizado com sucesso");
 
                 } else if (usuario instanceof Cliente) {
                     stmt.setLong(5, ((Cliente)usuario).getCpf());
@@ -455,7 +455,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     stmt.setString(8, ((Cliente) usuario).getPerguntasOuComentarios());
                     stmt.setInt(9, 2);
                     stmt.setInt(10, idEmpresa.get(0));
-                    logInfo("Cliente adicionado com sucesso");
+                    logInfo("Cliente atualizado com sucesso");
                 }
                 stmt.executeUpdate();
 
@@ -463,7 +463,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 logError(e);
             }
             conn.close();
-            logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_U +"  com sucesso!");
+            logInfo("Dados atualizados na tabela "+ UsuariosRepository.TB_NAME_U +"  com sucesso!");
         } catch (SQLException e) {
             logError(e);
         }

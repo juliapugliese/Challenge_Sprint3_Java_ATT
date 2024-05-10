@@ -95,7 +95,7 @@ public class Cliente extends Usuario {
 
         return super.getNomeCompleto() + "(" + super.getId() +") " + cargo +
                 " da empresa " + empresa.getNomeEmpresa() +
-                " na sede do(a) " + empresa.getPais();
+                " na sede no(a) " + empresa.getPais();
 
     }
 

@@ -13,7 +13,7 @@ public class Starter implements _Logger<String>{
             Map.entry("COD_CLIENTE", "COD_CLIENTE"),
             Map.entry("COD_PERFIL", "COD_PERFIL"),
             Map.entry("COD_CARGO", "COD_CARGO"),
-            Map.entry("NOME", "NOME"),
+            Map.entry("NOME_CARGO", "NOME_CARGO"),
             Map.entry("NOME_USUARIO", "NOME_USUARIO"),
             Map.entry("SENHA", "SENHA"),
             Map.entry("EMAIL", "EMAIL"),
@@ -82,7 +82,7 @@ public class Starter implements _Logger<String>{
                                     "%s VARCHAR2(60) NOT NULL, " +
                                     "%s NUMBER(11), " +
                                     "%s NUMBER(11), " +
-                                    "%s VARCHAR2(50), " +
+                                    "%s NUMBER, " +
                                     "%s VARCHAR2(200), " +
                                     "%s NUMBER, " +
                                     "%s NUMBER NOT NULL)")
@@ -128,7 +128,7 @@ public class Starter implements _Logger<String>{
             try {
                 var stmt = conn.prepareStatement(
                         ("CREATE TABLE " + UsuariosRepository.TB_NAME_CA + " (COD_CARGO NUMBER GENERATED AS IDENTITY CONSTRAINT CARGO_JAVA_PK PRIMARY KEY, " +
-                                "NOME VARCHAR2(60) NOT NULL)" ));
+                                "NOME_CARGO VARCHAR2(60) NOT NULL)" ));
                 stmt.executeUpdate();
                 logInfo("Tabela "+ UsuariosRepository.TB_NAME_CA +" criada com sucesso!");
 
@@ -206,7 +206,7 @@ public class Starter implements _Logger<String>{
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CARGO_FK FOREIGN KEY(COD_CARGO) REFERENCES "+ UsuariosRepository.TB_NAME_CA +"(COD_CARGO)")) {
+            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CARGO_FK FOREIGN KEY(COD_CARGO) REFERENCES "+ UsuariosRepository.TB_NAME_CA +"(COD_CARGO) ON DELETE CASCADE")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
@@ -264,7 +264,7 @@ public class Starter implements _Logger<String>{
                 logError(e);
             }
             try {var stmt = conn.prepareStatement("INSERT INTO " + PlanosRepository.TB_NAME_T  + "(TIPO) VALUES (?)");
-                stmt.setString(2, "PLANO DE SUCESSO");
+                stmt.setString(1, "PLANO DE SUCESSO");
                 stmt.executeUpdate();
                 logInfo("Dados inseridos na tabela "+ PlanosRepository.TB_NAME_T  +" com sucesso!");
             } catch (SQLException e) {

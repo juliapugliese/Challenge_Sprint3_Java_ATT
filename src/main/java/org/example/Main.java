@@ -65,14 +65,14 @@ public class Main {
 
 
 
-        administradores.read(2);
+//        administradores.read(2);
 //        administradores.create(adm2);
 //        clientes.read(1);
+        clientes.delete(1);
 
 
-
-        System.out.println("-----------------------");
-        clientes.readAllCLT();
+//        System.out.println("-----------------------");
+//        clientes.readAllCLT();
 //        System.out.println("-----------------------");
 //        administradores.readAllADM();
 //        System.out.println("------------***-----------");

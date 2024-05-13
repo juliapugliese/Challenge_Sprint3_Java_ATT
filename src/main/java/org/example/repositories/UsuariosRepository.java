@@ -9,7 +9,10 @@ import org.example.infrastructure.OracleDatabaseConfiguration;
 
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 public class UsuariosRepository extends Starter implements _BaseRepository<Usuario>, _Logger<String>{
 
@@ -72,7 +75,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 
     public void create(Usuario usuario) {
         var idEmpresa = new ArrayList<Integer>();
-        var idCargo = new ArrayList<String>();
+        var idCargo = new ArrayList<Integer>();
 
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
 
@@ -112,30 +115,24 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 }
 
                 try (var stmt = conn.prepareStatement(
-                        ("INSERT INTO %s(%s) VALUES (?)")
-                                .formatted(UsuariosRepository.TB_NAME_CA,
-                                        TB_COLUMNS.get("NOME")))){
+                        "INSERT INTO %s(%s) VALUES (?)".formatted(UsuariosRepository.TB_NAME_CA, TB_COLUMNS.get("NOME_CARGO")))) {
                     stmt.setString(1, ((Cliente) usuario).getCargo());
-
                     stmt.executeUpdate();
-                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_CA +"  com sucesso!");
 
+                    try (var stmtRetrieve = conn.prepareStatement("SELECT MAX(COD_CARGO) FROM " + UsuariosRepository.TB_NAME_CA)) {
+                        try (var rs = stmtRetrieve.executeQuery()) {
+                            if (rs.next()) {
+                                idCargo.add(rs.getInt(1));
+                            } else {
+                                throw new SQLException("Falha ao obter o COD_CARGO.");
+                            }
+                        }
+                    }
+
+                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_CA +"  com sucesso!");
                 } catch (SQLException e) {
                     logError(e);
                 }
-
-                try (var stmt = conn.prepareStatement(
-                        "SELECT * FROM %s WHERE %s = %s"
-                                .formatted(UsuariosRepository.TB_NAME_C, TB_COLUMNS.get("CNPJ"), ((Cliente) usuario).getEmpresa().getCnpj()))){
-                    var resultSet = stmt.executeQuery();
-                    while (resultSet.next()) {
-                        idCargo.add(resultSet.getString(TB_COLUMNS.get("COD_CARGO")));
-//                        int idEmpresa = resultSet.getInt("COD_CLIENTE");
-                    }
-                }catch (SQLException e) {
-                    logError(e);
-                }
-
 
             }
 
@@ -171,7 +168,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 } else if (usuario instanceof Cliente) {
                     stmt.setLong(5, ((Cliente)usuario).getCpf());
                     stmt.setString(6, ((Cliente)usuario).getTelefone());
-                    stmt.setString(7, idCargo.get(0));
+                    stmt.setInt(7, idCargo.get(0));
                     stmt.setString(8, ((Cliente) usuario).getPerguntasOuComentarios());
                     stmt.setInt(9, 2);
                     stmt.setInt(10, idEmpresa.get(0));
@@ -203,10 +200,23 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             }
 
             try {
+                var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_CA + " WHERE COD_CARGO IN (SELECT c.COD_CARGO FROM " + TB_NAME_CA + " c INNER JOIN "
+                        + TB_NAME_U +" u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = ?)");
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                logWarn("Cargo deletado com sucesso");
+            } catch (SQLException e) {
+                logError(e);
+            }
+
+//            DELETE FROM CARGO_JAVA WHERE COD_CARGO IN (SELECT c.COD_CARGO FROM CARGO_JAVA c INNER JOIN USUARIO_JAVA
+//            u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = 2)
+
+            try {
                 var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_U + " WHERE COD_USUARIO = ?");
                 stmt.setInt(1, id);
                 stmt.executeUpdate();
-                logWarn("Cliente deletado com sucesso");
+                logWarn("Usuario deletado com sucesso");
             } catch (SQLException e) {
                 logError(e);
             }

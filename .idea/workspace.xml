@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Finalização do método update da classe UsuariosRepository">
-      <change afterPath="$PROJECT_DIR$/Documentacao/modelo_logico.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Documentacao/modelo_relacional.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Documentacao/Logical.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Documentacao/Relational.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documentacao/modelo_logico.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documentacao/modelo_relacional.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/Starter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/Starter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" afterDir="false" />
     </list>

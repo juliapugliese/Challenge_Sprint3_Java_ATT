@@ -72,6 +72,8 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 
     public void create(Usuario usuario) {
         var idEmpresa = new ArrayList<Integer>();
+        var idCargo = new ArrayList<String>();
+
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
 
             if (usuario instanceof Cliente){
@@ -108,6 +110,33 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 }catch (SQLException e) {
                     logError(e);
                 }
+
+                try (var stmt = conn.prepareStatement(
+                        ("INSERT INTO %s(%s) VALUES (?)")
+                                .formatted(UsuariosRepository.TB_NAME_CA,
+                                        TB_COLUMNS.get("NOME")))){
+                    stmt.setString(1, ((Cliente) usuario).getCargo());
+
+                    stmt.executeUpdate();
+                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_CA +"  com sucesso!");
+
+                } catch (SQLException e) {
+                    logError(e);
+                }
+
+                try (var stmt = conn.prepareStatement(
+                        "SELECT * FROM %s WHERE %s = %s"
+                                .formatted(UsuariosRepository.TB_NAME_C, TB_COLUMNS.get("CNPJ"), ((Cliente) usuario).getEmpresa().getCnpj()))){
+                    var resultSet = stmt.executeQuery();
+                    while (resultSet.next()) {
+                        idCargo.add(resultSet.getString(TB_COLUMNS.get("COD_CARGO")));
+//                        int idEmpresa = resultSet.getInt("COD_CLIENTE");
+                    }
+                }catch (SQLException e) {
+                    logError(e);
+                }
+
+
             }
 
             try (var stmt = conn.prepareStatement(
@@ -119,7 +148,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                                     TB_COLUMNS.get("EMAIL"),
                                     TB_COLUMNS.get("CPF"),
                                     TB_COLUMNS.get("TELEFONE"),
-                                    TB_COLUMNS.get("CARGO"),
+                                    TB_COLUMNS.get("COD_CARGO"),
                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"),
                                     TB_COLUMNS.get("COD_PERFIL"),
                                     TB_COLUMNS.get("COD_CLIENTE")
@@ -142,7 +171,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 } else if (usuario instanceof Cliente) {
                     stmt.setLong(5, ((Cliente)usuario).getCpf());
                     stmt.setString(6, ((Cliente)usuario).getTelefone());
-                    stmt.setString(7, ((Cliente) usuario).getCargo());
+                    stmt.setString(7, idCargo.get(0));
                     stmt.setString(8, ((Cliente) usuario).getPerguntasOuComentarios());
                     stmt.setInt(9, 2);
                     stmt.setInt(10, idEmpresa.get(0));

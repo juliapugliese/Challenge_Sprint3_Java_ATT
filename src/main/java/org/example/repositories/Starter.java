@@ -13,6 +13,7 @@ public class Starter implements _Logger<String>{
             Map.entry("COD_CLIENTE", "COD_CLIENTE"),
             Map.entry("COD_PERFIL", "COD_PERFIL"),
             Map.entry("COD_CARGO", "COD_CARGO"),
+            Map.entry("NOME", "NOME"),
             Map.entry("NOME_USUARIO", "NOME_USUARIO"),
             Map.entry("SENHA", "SENHA"),
             Map.entry("EMAIL", "EMAIL"),
@@ -236,6 +237,11 @@ public class Starter implements _Logger<String>{
                 logError(e);
             }
 
+
+
+
+
+
             try {var stmt = conn.prepareStatement("INSERT INTO " + UsuariosRepository.TB_NAME_P + "(TIPO) VALUES (?)");
                 stmt.setString(1, "ADMINISTRADOR");
                 stmt.executeUpdate();
@@ -247,6 +253,20 @@ public class Starter implements _Logger<String>{
                 stmt.setString(1, "CLIENTE");
                 stmt.executeUpdate();
                 logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_P +" com sucesso!");
+            } catch (SQLException e) {
+                logError(e);
+            }
+            try {var stmt = conn.prepareStatement("INSERT INTO " + PlanosRepository.TB_NAME_T + "(TIPO) VALUES (?)");
+                stmt.setString(1, "PLANO DE PAGAMENTO");
+                stmt.executeUpdate();
+                logInfo("Dados inseridos na tabela "+ PlanosRepository.TB_NAME_T  +" com sucesso!");
+            } catch (SQLException e) {
+                logError(e);
+            }
+            try {var stmt = conn.prepareStatement("INSERT INTO " + PlanosRepository.TB_NAME_T  + "(TIPO) VALUES (?)");
+                stmt.setString(2, "PLANO DE SUCESSO");
+                stmt.executeUpdate();
+                logInfo("Dados inseridos na tabela "+ PlanosRepository.TB_NAME_T  +" com sucesso!");
             } catch (SQLException e) {
                 logError(e);
             }

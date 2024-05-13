@@ -12,6 +12,7 @@ public class Starter implements _Logger<String>{
             Map.entry("COD_USUARIO", "COD_USUARIO"),
             Map.entry("COD_CLIENTE", "COD_CLIENTE"),
             Map.entry("COD_PERFIL", "COD_PERFIL"),
+            Map.entry("COD_CARGO", "COD_CARGO"),
             Map.entry("NOME_USUARIO", "NOME_USUARIO"),
             Map.entry("SENHA", "SENHA"),
             Map.entry("EMAIL", "EMAIL"),
@@ -21,7 +22,6 @@ public class Starter implements _Logger<String>{
             Map.entry("TELEFONE", "TELEFONE"),
             Map.entry("NOME_EMPRESA", "NOME_EMPRESA"),
             Map.entry("CNPJ", "CNPJ"),
-            Map.entry("CARGO", "CARGO"),
             Map.entry("SEGMENTO", "SEGMENTO"),
             Map.entry("TAMANHO_EMPRESA", "TAMANHO_EMPRESA"),
             Map.entry("PAIS", "PAIS")
@@ -31,6 +31,16 @@ public class Starter implements _Logger<String>{
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
 
             try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + PlanosRepository.TB_NAME + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                logError(e);
+            }
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + PlanosRepository.TB_NAME_T + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                logError(e);
+            }
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + ProdutosRepository.TB_NAME_I + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
@@ -55,7 +65,7 @@ public class Starter implements _Logger<String>{
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + ProdutosRepository.TB_NAME_I + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
+            try (var stmt = conn.prepareStatement("BEGIN EXECUTE IMMEDIATE 'DROP TABLE " + UsuariosRepository.TB_NAME_CA + " CASCADE CONSTRAINTS'; EXCEPTION WHEN OTHERS THEN NULL; END;")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
@@ -83,7 +93,7 @@ public class Starter implements _Logger<String>{
                                             TB_COLUMNS.get("EMAIL"),
                                             TB_COLUMNS.get("CPF"),
                                             TB_COLUMNS.get("TELEFONE"),
-                                            TB_COLUMNS.get("CARGO"),
+                                            TB_COLUMNS.get("COD_CARGO"),
                                             TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"),
                                             TB_COLUMNS.get("COD_CLIENTE"),
                                             TB_COLUMNS.get("COD_PERFIL")
@@ -114,14 +124,22 @@ public class Starter implements _Logger<String>{
             } catch (SQLException e) {
                 logError(e);
             }
+            try {
+                var stmt = conn.prepareStatement(
+                        ("CREATE TABLE " + UsuariosRepository.TB_NAME_CA + " (COD_CARGO NUMBER GENERATED AS IDENTITY CONSTRAINT CARGO_JAVA_PK PRIMARY KEY, " +
+                                "NOME VARCHAR2(60) NOT NULL)" ));
+                stmt.executeUpdate();
+                logInfo("Tabela "+ UsuariosRepository.TB_NAME_CA +" criada com sucesso!");
+
+            } catch (SQLException e) {
+                logError(e);
+            }
 
             try {
                 var stmt = conn.prepareStatement(
                         ("CREATE TABLE " + ProdutosRepository.TB_NAME + " (COD_PRODUTO NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_JAVA_PK PRIMARY KEY, " +
                                 "NOME VARCHAR2(60) NOT NULL, " +
-                                "DESCRICAO VARCHAR2(150) NOT NULL, " +
-                                "PLANO_PAGAMENTO NUMBER, " +
-                                "PLANO_SUCESSO NUMBER)" ));
+                                "DESCRICAO VARCHAR2(150) NOT NULL)" ));
                 stmt.executeUpdate();
                 logInfo("Tabela "+ ProdutosRepository.TB_NAME +" criada com sucesso!");
             } catch (SQLException e) {
@@ -145,9 +163,21 @@ public class Starter implements _Logger<String>{
                                 "NOME VARCHAR2(60) NOT NULL, " +
                                 "DESCRICAO VARCHAR2(150) NOT NULL, " +
                                 "RECURSOS VARCHAR2(150), " +
-                                "PRECO DECIMAL(9,2))" ));
+                                "PRECO DECIMAL(9,2), " +
+                                "COD_PRODUTO NUMBER, " +
+                                "COD_TIPO_PLANO NUMBER)" ));
                 stmt.executeUpdate();
                 logInfo("Tabela "+ PlanosRepository.TB_NAME +" criada com sucesso!");
+
+            } catch (SQLException e) {
+                logError(e);
+            }
+            try {
+                var stmt = conn.prepareStatement(
+                        ("CREATE TABLE " + PlanosRepository.TB_NAME_T + " (COD_TIPO_PLANO  NUMBER GENERATED AS IDENTITY CONSTRAINT TIPO_PLANO_JAVA_PK PRIMARY KEY, " +
+                                "TIPO VARCHAR2(30) NOT NULL)" ));
+                stmt.executeUpdate();
+                logInfo("Tabela "+ PlanosRepository.TB_NAME_T +" criada com sucesso!");
 
             } catch (SQLException e) {
                 logError(e);
@@ -175,17 +205,22 @@ public class Starter implements _Logger<String>{
             } catch (SQLException e) {
                 logError(e);
             }
+            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CARGO_FK FOREIGN KEY(COD_CARGO) REFERENCES "+ UsuariosRepository.TB_NAME_CA +"(COD_CARGO)")) {
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                logError(e);
+            }
             try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CLIENTE_FK FOREIGN KEY(COD_CLIENTE) REFERENCES "+ UsuariosRepository.TB_NAME_C +"(COD_CLIENTE) ON DELETE CASCADE")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("ALTER TABLE "+ ProdutosRepository.TB_NAME +" ADD CONSTRAINT PRODUTO_PLANO_PAGAMENTO_FK FOREIGN KEY(PLANO_PAGAMENTO) REFERENCES "+ PlanosRepository.TB_NAME +"(COD_PLANO)")) {
+            try (var stmt = conn.prepareStatement("ALTER TABLE "+ PlanosRepository.TB_NAME +" ADD CONSTRAINT PRODUTO_PLANO_FK FOREIGN KEY(COD_PRODUTO) REFERENCES "+ ProdutosRepository.TB_NAME +"(COD_PRODUTO)")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("ALTER TABLE "+ ProdutosRepository.TB_NAME +" ADD CONSTRAINT PRODUTO_PLANO_SUCESSO_FK FOREIGN KEY(PLANO_SUCESSO) REFERENCES "+ PlanosRepository.TB_NAME +"(COD_PLANO)")) {
+            try (var stmt = conn.prepareStatement("ALTER TABLE "+ PlanosRepository.TB_NAME +" ADD CONSTRAINT PLANO_TIPO_PLANO_FK FOREIGN KEY(COD_TIPO_PLANO) REFERENCES "+ PlanosRepository.TB_NAME_T +"(COD_TIPO_PLANO)")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);

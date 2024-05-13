@@ -15,6 +15,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 
     public static final String TB_NAME_U = "USUARIO_JAVA";
     public static final String TB_NAME_C = "CLIENTE_JAVA";
+    public static final String TB_NAME_CA = "CARGO_JAVA";
     public static final String TB_NAME_P = "PERFIL_JAVA";
 
 

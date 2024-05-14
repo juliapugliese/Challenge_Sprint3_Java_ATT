@@ -264,6 +264,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==2) {
 
                     var empresa = new ArrayList<Empresa>();
+                    var cargo = new ArrayList<String>();
                     var stmt2 = conn.prepareStatement("SELECT * FROM %s WHERE COD_CLIENTE = %s".formatted(TB_NAME_C, resultSet.getString(TB_COLUMNS.get("COD_CLIENTE"))));
                     var resultSet2 = stmt2.executeQuery();
                     while (resultSet2.next()) {
@@ -277,6 +278,15 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                         ));
                     }
 
+                    var stmt3 = conn.prepareStatement("SELECT NOME_CARGO FROM " + TB_NAME_CA + " WHERE COD_CARGO IN " +
+                            "(SELECT c.COD_CARGO FROM " + TB_NAME_CA + " c INNER JOIN " + TB_NAME_U +
+                            " u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = %s)"
+                            .formatted(resultSet.getString(TB_COLUMNS.get("COD_USUARIO"))));
+                    var resultSet3 = stmt3.executeQuery();
+                    while (resultSet3.next()){
+                        cargo.add(resultSet3.getString(1));
+                    }
+
                     clientes.add(new Cliente(
                             resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
@@ -285,7 +295,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                             resultSet.getString(TB_COLUMNS.get("EMAIL")),
                             resultSet.getLong(TB_COLUMNS.get("CPF")),
                             resultSet.getString(TB_COLUMNS.get("TELEFONE")),
-                            resultSet.getString(TB_COLUMNS.get("CARGO")),
+                            cargo.get(0),
                             resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")),
                             empresa.get(0)
                     ));
@@ -319,6 +329,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     ));
                 } else {
                     var empresa = new ArrayList<Empresa>();
+                    var cargo = new ArrayList<String>();
                     var stmt2 = conn.prepareStatement("SELECT * FROM %s WHERE COD_CLIENTE = %s".formatted(TB_NAME_C, resultSet.getString(TB_COLUMNS.get("COD_CLIENTE"))));
                     var resultSet2 = stmt2.executeQuery();
                     while (resultSet2.next()) {
@@ -332,6 +343,15 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                         ));
                     }
 
+                    var stmt3 = conn.prepareStatement("SELECT NOME_CARGO FROM " + TB_NAME_CA + " WHERE COD_CARGO IN " +
+                            "(SELECT c.COD_CARGO FROM " + TB_NAME_CA + " c INNER JOIN " + TB_NAME_U +
+                            " u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = %s)"
+                                    .formatted(resultSet.getString(TB_COLUMNS.get("COD_USUARIO"))));
+                    var resultSet3 = stmt3.executeQuery();
+                    while (resultSet3.next()){
+                        cargo.add(resultSet3.getString(1));
+                    }
+
                     usuarios.add(new Cliente(
                             resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
@@ -340,7 +360,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                             resultSet.getString(TB_COLUMNS.get("EMAIL")),
                             resultSet.getLong(TB_COLUMNS.get("CPF")),
                             resultSet.getString(TB_COLUMNS.get("TELEFONE")),
-                            resultSet.getString(TB_COLUMNS.get("CARGO")),
+                            cargo.get(0),
                             resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")),
                             empresa.get(0)
                     ));
@@ -507,74 +527,5 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         }
 
     }
-
-
-//    public void update(int id, Usuario usuario) {
-//        try {var conn =  new OracleDatabaseConfiguration().getConnection();
-//            var stmt = conn.prepareStatement(
-//                    "UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE ID = ?"
-//                            .formatted(TB_NAME_U,
-//                                    TB_COLUMNS.get("NOME_USUARIO"),
-//                                    TB_COLUMNS.get("SENHA"),
-//                                    TB_COLUMNS.get("TIPO"),
-//                                    TB_COLUMNS.get("NOME_ADM"),
-//                                    TB_COLUMNS.get("EMAIL"),
-//                                    TB_COLUMNS.get("NOME_COMPLETO"),
-//                                    TB_COLUMNS.get("CPF"),
-//                                    TB_COLUMNS.get("TELEFONE"),
-//                                    TB_COLUMNS.get("EMPRESA"),
-//                                    TB_COLUMNS.get("CNPJ"),
-//                                    TB_COLUMNS.get("CARGO"),
-//                                    TB_COLUMNS.get("SEGMENTO"),
-//                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
-//                                    TB_COLUMNS.get("PAIS"),
-//                                    TB_COLUMNS.get("EMAIL_CORPORATIVO"),
-//                                    TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
-//
-//
-//            stmt.setString(1, usuario.getNomeUsuario());
-//            stmt.setString(2, usuario.getSenha());
-//            stmt.setInt(17, id);
-//
-//            if (usuario instanceof Administrador) {
-//                stmt.setString(3, "ADM");
-//                stmt.setString(4, ((Administrador) usuario).getNomeAdm());
-//                stmt.setString(5, ((Administrador) usuario).getEmail());
-//                stmt.setNull(6, Types.VARCHAR);
-//                stmt.setNull(7, Types.NUMERIC);
-//                stmt.setNull(8, Types.VARCHAR);
-//                stmt.setNull(9, Types.VARCHAR);
-//                stmt.setNull(10, Types.NUMERIC);
-//                stmt.setNull(11, Types.VARCHAR);
-//                stmt.setNull(12, Types.VARCHAR);
-//                stmt.setNull(13, Types.VARCHAR);
-//                stmt.setNull(14, Types.VARCHAR);
-//                stmt.setNull(15, Types.VARCHAR);
-//                stmt.setNull(16, Types.VARCHAR);
-//
-//            } else if (usuario instanceof Cliente) {
-//                stmt.setString(3, "CLT");
-//                stmt.setNull(4, Types.VARCHAR);
-//                stmt.setNull(5, Types.VARCHAR);
-//                stmt.setString(6, ((Cliente) usuario).getNomeCompleto());
-//                stmt.setLong(7, ((Cliente) usuario).getCpf());
-//                stmt.setString(8, ((Cliente) usuario).getTelefone());
-//                stmt.setString(9, ((Cliente) usuario).getEmpresa().getNomeEmpresa());
-//                stmt.setLong(10, ((Cliente) usuario).getCnpj());
-//                stmt.setString(11, ((Cliente) usuario).getCargo());
-//                stmt.setString(12, ((Cliente) usuario).getSegmento());
-//                stmt.setString(13, ((Cliente) usuario).getTamanhoEmpresa());
-//                stmt.setString(14, ((Cliente) usuario).getPais());
-//                stmt.setString(15, ((Cliente) usuario).getEmailCorporativo());
-//                stmt.setString(16, ((Cliente) usuario).getPerguntasOuComentarios());
-//            }
-//            stmt.executeUpdate();
-//            logWarn("Usuário atualizado com sucesso!");
-//            conn.close();
-//        } catch (SQLException e) {
-//            logError(e);
-//        }
-//    }
-
 
 }

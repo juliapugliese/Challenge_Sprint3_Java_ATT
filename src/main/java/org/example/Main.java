@@ -53,6 +53,10 @@ public class Main {
         var cli1 = new Cliente("Henrique", "henrique123",  "Henriqua J. Diaz","rm554585@fiap.com.br", 14451445751L, "11456699887", "Estagiario", empresa1);
         clientes.create(cli1);
 
+        var empresa2 = new Empresa("sabesp", 1454242581475L, "Administrativo", "Grande", "Brasil");
+        var cli2 = new Cliente("Henrique", "henrique123",  "Henriqua J. Diaz","rm554585@fiap.com.br", 14451445751L, "11456699887", "Estagiario", empresa2);
+        clientes.create(cli2);
+
         var adm2 = new Administrador("553427", "fiap2",  "Julia Ribeiro","rm553427@fiap.com.br");
         administradores.create(adm2);
 
@@ -68,7 +72,7 @@ public class Main {
 //        administradores.read(2);
 //        administradores.create(adm2);
 //        clientes.read(1);
-        clientes.delete(1);
+        clientes.delete(2);
 
 
 //        System.out.println("-----------------------");

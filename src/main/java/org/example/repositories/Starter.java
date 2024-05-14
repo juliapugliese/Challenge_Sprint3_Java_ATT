@@ -128,7 +128,7 @@ public class Starter implements _Logger<String>{
             try {
                 var stmt = conn.prepareStatement(
                         ("CREATE TABLE " + UsuariosRepository.TB_NAME_CA + " (COD_CARGO NUMBER GENERATED AS IDENTITY CONSTRAINT CARGO_JAVA_PK PRIMARY KEY, " +
-                                "NOME_CARGO VARCHAR2(60) NOT NULL)" ));
+                                "NOME_CARGO VARCHAR2(60) UNIQUE NOT NULL)" ));
                 stmt.executeUpdate();
                 logInfo("Tabela "+ UsuariosRepository.TB_NAME_CA +" criada com sucesso!");
 
@@ -206,12 +206,12 @@ public class Starter implements _Logger<String>{
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CARGO_FK FOREIGN KEY(COD_CARGO) REFERENCES "+ UsuariosRepository.TB_NAME_CA +"(COD_CARGO) ON DELETE CASCADE")) {
+            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CARGO_FK FOREIGN KEY(COD_CARGO) REFERENCES "+ UsuariosRepository.TB_NAME_CA +"(COD_CARGO) ON DELETE SET NULL")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);
             }
-            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CLIENTE_FK FOREIGN KEY(COD_CLIENTE) REFERENCES "+ UsuariosRepository.TB_NAME_C +"(COD_CLIENTE) ON DELETE CASCADE")) {
+            try (var stmt = conn.prepareStatement("ALTER TABLE "+ UsuariosRepository.TB_NAME_U +" ADD CONSTRAINT USUARIO_CLIENTE_FK FOREIGN KEY(COD_CLIENTE) REFERENCES "+ UsuariosRepository.TB_NAME_C +"(COD_CLIENTE) ON DELETE SET NULL")) {
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 logError(e);

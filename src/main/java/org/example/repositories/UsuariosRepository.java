@@ -108,30 +108,41 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     var resultSet = stmt.executeQuery();
                     while (resultSet.next()) {
                         idEmpresa.add(resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")));
-//                        int idEmpresa = resultSet.getInt("COD_CLIENTE");
                     }
                 }catch (SQLException e) {
                     logError(e);
                 }
 
-                try (var stmt = conn.prepareStatement(
-                        "INSERT INTO %s(%s) VALUES (?)".formatted(UsuariosRepository.TB_NAME_CA, TB_COLUMNS.get("NOME_CARGO")))) {
-                    stmt.setString(1, ((Cliente) usuario).getCargo());
-                    stmt.executeUpdate();
+                try (var stmtVericador = conn.prepareStatement(
+                        "SELECT COUNT(*) FROM %s WHERE %s = '%s'".formatted(UsuariosRepository.TB_NAME_CA, TB_COLUMNS.get("NOME_CARGO"), ((Cliente) usuario).getCargo())
+                )){
+                    var rsVerifcador = stmtVericador.executeQuery();
 
-                    try (var stmtRetrieve = conn.prepareStatement("SELECT MAX(COD_CARGO) FROM " + UsuariosRepository.TB_NAME_CA)) {
-                        try (var rs = stmtRetrieve.executeQuery()) {
-                            if (rs.next()) {
-                                idCargo.add(rs.getInt(1));
-                            } else {
-                                throw new SQLException("Falha ao obter o COD_CARGO.");
+                    while (rsVerifcador.next()) {
+                        if(rsVerifcador.getInt(1) == 0){
+                            try (var stmt = conn.prepareStatement(
+                                    "INSERT INTO %s(%s) VALUES (?)".formatted(UsuariosRepository.TB_NAME_CA, TB_COLUMNS.get("NOME_CARGO")))) {
+                                stmt.setString(1, ((Cliente) usuario).getCargo());
+                                stmt.executeUpdate();
+
+                                logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_CA +"  com sucesso!");
+                            } catch (SQLException e) {
+                                logError(e);
                             }
                         }
                     }
 
-                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_CA +"  com sucesso!");
-                } catch (SQLException e) {
-                    logError(e);
+
+                }
+
+                try (var stmtRetrieve = conn.prepareStatement("SELECT COD_CARGO FROM "+ TB_NAME_CA+" WHERE NOME_CARGO = '%s'".formatted(((Cliente) usuario).getCargo()))) {
+                    try (var rs = stmtRetrieve.executeQuery()) {
+                        if (rs.next()) {
+                            idCargo.add(rs.getInt(1));
+                        } else {
+                            throw new SQLException("Falha ao obter o COD_CARGO.");
+                        }
+                    }
                 }
 
             }
@@ -198,19 +209,6 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             } catch (SQLException e) {
                 logError(e);
             }
-
-            try {
-                var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_CA + " WHERE COD_CARGO IN (SELECT c.COD_CARGO FROM " + TB_NAME_CA + " c INNER JOIN "
-                        + TB_NAME_U +" u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = ?)");
-                stmt.setInt(1, id);
-                stmt.executeUpdate();
-                logWarn("Cargo deletado com sucesso");
-            } catch (SQLException e) {
-                logError(e);
-            }
-
-//            DELETE FROM CARGO_JAVA WHERE COD_CARGO IN (SELECT c.COD_CARGO FROM CARGO_JAVA c INNER JOIN USUARIO_JAVA
-//            u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = 2)
 
             try {
                 var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME_U + " WHERE COD_USUARIO = ?");

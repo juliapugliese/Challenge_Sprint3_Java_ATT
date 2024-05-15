@@ -436,6 +436,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 
     public void update(int id, Usuario usuario) {
         var idEmpresa = new ArrayList<Integer>();
+        var idCargo = new ArrayList<Integer>();
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
 
             if (usuario instanceof Cliente){
@@ -485,7 +486,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                                     TB_COLUMNS.get("EMAIL"),
                                     TB_COLUMNS.get("CPF"),
                                     TB_COLUMNS.get("TELEFONE"),
-                                    TB_COLUMNS.get("CARGO"),
+                                    TB_COLUMNS.get("COD_CARGO"),
                                     TB_COLUMNS.get("PERGUNTAS_COMENTARIOS"),
                                     TB_COLUMNS.get("COD_PERFIL"),
                                     TB_COLUMNS.get("COD_CLIENTE")
@@ -507,9 +508,43 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     logInfo("Administrador atualizado com sucesso");
 
                 } else if (usuario instanceof Cliente) {
+
+
+
+                    try (var stmtVericador = conn.prepareStatement(
+                            "SELECT COUNT(*) FROM %s WHERE %s = '%s'".formatted(UsuariosRepository.TB_NAME_CA, TB_COLUMNS.get("NOME_CARGO"), ((Cliente) usuario).getCargo())
+                    )){
+                        var rsVerifcador = stmtVericador.executeQuery();
+
+                        while (rsVerifcador.next()) {
+                            if(rsVerifcador.getInt(1) == 0){
+                                try (var stmtCargo = conn.prepareStatement(
+                                        "INSERT INTO %s(%s) VALUES (?)".formatted(UsuariosRepository.TB_NAME_CA, TB_COLUMNS.get("NOME_CARGO")))) {
+                                    stmtCargo.setString(1, ((Cliente) usuario).getCargo());
+                                    stmtCargo.executeUpdate();
+
+                                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_CA +"  com sucesso!");
+                                } catch (SQLException e) {
+                                    logError(e);
+                                }
+                            }
+                        }
+
+
+                    }
+                    try (var stmtRetrieve = conn.prepareStatement("SELECT COD_CARGO FROM "+ TB_NAME_CA+" WHERE NOME_CARGO = '%s'".formatted(((Cliente) usuario).getCargo()))) {
+                        try (var rs = stmtRetrieve.executeQuery()) {
+                            if (rs.next()) {
+                                idCargo.add(rs.getInt(1));
+                            } else {
+                                throw new SQLException("Falha ao obter o COD_CARGO.");
+                            }
+                        }
+                    }
+
                     stmt.setLong(5, ((Cliente)usuario).getCpf());
                     stmt.setString(6, ((Cliente)usuario).getTelefone());
-                    stmt.setString(7, ((Cliente) usuario).getCargo());
+                    stmt.setInt(7, idCargo.get(0));
                     stmt.setString(8, ((Cliente) usuario).getPerguntasOuComentarios());
                     stmt.setInt(9, 2);
                     stmt.setInt(10, idEmpresa.get(0));

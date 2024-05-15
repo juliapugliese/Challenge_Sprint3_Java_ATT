@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Finalização do método update da classe UsuariosRepository">
+    <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Finalização da classe UsuariosRepository">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -390,7 +389,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715732766525</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Finalização da classe UsuariosRepository">
+      <option name="closed" value="true" />
+      <created>1715733578416</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1715733578416</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -405,7 +412,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Alterações na classe PlanosRepository" />
     <MESSAGE value="Alterações na classe ProdutosRepository" />
     <MESSAGE value="Adição do entregavel word" />
     <MESSAGE value="Adição da classe ProdutoResource" />
@@ -430,7 +436,8 @@
     <MESSAGE value="Finalização dos métodos delete e create da classe UsuariosRepository" />
     <MESSAGE value="Finalização dos métodos read da classe UsuariosRepository" />
     <MESSAGE value="Finalização do método update da classe UsuariosRepository" />
-    <option name="LAST_COMMIT_MESSAGE" value="Finalização do método update da classe UsuariosRepository" />
+    <MESSAGE value="Finalização da classe UsuariosRepository" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finalização da classe UsuariosRepository" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

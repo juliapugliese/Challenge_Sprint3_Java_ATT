@@ -32,7 +32,7 @@ public class ClienteResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response read(@PathParam("id") int id){
-        var cliente = usuariosRepository.read(id);
+        var cliente = usuariosRepository.readCLT(id);
         return cliente.isPresent() ?
                 Response.ok(cliente.get()).build() :
                 Response.status(Response.Status.NOT_FOUND).build();

@@ -33,7 +33,7 @@ public class AdministradorResource {
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response read(@PathParam("id") int id){
-        var administrador = usuariosRepository.read(id);
+        var administrador = usuariosRepository.readADM(id);
         return administrador.isPresent() ?
                 Response.ok(administrador.get()).build() :
                 Response.status(Response.Status.NOT_FOUND).build();

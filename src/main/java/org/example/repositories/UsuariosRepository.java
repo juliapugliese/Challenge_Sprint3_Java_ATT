@@ -25,54 +25,6 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
     public UsuariosRepository() {
     }
 
-//    public void initialize() {
-//        try {
-//            var conn =  new OracleDatabaseConfiguration().getConnection();
-//            var stmt = conn.prepareStatement(
-//                    ("CREATE TABLE %s (" +
-//                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
-//                            "%s VARCHAR2(20) NOT NULL, " +
-//                            "%s VARCHAR2(20) NOT NULL, " +
-//                            "%s VARCHAR2(3) NOT NULL, " +
-//                            "%s VARCHAR2(50), " +
-//                            "%s VARCHAR2(60), " +
-//                            "%s VARCHAR2(40), " +
-//                            "%s NUMBER(11), " +
-//                            "%s NUMBER(11), " +
-//                            "%s VARCHAR2(70), " +
-//                            "%s NUMBER(14), " +
-//                            "%s VARCHAR2(50), " +
-//                            "%s VARCHAR2(70), " +
-//                            "%s VARCHAR2(10), " +
-//                            "%s VARCHAR2(40), " +
-//                            "%s VARCHAR2(60), " +
-//                            "%s VARCHAR2(200))")
-//                            .formatted(TB_NAME,
-//                                    TB_COLUMNS.get("ID"),
-//                                    TB_COLUMNS.get("NOME_USUARIO"),
-//                                    TB_COLUMNS.get("SENHA"),
-//                                    TB_COLUMNS.get("TIPO"),
-//                                    TB_COLUMNS.get("NOME_ADM"),
-//                                    TB_COLUMNS.get("EMAIL"),
-//                                    TB_COLUMNS.get("NOME_COMPLETO"),
-//                                    TB_COLUMNS.get("CPF"),
-//                                    TB_COLUMNS.get("TELEFONE"),
-//                                    TB_COLUMNS.get("EMPRESA"),
-//                                    TB_COLUMNS.get("CNPJ"),
-//                                    TB_COLUMNS.get("CARGO"),
-//                                    TB_COLUMNS.get("SEGMENTO"),
-//                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
-//                                    TB_COLUMNS.get("PAIS"),
-//                                    TB_COLUMNS.get("EMAIL_CORPORATIVO"),
-//                                    TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
-//            stmt.executeUpdate();
-//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
-//            conn.close();
-//        } catch (SQLException e) {
-//            logError(e);
-//        }
-//    }
-
     public void create(Usuario usuario) {
         var idEmpresa = new ArrayList<Integer>();
         var idCargo = new ArrayList<Integer>();
@@ -197,6 +149,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         }
 
     }
+
     public void delete(int id){
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
             try {
@@ -225,6 +178,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             logError(e);
         }
     }
+
     public List<Usuario> readAllADM() {
         var administradores = new ArrayList<Usuario>();
         try {
@@ -381,7 +335,8 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME_U + " WHERE COD_USUARIO = ?");
             stmt.setInt(1, id);
             var resultSet = stmt.executeQuery();
-            if(resultSet.next()) {
+
+            while (resultSet.next()) {
                 if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==1) {
                     var administrador = new Administrador(
                             resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
@@ -392,8 +347,10 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     );
                     logInfo("Lendo administrador: " + administrador);
                     return Optional.of(administrador);
-                } else {
+
+                } else if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==2){
                     var empresa = new ArrayList<Empresa>();
+                    var cargo = new ArrayList<String>();
                     var stmt2 = conn.prepareStatement("SELECT * FROM %s WHERE COD_CLIENTE = %s".formatted(TB_NAME_C, resultSet.getString(TB_COLUMNS.get("COD_CLIENTE"))));
                     var resultSet2 = stmt2.executeQuery();
                     while (resultSet2.next()) {
@@ -407,6 +364,15 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                         ));
                     }
 
+                    var stmt3 = conn.prepareStatement("SELECT NOME_CARGO FROM " + TB_NAME_CA + " WHERE COD_CARGO IN " +
+                            "(SELECT c.COD_CARGO FROM " + TB_NAME_CA + " c INNER JOIN " + TB_NAME_U +
+                            " u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = %s)"
+                                    .formatted(resultSet.getString(TB_COLUMNS.get("COD_USUARIO"))));
+                    var resultSet3 = stmt3.executeQuery();
+                    while (resultSet3.next()){
+                        cargo.add(resultSet3.getString(1));
+                    }
+
                     var cliente = new Cliente(
                             resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
                             resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
@@ -415,14 +381,12 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                             resultSet.getString(TB_COLUMNS.get("EMAIL")),
                             resultSet.getLong(TB_COLUMNS.get("CPF")),
                             resultSet.getString(TB_COLUMNS.get("TELEFONE")),
-                            resultSet.getString(TB_COLUMNS.get("CARGO")),
+                            cargo.get(0),
                             resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")),
                             empresa.get(0)
                     );
-
                     logInfo("Lendo cliente: " + cliente);
                     return Optional.of(cliente);
-
                 }
             }
             conn.close();
@@ -433,6 +397,88 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         return Optional.empty();
     }
 
+    public Optional<Usuario> readADM(int id){
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME_U + " WHERE COD_USUARIO = ?");
+            stmt.setInt(1, id);
+            var resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==1) {
+                    var administrador = new Administrador(
+                            resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
+                            resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
+                            resultSet.getString(TB_COLUMNS.get("SENHA")),
+                            resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
+                            resultSet.getString(TB_COLUMNS.get("EMAIL"))
+                    );
+                    logInfo("Lendo administrador: " + administrador);
+                    return Optional.of(administrador);
+
+                }
+            }
+            conn.close();
+        }
+        catch (SQLException e) {
+            logError(e);
+        }
+        return Optional.empty();
+    }
+    public Optional<Usuario> readCLT(int id){
+        try{var conn = new OracleDatabaseConfiguration().getConnection();
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME_U + " WHERE COD_USUARIO = ?");
+            stmt.setInt(1, id);
+            var resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                if (resultSet.getInt(TB_COLUMNS.get("COD_PERFIL"))==2){
+                    var empresa = new ArrayList<Empresa>();
+                    var cargo = new ArrayList<String>();
+                    var stmt2 = conn.prepareStatement("SELECT * FROM %s WHERE COD_CLIENTE = %s".formatted(TB_NAME_C, resultSet.getString(TB_COLUMNS.get("COD_CLIENTE"))));
+                    var resultSet2 = stmt2.executeQuery();
+                    while (resultSet2.next()) {
+                        empresa.add(new Empresa(
+                                resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")),
+                                resultSet2.getString(TB_COLUMNS.get("NOME_EMPRESA")),
+                                resultSet2.getLong(TB_COLUMNS.get("CNPJ")),
+                                resultSet2.getString(TB_COLUMNS.get("SEGMENTO")),
+                                resultSet2.getString(TB_COLUMNS.get("TAMANHO_EMPRESA")),
+                                resultSet2.getString(TB_COLUMNS.get("PAIS"))
+                        ));
+                    }
+
+                    var stmt3 = conn.prepareStatement("SELECT NOME_CARGO FROM " + TB_NAME_CA + " WHERE COD_CARGO IN " +
+                            "(SELECT c.COD_CARGO FROM " + TB_NAME_CA + " c INNER JOIN " + TB_NAME_U +
+                            " u ON c.COD_CARGO = u.COD_CARGO WHERE u.COD_USUARIO = %s)"
+                                    .formatted(resultSet.getString(TB_COLUMNS.get("COD_USUARIO"))));
+                    var resultSet3 = stmt3.executeQuery();
+                    while (resultSet3.next()){
+                        cargo.add(resultSet3.getString(1));
+                    }
+
+                    var cliente = new Cliente(
+                            resultSet.getInt(TB_COLUMNS.get("COD_USUARIO")),
+                            resultSet.getString(TB_COLUMNS.get("NOME_USUARIO")),
+                            resultSet.getString(TB_COLUMNS.get("SENHA")),
+                            resultSet.getString(TB_COLUMNS.get("NOME_COMPLETO")),
+                            resultSet.getString(TB_COLUMNS.get("EMAIL")),
+                            resultSet.getLong(TB_COLUMNS.get("CPF")),
+                            resultSet.getString(TB_COLUMNS.get("TELEFONE")),
+                            cargo.get(0),
+                            resultSet.getString(TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")),
+                            empresa.get(0)
+                    );
+                    logInfo("Lendo cliente: " + cliente);
+                    return Optional.of(cliente);
+                }
+            }
+            conn.close();
+        }
+        catch (SQLException e) {
+            logError(e);
+        }
+        return Optional.empty();
+    }
 
     public void update(int id, Usuario usuario) {
         var idEmpresa = new ArrayList<Integer>();
@@ -470,7 +516,6 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     var resultSet = stmt.executeQuery();
                     while (resultSet.next()) {
                         idEmpresa.add(resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")));
-//                        int idEmpresa = resultSet.getInt("COD_CLIENTE");
                     }
                 }catch (SQLException e) {
                     logError(e);
@@ -562,5 +607,53 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         }
 
     }
+
+    //    public void initialize() {
+//        try {
+//            var conn =  new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement(
+//                    ("CREATE TABLE %s (" +
+//                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
+//                            "%s VARCHAR2(20) NOT NULL, " +
+//                            "%s VARCHAR2(20) NOT NULL, " +
+//                            "%s VARCHAR2(3) NOT NULL, " +
+//                            "%s VARCHAR2(50), " +
+//                            "%s VARCHAR2(60), " +
+//                            "%s VARCHAR2(40), " +
+//                            "%s NUMBER(11), " +
+//                            "%s NUMBER(11), " +
+//                            "%s VARCHAR2(70), " +
+//                            "%s NUMBER(14), " +
+//                            "%s VARCHAR2(50), " +
+//                            "%s VARCHAR2(70), " +
+//                            "%s VARCHAR2(10), " +
+//                            "%s VARCHAR2(40), " +
+//                            "%s VARCHAR2(60), " +
+//                            "%s VARCHAR2(200))")
+//                            .formatted(TB_NAME,
+//                                    TB_COLUMNS.get("ID"),
+//                                    TB_COLUMNS.get("NOME_USUARIO"),
+//                                    TB_COLUMNS.get("SENHA"),
+//                                    TB_COLUMNS.get("TIPO"),
+//                                    TB_COLUMNS.get("NOME_ADM"),
+//                                    TB_COLUMNS.get("EMAIL"),
+//                                    TB_COLUMNS.get("NOME_COMPLETO"),
+//                                    TB_COLUMNS.get("CPF"),
+//                                    TB_COLUMNS.get("TELEFONE"),
+//                                    TB_COLUMNS.get("EMPRESA"),
+//                                    TB_COLUMNS.get("CNPJ"),
+//                                    TB_COLUMNS.get("CARGO"),
+//                                    TB_COLUMNS.get("SEGMENTO"),
+//                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
+//                                    TB_COLUMNS.get("PAIS"),
+//                                    TB_COLUMNS.get("EMAIL_CORPORATIVO"),
+//                                    TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
+//            stmt.executeUpdate();
+//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
+//            conn.close();
+//        } catch (SQLException e) {
+//            logError(e);
+//        }
+//    }
 
 }

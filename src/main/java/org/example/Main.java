@@ -1,8 +1,10 @@
 package org.example;
 
+import org.example.entities.ServicoModel.Plano;
 import org.example.entities.UsuarioModel.Administrador;
 import org.example.entities.UsuarioModel.Cliente;
 import org.example.entities.UsuarioModel.Empresa;
+import org.example.repositories.PlanosRepository;
 import org.example.repositories.Starter;
 import org.example.repositories.UsuariosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -81,8 +83,15 @@ public class Main {
         administradores.readAllADM();
         System.out.println("------------***-----------");
         clientes.readAll();
+        System.out.println("------------***-----------");
 
-
+        var repopl = new PlanosRepository();
+        var planoSucesso = new Plano("Standard", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico", "SucessPlan");
+        repopl.create(planoSucesso);
+        var planoSucesso1 = new Plano("Premier", "Obtenha ajuda especializada adicional, orientação de adoção, treinamento e suporte ao vivo.", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico, Suporte ao desenvolvedor e por telefone ininterrupto, Treinamento especializado, Descontos do Trailhead Academy", "SucessPlan");
+        repopl.create(planoSucesso1);
+        var planoSucesso2 = new Plano("Signature", "Adicione gerenciamento proativo de conta e de incidentes, prontidão para eventos e muito mais.", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico, Suporte ao desenvolvedor e por telefone ininterrupto, Treinamento especializado, Descontos do Trailhead Academy, Serviços proativos, Gerente de Conta", "SucessPlan");
+        repopl.create(planoSucesso2);
 
 //        administradores.readAll();
 //        administradores.readAll();

@@ -11,32 +11,37 @@ public class Plano extends _BaseEntity {
     private String descricaoPlano;
     private String recursosPlano;
     private float precoPlano;
+    private String tipo;
 
 
     public Plano() {}
 
-    public Plano(String nomePlano, String descricaoPlano) {
+    public Plano(String nomePlano, String descricaoPlano, String tipo) {
         this.nomePlano = nomePlano;
         this.descricaoPlano = descricaoPlano;
+        this.tipo = tipo;
     }
 
-    public Plano(String nomePlano, String descricaoPlano, String recursosPlano) {
+    public Plano(String nomePlano, String descricaoPlano, String recursosPlano, String tipo) {
         this.nomePlano = nomePlano;
         this.descricaoPlano = descricaoPlano;
         this.recursosPlano = recursosPlano;
+        this.tipo = tipo;
     }
 
-    public Plano(String nomePlano, String descricaoPlano, float precoPlano) {
+    public Plano(String nomePlano, String descricaoPlano, float precoPlano, String tipo) {
         this.nomePlano = nomePlano;
         this.descricaoPlano = descricaoPlano;
         this.precoPlano = precoPlano;
+        this.tipo = tipo;
     }
 
-    public Plano(String nomePlano, String descricaoPlano, String recursosPlano, float precoPlano) {
+    public Plano(String nomePlano, String descricaoPlano, String recursosPlano, float precoPlano, String tipo) {
         this.nomePlano = nomePlano;
         this.descricaoPlano = descricaoPlano;
         this.recursosPlano = recursosPlano;
         this.precoPlano = precoPlano;
+        this.tipo = tipo;
     }
 
     public String getNomePlano() {
@@ -72,6 +77,14 @@ public class Plano extends _BaseEntity {
         this.precoPlano = precoPlano;
     }
 
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
     @Override
     public String toString() {
         return  nomePlano + "(" + super.getId() +")" +
@@ -90,9 +103,14 @@ public class Plano extends _BaseEntity {
         if (descricaoPlano == null || descricaoPlano.isBlank())
             errors.add("Descrição do plano não pode ser vazia");
 
+        if (recursosPlano == null || recursosPlano.isBlank())
+            errors.add("Os recursos do plano não podem estar em branco");
+
         if (precoPlano < 0)
             errors.add("Preço do plano não pode ser menor que zero");
 
+        if (tipo == null || tipo.isBlank())
+            errors.add("O tipo do plano não pode ser vazio");
         return !errors.isEmpty() ?
                 Map.of(false, errors) :
                 Map.of(true, errors);

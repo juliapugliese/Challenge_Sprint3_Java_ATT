@@ -5,6 +5,7 @@ import org.example.entities._BaseEntity;
 import org.example.infrastructure.OracleDatabaseConfiguration;
 
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -119,11 +120,20 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
     }
     public void create(Plano plano){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, RECURSOS, PRECO) VALUES (?,?,?,?)");
+            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, RECURSOS, PRECO, COD_PRODUTO, COD_TIPO_PLANO) VALUES (?,?,?,?,?,?)");
             stmt.setString(1, plano.getNomePlano());
             stmt.setString(2, plano.getDescricaoPlano());
             stmt.setString(3, plano.getRecursosPlano());
             stmt.setFloat(4, plano.getPrecoPlano());
+
+            if(plano.getTipo().equalsIgnoreCase("SucessPlan")){
+                stmt.setNull(5, Types.NULL);
+                stmt.setInt(6, 2);
+            }
+            else {
+                stmt.setNull(5, Types.NULL);
+                stmt.setInt(6, 1);
+            }
             stmt.executeUpdate();
 
             logInfo("Plano adicionado com sucesso");

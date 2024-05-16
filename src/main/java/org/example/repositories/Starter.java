@@ -162,8 +162,8 @@ public class Starter implements _Logger<String>{
                 var stmt = conn.prepareStatement(
                         ("CREATE TABLE " + PlanosRepository.TB_NAME + " (COD_PLANO NUMBER GENERATED AS IDENTITY CONSTRAINT PLANOS_JAVA_PK PRIMARY KEY, " +
                                 "NOME VARCHAR2(60) NOT NULL, " +
-                                "DESCRICAO VARCHAR2(150) NOT NULL, " +
-                                "RECURSOS VARCHAR2(150), " +
+                                "DESCRICAO VARCHAR2(300) NOT NULL, " +
+                                "RECURSOS VARCHAR2(450), " +
                                 "PRECO DECIMAL(9,2), " +
                                 "COD_PRODUTO NUMBER, " +
                                 "COD_TIPO_PLANO NUMBER)" ));

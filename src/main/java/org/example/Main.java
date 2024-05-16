@@ -1,10 +1,12 @@
 package org.example;
 
 import org.example.entities.ServicoModel.Plano;
+import org.example.entities.ServicoModel.Produto;
 import org.example.entities.UsuarioModel.Administrador;
 import org.example.entities.UsuarioModel.Cliente;
 import org.example.entities.UsuarioModel.Empresa;
 import org.example.repositories.PlanosRepository;
+import org.example.repositories.ProdutosRepository;
 import org.example.repositories.Starter;
 import org.example.repositories.UsuariosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
@@ -13,6 +15,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class.
@@ -85,6 +89,8 @@ public class Main {
         clientes.readAll();
         System.out.println("------------***-----------");
 
+
+
         var repopl = new PlanosRepository();
         var planoSucesso = new Plano("Standard", "Explore recursos autoguiados, como aprendizado online, demonstrações e conselhos da comunidade. Incluído em todas as licenças", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico", "SucessPlan");
         repopl.create(planoSucesso);
@@ -92,6 +98,23 @@ public class Main {
         repopl.create(planoSucesso1);
         var planoSucesso2 = new Plano("Signature", "Adicione gerenciamento proativo de conta e de incidentes, prontidão para eventos e muito mais.", "Trailhead, Portal de Ajuda, Comunidade de Trailblazers, Success Center, Suporte Técnico, Suporte ao desenvolvedor e por telefone ininterrupto, Treinamento especializado, Descontos do Trailhead Academy, Serviços proativos, Gerente de Conta", "SucessPlan");
         repopl.create(planoSucesso2);
+
+        var prodrepo = new ProdutosRepository();
+
+
+        var produto = new Produto("Sales Cloudy",  "Venda mais rápido e com mais inteligência com qualquer uma das nossas edições de CRM totalmente personalizáveis.", new ArrayList<>(List.of(
+                new Plano("Starter", "Ferramentas de vendas e atendimento ao cliente em um app", 25, "Plano de pagamento"),
+                new Plano("Sales Professional", "Solução de vendas completa para equipes de qualquer tamanho",  80, "Plano de pagamento"),
+                new Plano("Enterprise", "CRM de vendas altamente personalizável para o seu negócio",  165, "Plano de pagamento"),
+                new Plano("Unlimited", "A plataforma definitiva para seu crescimento",  330, "Plano de pagamento")
+        )));
+        prodrepo.create(produto);
+
+
+        var produto1 = new Produto("MuleSoft Automation",  "Combine o poder do MuleSoft RPA, MuleSoft Composer e Anypoint Platform para ajudar as equipes a automatizar.", new ArrayList<>(List.of(
+                new Plano("MuleSoft Automation", "Capacite suas equipes para fazer mais, com menos.", 4750, "Plano de pagamento")
+        )));
+        prodrepo.create(produto1);
 
 //        administradores.readAll();
 //        administradores.readAll();
@@ -128,8 +151,6 @@ public class Main {
 //                new Plano("MuleSoft Automation", "Capacite suas equipes para fazer mais, com menos.",  4750)
 //        )));
 ////
-//        var prodrepo = new ProdutosRepository();
-//        prodrepo.create(produto);
 //        prodrepo.delete(2);
 //        prodrepo.readAll();
 //        prodrepo.update(2, produto1);

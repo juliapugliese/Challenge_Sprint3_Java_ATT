@@ -40,38 +40,49 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
 
     public void create(Produto produto){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, PLANO_PAGAMENTO, SUCESS_PLANS) VALUES (?,?,?,?)");
+            var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO) VALUES (?,?)");
             stmt.setString(1, produto.getNomeProduto());
             stmt.setString(2, produto.getDescricaoProduto());
-
-            if (produto.getPlanoPagamento()==null){
-                stmt.setNull(3, Types.CLOB);
-            }
-            //Planos de pagamento nao devem conter o mesmo nome
-            else {
-                produto.getPlanoPagamento().forEach(new PlanosRepository()::create);
-                ArrayList<Plano> planosRepositoryAtt = new ArrayList<>();
-                produto.getPlanoPagamento().forEach(pln -> {
-                    Optional<Plano> planoOptional = new PlanosRepository().getByName(pln);
-                    if (planoOptional.isPresent()) {
-                        Plano plano = planoOptional.get();
-                        planosRepositoryAtt.add(plano);
-                    }
-                });
-                stmt.setString(3, gson.toJson(planosRepositoryAtt));
-
-            }
-
-            if (produto.getSucessPlans()==null){
-                stmt.setNull(4, Types.CLOB);
-            }
-            else {
-                new PlanosRepository().create(produto.getSucessPlans());
-                stmt.setString(4, gson.toJson(produto.getSucessPlans()));
-            }
-
             stmt.executeUpdate();
             logInfo("Produto adicionado com sucesso");
+
+            var idProduto = new ArrayList<Integer>();
+
+            try (var stmtGetId = conn.prepareStatement(
+                    "SELECT * FROM %s WHERE %s = '%s'"
+                            .formatted(TB_NAME, "NOME", produto.getNomeProduto()))){
+                var resultSet = stmtGetId.executeQuery();
+                while (resultSet.next()) {
+                    idProduto.add(resultSet.getInt("COD_PRODUTO"));
+                }
+                System.out.println(idProduto);
+            }catch (SQLException e) {
+                logError(e);
+            }
+
+            produto.getPlanoPagamento().forEach(pln ->{
+                try (var stmtPlano =  conn.prepareStatement("INSERT INTO " + PlanosRepository.TB_NAME +
+                        " (NOME, DESCRICAO, RECURSOS, PRECO, COD_PRODUTO, COD_TIPO_PLANO) " +
+                        "VALUES (?,?,?,?,?,?)")){
+                    stmtPlano.setString(1, pln.getNomePlano());
+                    stmtPlano.setString(2, pln.getDescricaoPlano());
+                    stmtPlano.setString(3, pln.getRecursosPlano());
+                    stmtPlano.setFloat(4, pln.getPrecoPlano());
+                    stmtPlano.setInt(5, idProduto.get(0));
+                    stmtPlano.setInt(6, 1);
+
+                    stmtPlano.executeUpdate();
+                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_C +" com sucesso!");
+
+                } catch (SQLException e) {
+                    logError(e);
+                }}
+            );
+
+            if (produto.getSucessPlans()!=null){
+                new PlanosRepository().create(produto.getSucessPlans());
+            }
+
             conn.close();
         }
         catch (SQLException e) {

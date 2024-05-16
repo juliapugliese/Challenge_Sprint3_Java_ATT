@@ -1,13 +1,10 @@
 package org.example.repositories;
 
 import org.example.entities.ServicoModel.Plano;
-import org.example.entities._BaseEntity;
 import org.example.infrastructure.OracleDatabaseConfiguration;
 
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,76 +45,6 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
         }
     }
 
-
-    public List<Plano> readAll(){
-        var planos = new ArrayList<Plano>();
-        try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
-            var rs = stmt.executeQuery();
-            while(rs.next()){
-                planos.add(new Plano(
-                        rs.getString("NOME"),
-                        rs.getString("DESCRICAO"),
-                        rs.getString("RECURSOS"),
-                        rs.getFloat("PRECO")));
-            }
-
-            conn.close();
-        }
-
-        catch (SQLException e) {
-            logError(e);
-        }
-        planos.sort(Comparator.comparingInt(_BaseEntity::getId));
-        logInfo("Lendo planos: " + planos);
-        return planos;
-    }
-
-    public Optional<Plano> read(int id){
-        try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
-
-            stmt.setInt(1, id);
-            var rs = stmt.executeQuery();
-            if(rs.next()){
-                var plano = new Plano(
-                        rs.getString("NOME"),
-                        rs.getString("DESCRICAO"),
-                        rs.getString("RECURSOS"),
-                        rs.getFloat("PRECO"));
-                logInfo("Lendo plano: " + plano);
-                return Optional.of(plano);
-            }
-            conn.close();
-        }
-        catch (SQLException e) {
-            logError(e);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<Plano> getByName(Plano plano){
-        try {var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE NOME = ?");
-
-            stmt.setString(1, plano.getNomePlano());
-            var rs = stmt.executeQuery();
-            if(rs.next()){
-                var optional = Optional.of(new Plano(
-                        rs.getString("NOME"),
-                        rs.getString("DESCRICAO"),
-                        rs.getString("RECURSOS"),
-                        rs.getFloat("PRECO")));
-                logInfo("Lendo plano: " + optional.get());
-                return optional;
-            }
-            conn.close();
-        }
-        catch (SQLException e) {
-            logError(e);
-        }
-        return Optional.empty();
-    }
     public void create(Plano plano){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("INSERT INTO " + TB_NAME + " (NOME, DESCRICAO, RECURSOS, PRECO, COD_PRODUTO, COD_TIPO_PLANO) VALUES (?,?,?,?,?,?)");
@@ -130,10 +57,6 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
                 stmt.setNull(5, Types.NULL);
                 stmt.setInt(6, 2);
             }
-            else {
-                stmt.setNull(5, Types.NULL);
-                stmt.setInt(6, 1);
-            }
             stmt.executeUpdate();
 
             logInfo("Plano adicionado com sucesso");
@@ -143,6 +66,86 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
             logError(e);
         }
     }
+
+    @Override
+    public List<Plano> readAll() {
+        return null;
+    }
+
+    @Override
+    public Optional<Plano> read(int id) {
+        return Optional.empty();
+    }
+
+//    public List<Plano> readAll(){
+//        var planos = new ArrayList<Plano>();
+//        try{var conn = new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
+//            var rs = stmt.executeQuery();
+//            while(rs.next()){
+//                planos.add(new Plano(
+//                        rs.getString("NOME"),
+//                        rs.getString("DESCRICAO"),
+//                        rs.getString("RECURSOS"),
+//                        rs.getFloat("PRECO")));
+//            }
+//
+//            conn.close();
+//        }
+//
+//        catch (SQLException e) {
+//            logError(e);
+//        }
+//        planos.sort(Comparator.comparingInt(_BaseEntity::getId));
+//        logInfo("Lendo planos: " + planos);
+//        return planos;
+//    }
+//
+//    public Optional<Plano> read(int id){
+//        try{var conn = new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
+//
+//            stmt.setInt(1, id);
+//            var rs = stmt.executeQuery();
+//            if(rs.next()){
+//                var plano = new Plano(
+//                        rs.getString("NOME"),
+//                        rs.getString("DESCRICAO"),
+//                        rs.getString("RECURSOS"),
+//                        rs.getFloat("PRECO"));
+//                logInfo("Lendo plano: " + plano);
+//                return Optional.of(plano);
+//            }
+//            conn.close();
+//        }
+//        catch (SQLException e) {
+//            logError(e);
+//        }
+//        return Optional.empty();
+//    }
+//
+//    public Optional<Plano> getByName(Plano plano){
+//        try {var conn = new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE NOME = ?");
+//
+//            stmt.setString(1, plano.getNomePlano());
+//            var rs = stmt.executeQuery();
+//            if(rs.next()){
+//                var optional = Optional.of(new Plano(
+//                        rs.getString("NOME"),
+//                        rs.getString("DESCRICAO"),
+//                        rs.getString("RECURSOS"),
+//                        rs.getFloat("PRECO")));
+//                logInfo("Lendo plano: " + optional.get());
+//                return optional;
+//            }
+//            conn.close();
+//        }
+//        catch (SQLException e) {
+//            logError(e);
+//        }
+//        return Optional.empty();
+//    }
 
     public void update(int id, Plano plano){
         try{var conn = new OracleDatabaseConfiguration().getConnection();

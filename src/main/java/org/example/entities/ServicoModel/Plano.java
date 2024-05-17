@@ -44,6 +44,40 @@ public class Plano extends _BaseEntity {
         this.tipo = tipo;
     }
 
+
+
+    public Plano(int id, String nomePlano, String descricaoPlano, String tipo) {
+        super(id);
+        this.nomePlano = nomePlano;
+        this.descricaoPlano = descricaoPlano;
+        this.tipo = tipo;
+    }
+
+    public Plano(int id, String nomePlano, String descricaoPlano, String recursosPlano, String tipo) {
+        super(id);
+        this.nomePlano = nomePlano;
+        this.descricaoPlano = descricaoPlano;
+        this.recursosPlano = recursosPlano;
+        this.tipo = tipo;
+    }
+
+    public Plano(int id, String nomePlano, String descricaoPlano, float precoPlano, String tipo) {
+        super(id);
+        this.nomePlano = nomePlano;
+        this.descricaoPlano = descricaoPlano;
+        this.precoPlano = precoPlano;
+        this.tipo = tipo;
+    }
+
+    public Plano(int id, String nomePlano, String descricaoPlano, String recursosPlano, float precoPlano, String tipo) {
+        super(id);
+        this.nomePlano = nomePlano;
+        this.descricaoPlano = descricaoPlano;
+        this.recursosPlano = recursosPlano;
+        this.precoPlano = precoPlano;
+        this.tipo = tipo;
+    }
+
     public String getNomePlano() {
         return nomePlano;
     }

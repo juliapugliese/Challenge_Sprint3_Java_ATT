@@ -2,13 +2,9 @@ package org.example;
 
 import org.example.entities.ServicoModel.Plano;
 import org.example.entities.ServicoModel.Produto;
-import org.example.entities.UsuarioModel.Administrador;
-import org.example.entities.UsuarioModel.Cliente;
-import org.example.entities.UsuarioModel.Empresa;
 import org.example.repositories.PlanosRepository;
 import org.example.repositories.ProdutosRepository;
 import org.example.repositories.Starter;
-import org.example.repositories.UsuariosRepository;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -48,23 +44,25 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         new Starter().initialize();
-        var administradores = new UsuariosRepository();
-        var clientes = new UsuariosRepository();
-        //TESTE
-        var empresa = new Empresa("fiap", 14563201478965L, "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil");
-        var cli = new Cliente("Giuliana", "giuliana789", "Giuliana R. Silva", "rm553536@fiap.com.br",  14451445751L, "11456699887", "Aluno", empresa);
-        clientes.create(cli);
 
-        var empresa1 = new Empresa("sabesp", 1454256481475L, "Administrativo", "Grande", "Brasil");
-        var cli1 = new Cliente("Henrique", "henrique123",  "Henriqua J. Diaz","rm554585@fiap.com.br", 14451445751L, "11456699887", "Estagiario", empresa1);
-        clientes.create(cli1);
 
-        var empresa2 = new Empresa("danone", 1454242581475L, "Alimenticio", "Grande", "Brasil");
-        var cli2 = new Cliente("Fabiana", "bibi02",  "Fabiana Montero de Melo","rm545585@fiap.com.br", 11585457451L, "11893699887", "Estagiario", empresa2);
-        clientes.create(cli2);
-
-        var adm2 = new Administrador("553427", "fiap2",  "Julia Ribeiro","rm553427@fiap.com.br");
-        administradores.create(adm2);
+//        var administradores = new UsuariosRepository();
+//        var clientes = new UsuariosRepository();
+//        //TESTE
+//        var empresa = new Empresa("fiap", 14563201478965L, "Analise e Desenvolvimento de Sistemas", "Medio", "Brasil");
+//        var cli = new Cliente("Giuliana", "giuliana789", "Giuliana R. Silva", "rm553536@fiap.com.br",  14451445751L, "11456699887", "Aluno", empresa);
+//        clientes.create(cli);
+//
+//        var empresa1 = new Empresa("sabesp", 1454256481475L, "Administrativo", "Grande", "Brasil");
+//        var cli1 = new Cliente("Henrique", "henrique123",  "Henriqua J. Diaz","rm554585@fiap.com.br", 14451445751L, "11456699887", "Estagiario", empresa1);
+//        clientes.create(cli1);
+//
+//        var empresa2 = new Empresa("danone", 1454242581475L, "Alimenticio", "Grande", "Brasil");
+//        var cli2 = new Cliente("Fabiana", "bibi02",  "Fabiana Montero de Melo","rm545585@fiap.com.br", 11585457451L, "11893699887", "Estagiario", empresa2);
+//        clientes.create(cli2);
+//
+//        var adm2 = new Administrador("553427", "fiap2",  "Julia Ribeiro","rm553427@fiap.com.br");
+//        administradores.create(adm2);
 
 
 
@@ -81,12 +79,12 @@ public class Main {
 //        clientes.delete(1);
 
 
-        System.out.println("-----------------------");
-        clientes.readAllCLT();
-        System.out.println("-----------------------");
-        administradores.readAllADM();
-        System.out.println("------------***-----------");
-        clientes.readAll();
+//        System.out.println("-----------------------");
+//        clientes.readAllCLT();
+//        System.out.println("-----------------------");
+//        administradores.readAllADM();
+//        System.out.println("------------***-----------");
+//        clientes.readAll();
         System.out.println("------------***-----------");
 
 

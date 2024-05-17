@@ -30,6 +30,23 @@ public class Produto extends _BaseEntity {
 
 
 
+    public Produto(int id, String nomeProduto, String descricaoProduto, List<Plano> planoPagamento) {
+        super(id);
+        this.nomeProduto = nomeProduto;
+        this.descricaoProduto = descricaoProduto;
+        this.planoPagamento = planoPagamento;
+    }
+
+    public Produto(int id, String nomeProduto, String descricaoProduto, List<Plano> planoPagamento, Plano sucessPlans) {
+        super(id);
+        this.nomeProduto = nomeProduto;
+        this.descricaoProduto = descricaoProduto;
+        this.planoPagamento = planoPagamento;
+        this.sucessPlans = sucessPlans;
+    }
+
+
+
     public String getNomeProduto() {
         return nomeProduto;
     }

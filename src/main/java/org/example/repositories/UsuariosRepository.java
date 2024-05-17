@@ -35,6 +35,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
             while (resultSet.next()) {
                 idEmpresa.add(resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")));
             }
+            conn.close();
         }catch (SQLException e) {
             logError(e);
         }
@@ -52,6 +53,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     throw new SQLException("Falha ao obter o COD_CARGO.");
                 }
             }
+            conn.close();
         }catch (SQLException e) {
                 logError(e);
              }
@@ -229,7 +231,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     var resultSet2 = stmt2.executeQuery();
                     while (resultSet2.next()) {
                         empresa.add(new Empresa(
-                                resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")),
+                                resultSet2.getInt(TB_COLUMNS.get("COD_CLIENTE")),
                                 resultSet2.getString(TB_COLUMNS.get("NOME_EMPRESA")),
                                 resultSet2.getLong(TB_COLUMNS.get("CNPJ")),
                                 resultSet2.getString(TB_COLUMNS.get("SEGMENTO")),

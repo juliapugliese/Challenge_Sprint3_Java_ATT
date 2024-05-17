@@ -48,6 +48,7 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
                     idProduto.add(resultSet.getInt("COD_PRODUTO"));
                 }
             }
+            conn.close();
         }catch (SQLException e) {
             logError(e);
         }
@@ -74,7 +75,7 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
                     stmtPlano.setInt(6, 1);
 
                     stmtPlano.executeUpdate();
-                    logInfo("Dados inseridos na tabela "+ UsuariosRepository.TB_NAME_C +" com sucesso!");
+                    logInfo("Dados inseridos na tabela "+ PlanosRepository.TB_NAME +" com sucesso!");
 
                 } catch (SQLException e) {
                     logError(e);
@@ -110,20 +111,55 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
         var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY COD_PRODUTO");
         var rs = stmt.executeQuery();
         while(rs.next()){
+            var planosPagamento = new ArrayList<Plano>();
+            var planosSucesso = new ArrayList<Plano>();
+
+            var stmtPlano = conn.prepareStatement("SELECT * FROM %s WHERE COD_PRODUTO = %s".formatted(PlanosRepository.TB_NAME, rs.getString("COD_PRODUTO")));
+            var resultSetPlano = stmtPlano.executeQuery();
+
+            while (resultSetPlano.next()) {
+
+                var stmtTipoPlano = conn.prepareStatement("SELECT TIPO FROM " + PlanosRepository.TB_NAME_T + " WHERE COD_TIPO_PLANO IN " +
+                        "(SELECT COD_TIPO_PLANO FROM " + PlanosRepository.TB_NAME + " WHERE COD_PLANO = %s)"
+                        .formatted(resultSetPlano.getString("COD_PLANO")));
+                var resultSetTipoPlano = stmtTipoPlano.executeQuery();
+                while (resultSetTipoPlano.next()){
+                    if(resultSetTipoPlano.getString(1).equalsIgnoreCase("PLANO DE PAGAMENTO")){
+                        planosPagamento.add(new Plano(
+                                resultSetPlano.getInt("COD_PLANO"),
+                                resultSetPlano.getString("NOME"),
+                                resultSetPlano.getString("DESCRICAO"),
+                                resultSetPlano.getString("RECURSOS"),
+                                resultSetPlano.getFloat("PRECO"),
+                                resultSetTipoPlano.getString(1)
+                        ));
+                    }
+                    else if (resultSetTipoPlano.getString(1).equalsIgnoreCase("PLANO DE SUCESSO")){
+                        planosSucesso.add(new Plano(
+                                resultSetPlano.getString("NOME"),
+                                resultSetPlano.getString("DESCRICAO"),
+                                resultSetPlano.getString("RECURSOS"),
+                                resultSetPlano.getFloat("PRECO"),
+                                resultSetTipoPlano.getString(1)
+                        ));
+                    }
+                }
+
+
+            }
+
             Produto produto = new Produto();
             produto.setId(rs.getInt("COD_PRODUTO"));
             produto.setNomeProduto(rs.getString("NOME"));
             produto.setDescricaoProduto(rs.getString("DESCRICAO"));
-
-            String jsonPlanoPagamento = rs.getString("PLANO_PAGAMENTO");
-            if (jsonPlanoPagamento != null) {
-                produto.setPlanoPagamento(gson.fromJson(jsonPlanoPagamento, new TypeToken<ArrayList<Plano>>(){}.getType()));
+            if (planosPagamento.isEmpty()){
+                produto.setPlanoPagamento(null);
             }
-
-            String jsonSuccessPlans = rs.getString("SUCESS_PLANS");
-            if (jsonSuccessPlans != null) {
-                produto.setSucessPlans(gson.fromJson(jsonSuccessPlans, Plano.class));
+            else {produto.setPlanoPagamento(planosPagamento);}
+            if (planosSucesso.isEmpty()){
+                produto.setSucessPlans(null);
             }
+            else {produto.setSucessPlans(planosSucesso.get(0));}
 
             produtos.add(produto);
         }
@@ -132,6 +168,7 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
     catch (SQLException e) {
 //        System.err.println("Erro ao ler produtos: " + e.getMessage());
         logError(e);
+
     }
     produtos.sort(Comparator.comparingInt(_BaseEntity::getId));
     logInfo("Lendo produtos: " + produtos);

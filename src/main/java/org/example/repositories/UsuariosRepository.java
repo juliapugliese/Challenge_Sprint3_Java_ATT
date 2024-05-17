@@ -25,10 +25,40 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
     public UsuariosRepository() {
     }
 
-    public void create(Usuario usuario) {
+    public List<Integer> getIdEmpresa(Usuario usuario){
         var idEmpresa = new ArrayList<Integer>();
-        var idCargo = new ArrayList<Integer>();
+        try (var conn = new OracleDatabaseConfiguration().getConnection();
+              var stmt = conn.prepareStatement(
+                "SELECT * FROM %s WHERE %s = %s"
+                        .formatted(UsuariosRepository.TB_NAME_C, TB_COLUMNS.get("CNPJ"), ((Cliente) usuario).getEmpresa().getCnpj()))){
+            var resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                idEmpresa.add(resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")));
+            }
+        }catch (SQLException e) {
+            logError(e);
+        }
 
+        return idEmpresa;
+    }
+    public List<Integer> getIdCargo(Usuario usuario){
+        var idCargo = new ArrayList<Integer>();
+        try (var conn = new OracleDatabaseConfiguration().getConnection()){
+             var stmtRetrieve = conn.prepareStatement("SELECT COD_CARGO FROM "+ TB_NAME_CA+" WHERE NOME_CARGO = '%s'".formatted(((Cliente) usuario).getCargo()));
+            try (var rs = stmtRetrieve.executeQuery()) {
+                if (rs.next()) {
+                    idCargo.add(rs.getInt(1));
+                } else {
+                    throw new SQLException("Falha ao obter o COD_CARGO.");
+                }
+            }
+        }catch (SQLException e) {
+                logError(e);
+             }
+        return idCargo;
+    }
+
+    public void create(Usuario usuario) {
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
 
             if (usuario instanceof Cliente){
@@ -53,18 +83,6 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     logError(e);
                 }
 
-
-                try (var stmt = conn.prepareStatement(
-                        "SELECT * FROM %s WHERE %s = %s"
-                                .formatted(UsuariosRepository.TB_NAME_C, TB_COLUMNS.get("CNPJ"), ((Cliente) usuario).getEmpresa().getCnpj()))){
-                    var resultSet = stmt.executeQuery();
-                    while (resultSet.next()) {
-                        idEmpresa.add(resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")));
-                    }
-                }catch (SQLException e) {
-                    logError(e);
-                }
-
                 try (var stmtVericador = conn.prepareStatement(
                         "SELECT COUNT(*) FROM %s WHERE %s = '%s'".formatted(UsuariosRepository.TB_NAME_CA, TB_COLUMNS.get("NOME_CARGO"), ((Cliente) usuario).getCargo())
                 )){
@@ -81,18 +99,6 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                             } catch (SQLException e) {
                                 logError(e);
                             }
-                        }
-                    }
-
-
-                }
-
-                try (var stmtRetrieve = conn.prepareStatement("SELECT COD_CARGO FROM "+ TB_NAME_CA+" WHERE NOME_CARGO = '%s'".formatted(((Cliente) usuario).getCargo()))) {
-                    try (var rs = stmtRetrieve.executeQuery()) {
-                        if (rs.next()) {
-                            idCargo.add(rs.getInt(1));
-                        } else {
-                            throw new SQLException("Falha ao obter o COD_CARGO.");
                         }
                     }
                 }
@@ -131,10 +137,10 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                 } else if (usuario instanceof Cliente) {
                     stmt.setLong(5, ((Cliente)usuario).getCpf());
                     stmt.setString(6, ((Cliente)usuario).getTelefone());
-                    stmt.setInt(7, idCargo.get(0));
+                    stmt.setInt(7, getIdCargo(usuario).get(0));
                     stmt.setString(8, ((Cliente) usuario).getPerguntasOuComentarios());
                     stmt.setInt(9, 2);
-                    stmt.setInt(10, idEmpresa.get(0));
+                    stmt.setInt(10, getIdEmpresa(usuario).get(0));
                     logInfo("Cliente adicionado com sucesso");
                 }
                 stmt.executeUpdate();
@@ -481,10 +487,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
     }
 
     public void update(int id, Usuario usuario) {
-        var idEmpresa = new ArrayList<Integer>();
-        var idCargo = new ArrayList<Integer>();
         try (var conn = new OracleDatabaseConfiguration().getConnection()) {
-
             if (usuario instanceof Cliente){
                 try (var stmt = conn.prepareStatement(
                         ("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ?, %s = ? WHERE COD_CLIENTE IN (SELECT c.COD_CLIENTE FROM "
@@ -509,17 +512,6 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                     logError(e);
                 }
 
-
-                try (var stmt = conn.prepareStatement(
-                        "SELECT * FROM %s WHERE %s = %s"
-                                .formatted(UsuariosRepository.TB_NAME_C, TB_COLUMNS.get("CNPJ"), ((Cliente) usuario).getEmpresa().getCnpj()))){
-                    var resultSet = stmt.executeQuery();
-                    while (resultSet.next()) {
-                        idEmpresa.add(resultSet.getInt(TB_COLUMNS.get("COD_CLIENTE")));
-                    }
-                }catch (SQLException e) {
-                    logError(e);
-                }
             }
 
             try (var stmt = conn.prepareStatement(
@@ -574,25 +566,14 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
                                 }
                             }
                         }
-
-
-                    }
-                    try (var stmtRetrieve = conn.prepareStatement("SELECT COD_CARGO FROM "+ TB_NAME_CA+" WHERE NOME_CARGO = '%s'".formatted(((Cliente) usuario).getCargo()))) {
-                        try (var rs = stmtRetrieve.executeQuery()) {
-                            if (rs.next()) {
-                                idCargo.add(rs.getInt(1));
-                            } else {
-                                throw new SQLException("Falha ao obter o COD_CARGO.");
-                            }
-                        }
                     }
 
                     stmt.setLong(5, ((Cliente)usuario).getCpf());
                     stmt.setString(6, ((Cliente)usuario).getTelefone());
-                    stmt.setInt(7, idCargo.get(0));
+                    stmt.setInt(7, getIdCargo(usuario).get(0));
                     stmt.setString(8, ((Cliente) usuario).getPerguntasOuComentarios());
                     stmt.setInt(9, 2);
-                    stmt.setInt(10, idEmpresa.get(0));
+                    stmt.setInt(10, getIdEmpresa(usuario).get(0));
                     logInfo("Cliente atualizado com sucesso");
                 }
                 stmt.executeUpdate();

@@ -37,6 +37,22 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
 //        }
 //    }
 
+    public List<Integer> getIdProduto(Produto produto){
+        var idProduto = new ArrayList<Integer>();
+        try {var conn = new OracleDatabaseConfiguration().getConnection();
+            var stmtGetId = conn.prepareStatement(
+                "SELECT * FROM %s WHERE %s = '%s'"
+                        .formatted(TB_NAME, "NOME", produto.getNomeProduto()));{
+                var resultSet = stmtGetId.executeQuery();
+                while (resultSet.next()) {
+                    idProduto.add(resultSet.getInt("COD_PRODUTO"));
+                }
+            }
+        }catch (SQLException e) {
+            logError(e);
+        }
+        return idProduto;
+    }
 
     public void create(Produto produto){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
@@ -46,20 +62,6 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
             stmt.executeUpdate();
             logInfo("Produto adicionado com sucesso");
 
-            var idProduto = new ArrayList<Integer>();
-
-            try (var stmtGetId = conn.prepareStatement(
-                    "SELECT * FROM %s WHERE %s = '%s'"
-                            .formatted(TB_NAME, "NOME", produto.getNomeProduto()))){
-                var resultSet = stmtGetId.executeQuery();
-                while (resultSet.next()) {
-                    idProduto.add(resultSet.getInt("COD_PRODUTO"));
-                }
-                System.out.println(idProduto);
-            }catch (SQLException e) {
-                logError(e);
-            }
-
             produto.getPlanoPagamento().forEach(pln ->{
                 try (var stmtPlano =  conn.prepareStatement("INSERT INTO " + PlanosRepository.TB_NAME +
                         " (NOME, DESCRICAO, RECURSOS, PRECO, COD_PRODUTO, COD_TIPO_PLANO) " +
@@ -68,7 +70,7 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
                     stmtPlano.setString(2, pln.getDescricaoPlano());
                     stmtPlano.setString(3, pln.getRecursosPlano());
                     stmtPlano.setFloat(4, pln.getPrecoPlano());
-                    stmtPlano.setInt(5, idProduto.get(0));
+                    stmtPlano.setInt(5, getIdProduto(produto).get(0));
                     stmtPlano.setInt(6, 1);
 
                     stmtPlano.executeUpdate();
@@ -105,11 +107,11 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
     public List<Produto> readAll(){
     var produtos = new ArrayList<Produto>();
     try{var conn = new OracleDatabaseConfiguration().getConnection();
-        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY ID");
+        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY COD_PRODUTO");
         var rs = stmt.executeQuery();
         while(rs.next()){
             Produto produto = new Produto();
-            produto.setId(rs.getInt("ID"));
+            produto.setId(rs.getInt("COD_PRODUTO"));
             produto.setNomeProduto(rs.getString("NOME"));
             produto.setDescricaoProduto(rs.getString("DESCRICAO"));
 

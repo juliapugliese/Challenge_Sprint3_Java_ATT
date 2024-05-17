@@ -20,23 +20,6 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
     public static final String TB_NAME = "PRODUTO_JAVA";
     public static final String TB_NAME_I = "ITEM_COMPRA_JAVA";
 
-//    public void initialize() {
-//        try {
-//            var conn =  new OracleDatabaseConfiguration().getConnection();
-//            var stmt = conn.prepareStatement(
-//                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
-//                            "NOME VARCHAR2(60) NOT NULL, " +
-//                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
-//                            "PLANO_PAGAMENTO CLOB, " +
-//                            "SUCESS_PLANS CLOB)" ));
-//            stmt.executeUpdate();
-//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
-//            conn.close();
-//        } catch (SQLException e) {
-//            logError(e);
-//        }
-//    }
-
     public List<Integer> getIdProduto(Produto produto){
         var idProduto = new ArrayList<Integer>();
         try {var conn = new OracleDatabaseConfiguration().getConnection();
@@ -94,14 +77,25 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
     }
 
     public void delete(int id){
-        try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE ID = ?");
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-            logWarn("Produto deletado com sucesso");
-            conn.close();
-        }
-        catch (SQLException e) {
+        try (var conn = new OracleDatabaseConfiguration().getConnection()) {
+            try {var stmt = conn.prepareStatement("DELETE FROM " + PlanosRepository.TB_NAME + " WHERE COD_PRODUTO = ?");
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                logWarn("Plano de pagamento deletado com sucesso");
+            } catch (SQLException e) {
+                logError(e);
+            }
+
+            try {
+                var stmt = conn.prepareStatement("DELETE FROM " + TB_NAME + " WHERE COD_PRODUTO = ?");
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+                logWarn("Produto deletado com sucesso");
+                conn.close();
+            } catch (SQLException e) {
+                logError(e);
+            }
+        }catch (SQLException e) {
             logError(e);
         }
     }
@@ -281,5 +275,20 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
 
 
 
-
+//    public void initialize() {
+//        try {
+//            var conn =  new OracleDatabaseConfiguration().getConnection();
+//            var stmt = conn.prepareStatement(
+//                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
+//                            "NOME VARCHAR2(60) NOT NULL, " +
+//                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
+//                            "PLANO_PAGAMENTO CLOB, " +
+//                            "SUCESS_PLANS CLOB)" ));
+//            stmt.executeUpdate();
+//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
+//            conn.close();
+//        } catch (SQLException e) {
+//            logError(e);
+//        }
+//    }
 }

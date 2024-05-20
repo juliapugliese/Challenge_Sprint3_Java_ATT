@@ -22,8 +22,12 @@ public class ProdutoResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Produto> readAll(){
-       return produtoRepository.readAll();
+    public List<Produto> readAll(
+            @QueryParam("orderby") String orderBy,
+            @QueryParam("direction") String direction,
+            @QueryParam("limit") int limit,
+            @QueryParam("offset") int offset){
+       return produtoRepository.readAll(orderBy,direction, limit, offset);
     }
 
     @GET

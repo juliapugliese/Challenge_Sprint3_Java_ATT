@@ -99,10 +99,12 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
             logError(e);
         }
     }
-    public List<Produto> readAll(){
+    public List<Produto> readAll(String orderBy, String direction, int limit, int offset){
     var produtos = new ArrayList<Produto>();
     try{var conn = new OracleDatabaseConfiguration().getConnection();
-        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY COD_PRODUTO");
+        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY COD_PRODUTO" + " ORDER BY " + orderBy + " " +
+                (direction == null || direction.isEmpty() ? "ASC" : direction)
+                + " OFFSET "+offset+" ROWS FETCH NEXT "+ (limit == 0 ? 10 : limit) +" ROWS ONLY");
         var rs = stmt.executeQuery();
         while(rs.next()){
             var planosPagamento = new ArrayList<Plano>();
@@ -275,20 +277,4 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
 
 
 
-//    public void initialize() {
-//        try {
-//            var conn =  new OracleDatabaseConfiguration().getConnection();
-//            var stmt = conn.prepareStatement(
-//                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PRODUTOS_PK PRIMARY KEY, " +
-//                            "NOME VARCHAR2(60) NOT NULL, " +
-//                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
-//                            "PLANO_PAGAMENTO CLOB, " +
-//                            "SUCESS_PLANS CLOB)" ));
-//            stmt.executeUpdate();
-//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
-//            conn.close();
-//        } catch (SQLException e) {
-//            logError(e);
-//        }
-//    }
 }

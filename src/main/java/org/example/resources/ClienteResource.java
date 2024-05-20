@@ -24,8 +24,13 @@ public class ClienteResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Usuario> readAll(){
-        return usuariosRepository.readAllCLT();
+    public List<Usuario> readAll(
+            @QueryParam("orderby") String orderBy,
+            @QueryParam("direction") String direction,
+            @QueryParam("limit") int limit,
+            @QueryParam("offset") int offset
+    ){
+        return usuariosRepository.readAllCLT(orderBy,direction, limit, offset);
     }
 
     @GET

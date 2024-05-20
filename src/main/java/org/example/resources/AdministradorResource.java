@@ -25,8 +25,13 @@ public class AdministradorResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Usuario> readAll(){
-        return usuariosRepository.readAllADM();
+    public List<Usuario> readAll(
+            @QueryParam("orderby") String orderBy,
+            @QueryParam("direction") String direction,
+            @QueryParam("limit") int limit,
+            @QueryParam("offset") int offset
+    ){
+        return usuariosRepository.readAllADM(orderBy,direction, limit, offset);
     }
 
     @GET

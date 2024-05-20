@@ -21,8 +21,13 @@ public class PlanoResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Plano> readAll(){
-        return planoRepository.readAll();
+    public List<Plano> readAll(
+            @QueryParam("orderby") String orderBy,
+            @QueryParam("direction") String direction,
+            @QueryParam("limit") int limit,
+            @QueryParam("offset") int offset
+    ){
+        return planoRepository.readAll(orderBy,direction, limit, offset);
     }
 
     @GET

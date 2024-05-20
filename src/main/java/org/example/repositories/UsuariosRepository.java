@@ -187,11 +187,13 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         }
     }
 
-    public List<Usuario> readAllADM() {
+    public List<Usuario> readAllADM(String orderBy, String direction, int limit, int offset) {
         var administradores = new ArrayList<Usuario>();
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U));
+            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U) + " ORDER BY " + orderBy + " " +
+                    (direction == null || direction.isEmpty() ? "ASC" : direction)
+                    + " OFFSET "+offset+" ROWS FETCH NEXT "+ (limit == 0 ? 10 : limit) +" ROWS ONLY");
             var resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
@@ -214,11 +216,13 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         return administradores;
     }
 
-    public List<Usuario> readAllCLT() {
+    public List<Usuario> readAllCLT(String orderBy, String direction, int limit, int offset) {
         var clientes = new ArrayList<Usuario>();
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U));
+            var stmt = conn.prepareStatement("SELECT * FROM %s".formatted(TB_NAME_U)+ " ORDER BY " + orderBy + " " +
+                    (direction == null || direction.isEmpty() ? "ASC" : direction)
+                    + " OFFSET "+offset+" ROWS FETCH NEXT "+ (limit == 0 ? 10 : limit) +" ROWS ONLY");
             var resultSet = stmt.executeQuery();
 
 
@@ -273,7 +277,7 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
 
     }
 
-    public List<Usuario> readAll() {
+    public List<Usuario> readAll(String orderBy, String direction, int limit, int offset) {
         var usuarios = new ArrayList<Usuario>();
         try {
             var conn =  new OracleDatabaseConfiguration().getConnection();
@@ -590,53 +594,5 @@ public class UsuariosRepository extends Starter implements _BaseRepository<Usuar
         }
 
     }
-
-    //    public void initialize() {
-//        try {
-//            var conn =  new OracleDatabaseConfiguration().getConnection();
-//            var stmt = conn.prepareStatement(
-//                    ("CREATE TABLE %s (" +
-//                            "%s NUMBER GENERATED AS IDENTITY CONSTRAINT USER_PK PRIMARY KEY, " +
-//                            "%s VARCHAR2(20) NOT NULL, " +
-//                            "%s VARCHAR2(20) NOT NULL, " +
-//                            "%s VARCHAR2(3) NOT NULL, " +
-//                            "%s VARCHAR2(50), " +
-//                            "%s VARCHAR2(60), " +
-//                            "%s VARCHAR2(40), " +
-//                            "%s NUMBER(11), " +
-//                            "%s NUMBER(11), " +
-//                            "%s VARCHAR2(70), " +
-//                            "%s NUMBER(14), " +
-//                            "%s VARCHAR2(50), " +
-//                            "%s VARCHAR2(70), " +
-//                            "%s VARCHAR2(10), " +
-//                            "%s VARCHAR2(40), " +
-//                            "%s VARCHAR2(60), " +
-//                            "%s VARCHAR2(200))")
-//                            .formatted(TB_NAME,
-//                                    TB_COLUMNS.get("ID"),
-//                                    TB_COLUMNS.get("NOME_USUARIO"),
-//                                    TB_COLUMNS.get("SENHA"),
-//                                    TB_COLUMNS.get("TIPO"),
-//                                    TB_COLUMNS.get("NOME_ADM"),
-//                                    TB_COLUMNS.get("EMAIL"),
-//                                    TB_COLUMNS.get("NOME_COMPLETO"),
-//                                    TB_COLUMNS.get("CPF"),
-//                                    TB_COLUMNS.get("TELEFONE"),
-//                                    TB_COLUMNS.get("EMPRESA"),
-//                                    TB_COLUMNS.get("CNPJ"),
-//                                    TB_COLUMNS.get("CARGO"),
-//                                    TB_COLUMNS.get("SEGMENTO"),
-//                                    TB_COLUMNS.get("TAMANHO_EMPRESA"),
-//                                    TB_COLUMNS.get("PAIS"),
-//                                    TB_COLUMNS.get("EMAIL_CORPORATIVO"),
-//                                    TB_COLUMNS.get("PERGUNTAS_COMENTARIOS")));
-//            stmt.executeUpdate();
-//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
-//            conn.close();
-//        } catch (SQLException e) {
-//            logError(e);
-//        }
-//    }
 
 }

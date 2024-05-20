@@ -16,22 +16,6 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
     public static final String TB_NAME_T = "TIPO_PLANO_JAVA";
 
 
-//    public void initialize() {
-//        try {
-//            var conn =  new OracleDatabaseConfiguration().getConnection();
-//            var stmt = conn.prepareStatement(
-//                    ("CREATE TABLE " + TB_NAME + " (ID NUMBER GENERATED AS IDENTITY CONSTRAINT PLANOS_PK PRIMARY KEY, " +
-//                            "NOME VARCHAR2(60) NOT NULL, " +
-//                            "DESCRICAO VARCHAR2(150) NOT NULL, " +
-//                            "RECURSOS VARCHAR2(150), " +
-//                            "PRECO DECIMAL(9,2))" ));
-//            stmt.executeUpdate();
-//            logInfo("Tabela "+ TB_NAME +" criada com sucesso!");
-//            conn.close();
-//        } catch (SQLException e) {
-//            logError(e);
-//        }
-//    }
 
     public void shutdown() {
         try {
@@ -68,7 +52,7 @@ public class PlanosRepository extends Starter implements _BaseRepository<Plano>,
     }
 
     @Override
-    public List<Plano> readAll() {
+    public List<Plano> readAll(String orderBy, String direction, int limit, int offset) {
         return null;
     }
 

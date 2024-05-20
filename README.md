@@ -91,6 +91,187 @@ cd Challenge_Sprint3_Java_ATT
 
 Após a execução bem-sucedida do aplicativo, abra um navegador da web e acesse a URL fornecida no código do projeto para testar a conexão web.
 
+### Tabela de End-Points
+### Explicação dos Códigos de Status
+
+- *200 OK*: A solicitação foi bem-sucedida.
+- *201 Created*: A solicitação foi bem-sucedida e um novo recurso foi criado.
+- *204 No Content*: A solicitação foi bem-sucedida, mas não há conteúdo para enviar no corpo da resposta.
+- *400 Bad Request*: A solicitação é inválida ou malformada.
+- *404 Not Found*: O recurso solicitado não foi encontrado.
+
+### Exemplos de Uso
+
+1. *GET /api/cliente*
+   - *Descrição*: Retorna uma lista de todos os usuários.
+   - *Exemplo de Resposta*: 200 OK
+     ### json
+     ```
+       [{
+          "id": 2,
+          "email": "rm554585@fiap.com.br",
+          "nomeCompleto": "Henrique J. Buarque",
+          "nomeUsuario": "Henrique",
+          "senha": "henrique123",
+          "cargo": "Estagiario",
+          "cpf": 14451445751,
+          "empresa": {
+              "id": 2,
+              "cnpj": 1454256481475,
+              "nomeEmpresa": "sabesp",
+              "pais": "Brasil",
+              "segmento": "Administrativo",
+              "tamanhoEmpresa": "Grande"
+          },
+          "telefone": "11456699887"
+       },
+       {
+          "id": 3,
+          "email": "rm545585@fiap.com.br",
+          "nomeCompleto": "Fabiana Montero de Melo",
+          "nomeUsuario": "Fabiana",
+          "senha": "bibi02",
+          "cargo": "Estagiario",
+          "cpf": 11585457451,
+          "empresa": {
+              "id": 3,
+              "cnpj": 1454242581475,
+              "nomeEmpresa": "danone",
+              "pais": "Brasil",
+              "segmento": "Alimenticio",
+              "tamanhoEmpresa": "Grande"
+          },
+          "telefone": "11893699887"
+       }]
+     ```
+
+2. *GET /api/cliente/{id}*
+   - *Descrição*: Retorna os dados de um usuário específico.
+   - *Exemplo de Resposta*: 200 OK
+     ### json
+     ```
+       {
+         "id": 2,
+         "email": "rm554585@fiap.com.br",
+         "nomeCompleto": "Henrique J. Buarque",
+         "nomeUsuario": "Henrique",
+         "senha": "henrique123",
+         "cargo": "Estagiario",
+         "cpf": 14451445751,
+         "empresa": {
+             "id": 2,
+             "cnpj": 1454256481475,
+             "nomeEmpresa": "sabesp",
+             "pais": "Brasil",
+             "segmento": "Administrativo",
+             "tamanhoEmpresa": "Grande"
+         },
+         "telefone": "11456699887"
+       }
+     ```
+     
+
+3. *POST /api/cliente*
+   - *Descrição*: Cria um novo usuário.
+   - *Exemplo de Requisição*:
+     ### json
+     ```
+       {
+         "email": "rm553536@fiap.com.br",
+         "nomeCompleto": "Giuliana R. Silva",
+         "nomeUsuario": "Giuliana",
+         "senha": "giu789",
+         "cargo": "Estagiario",
+         "cpf": 14451445751,
+         "empresa": {
+             "cnpj": 1454256481475,
+             "nomeEmpresa": "sabesp",
+             "pais": "Brasil",
+             "segmento": "Administrativo",
+             "tamanhoEmpresa": "Grande"
+         },
+         "telefone": "11456699887"
+       }
+     ```
+     
+   - *Exemplo de Resposta*: 201 Created
+     ### json
+     ```
+       {
+         "id": 4,
+         "email": "rm553536@fiap.com.br",
+         "nomeCompleto": "Giuliana R. Silva",
+         "nomeUsuario": "Giuliana",
+         "senha": "giu789",
+         "cargo": "Estagiario",
+         "cpf": 14451445751,
+         "empresa": {
+             "id": 2,
+             "cnpj": 1454256481475,
+             "nomeEmpresa": "sabesp",
+             "pais": "Brasil",
+             "segmento": "Administrativo",
+             "tamanhoEmpresa": "Grande"
+         },
+         "telefone": "11456699887"
+       }
+     ```
+     
+
+4. *PUT /api/cliente/{id}*
+   - *Descrição*: Atualiza os dados de um usuário específico.
+   - *Exemplo de Requisição*:
+     ### json
+     ```
+       {
+         "email": "rm553536@fiap.com.br",
+         "nomeCompleto": "Giuliana R. Silva",
+         "nomeUsuario": "Giuliana",
+         "senha": "giu789",
+         "cargo": "Administrado",
+         "cpf": 14451445751,
+         "empresa": {
+             "cnpj": 1454256481475,
+             "nomeEmpresa": "santander",
+             "pais": "Brasil",
+             "segmento": "comércio",
+             "tamanhoEmpresa": "Grande"
+         },
+         "telefone": "11895519887"
+       }
+     ```
+     
+   - *Exemplo de Resposta*: 200 OK
+     ### json
+     ```
+      {
+          "id": 4,
+          "email": "rm553536@fiap.com.br",
+          "nomeCompleto": "Giuliana R. Silva",
+          "nomeUsuario": "Giuliana",
+          "senha": "giu789",
+          "cargo": "Administrador",
+          "cpf": 14451445751,
+          "empresa": {
+              "id": 4,
+              "cnpj": 1454256481475,
+              "nomeEmpresa": "santander",
+              "pais": "Brasil",
+              "segmento": "comércio",
+              "tamanhoEmpresa": "Grande"
+          },
+          "telefone": "11895519887"
+      }
+     
+     ```
+     
+
+5. *DELETE /api/cliente/{id}*
+   - *Descrição*: Remove um usuário específico.
+   - *Exemplo de Resposta*: 204 No Content
+
+Esta tabela cobre os principais métodos e códigos de status esperados para uma API RESTful básica voltada para gerenciamento de usuários.
+
 ### Considerações Finais
 
 Este README fornece instruções básicas para configurar e executar um projeto Java Maven com conexão web. Certifique-se de seguir as etapas cuidadosamente e ajustar conforme necessário para o seu ambiente específico. Se encontrar algum problema durante o processo, consulte a documentação do Maven, do IntelliJ IDEA ou do Java para obter ajuda adicional.

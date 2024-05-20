@@ -40,14 +40,6 @@ public class ProdutoResource {
                 Response.status(Response.Status.NOT_FOUND).build();
     }
 
-    //TESTAR GETALLBYPLANO
-    @GET
-    @Path("plano/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllByPlano(@PathParam("id") int idPlano){
-        return Response.ok(produtoRepository.readAllByPlano(idPlano)).build();
-    }
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Produto produto){

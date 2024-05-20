@@ -1,14 +1,12 @@
 package org.example.repositories;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.example.entities.ServicoModel.Plano;
 import org.example.entities.ServicoModel.Produto;
 import org.example.entities._BaseEntity;
 import org.example.infrastructure.OracleDatabaseConfiguration;
 
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -102,7 +100,7 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
     public List<Produto> readAll(String orderBy, String direction, int limit, int offset){
     var produtos = new ArrayList<Produto>();
     try{var conn = new OracleDatabaseConfiguration().getConnection();
-        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY COD_PRODUTO" + " ORDER BY " + orderBy + " " +
+        var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME +" ORDER BY " + orderBy + " " +
                 (direction == null || direction.isEmpty() ? "ASC" : direction)
                 + " OFFSET "+offset+" ROWS FETCH NEXT "+ (limit == 0 ? 10 : limit) +" ROWS ONLY");
         var rs = stmt.executeQuery();
@@ -132,6 +130,7 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
                     }
                     else if (resultSetTipoPlano.getString(1).equalsIgnoreCase("PLANO DE SUCESSO")){
                         planosSucesso.add(new Plano(
+                                resultSetPlano.getInt("COD_PLANO"),
                                 resultSetPlano.getString("NOME"),
                                 resultSetPlano.getString("DESCRICAO"),
                                 resultSetPlano.getString("RECURSOS"),
@@ -170,63 +169,64 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
     logInfo("Lendo produtos: " + produtos);
     return produtos;
 }
-
-//TESTAR FUNCAO
-    public List<Produto> readAllByPlano(int idPlano){
-        var produtos = new ArrayList<Produto>();
-        try(var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE IDPLANO = ?");){
-            stmt.setInt(1, idPlano);
-            var rs = stmt.executeQuery();
-            while (rs.next()){
-
-                Produto produto = new Produto();
-                produto.setId(rs.getInt("ID"));
-                produto.setNomeProduto(rs.getString("NOME"));
-                produto.setDescricaoProduto(rs.getString("DESCRICAO"));
-
-                String jsonPlanoPagamento = rs.getString("PLANO_PAGAMENTO");
-                if (jsonPlanoPagamento != null) {
-                    produto.setPlanoPagamento(gson.fromJson(jsonPlanoPagamento, new TypeToken<ArrayList<Plano>>(){}.getType()));
-                }
-
-                String jsonSuccessPlans = rs.getString("SUCESS_PLANS");
-                if (jsonSuccessPlans != null) {
-                    produto.setSucessPlans(gson.fromJson(jsonSuccessPlans, Plano.class));
-                }
-                produtos.add(produto);
-                logInfo("Lendo produto: " + produto);
-            }
-        }
-        catch (SQLException e) {
-            logError(e);
-        }
-        return produtos;
-    }
-
-
-
     public Optional<Produto> read(int id){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE ID = ?");
+            var stmt = conn.prepareStatement("SELECT * FROM " + TB_NAME + " WHERE COD_PRODUTO = ?");
 
             stmt.setInt(1, id);
             var rs = stmt.executeQuery();
             if(rs.next()){
+
+                var planosPagamento = new ArrayList<Plano>();
+                var planosSucesso = new ArrayList<Plano>();
+
+                var stmtPlano = conn.prepareStatement("SELECT * FROM %s WHERE COD_PRODUTO = %s".formatted(PlanosRepository.TB_NAME, rs.getString("COD_PRODUTO")));
+                var resultSetPlano = stmtPlano.executeQuery();
+
+                while (resultSetPlano.next()) {
+
+                    var stmtTipoPlano = conn.prepareStatement("SELECT TIPO FROM " + PlanosRepository.TB_NAME_T + " WHERE COD_TIPO_PLANO IN " +
+                            "(SELECT COD_TIPO_PLANO FROM " + PlanosRepository.TB_NAME + " WHERE COD_PLANO = %s)"
+                            .formatted(resultSetPlano.getString("COD_PLANO")));
+                    var resultSetTipoPlano = stmtTipoPlano.executeQuery();
+                    while (resultSetTipoPlano.next()) {
+                        if (resultSetTipoPlano.getString(1).equalsIgnoreCase("PLANO DE PAGAMENTO")) {
+                            planosPagamento.add(new Plano(
+                                    resultSetPlano.getInt("COD_PLANO"),
+                                    resultSetPlano.getString("NOME"),
+                                    resultSetPlano.getString("DESCRICAO"),
+                                    resultSetPlano.getString("RECURSOS"),
+                                    resultSetPlano.getFloat("PRECO"),
+                                    resultSetTipoPlano.getString(1)
+                            ));
+                        } else if (resultSetTipoPlano.getString(1).equalsIgnoreCase("PLANO DE SUCESSO")) {
+                            planosSucesso.add(new Plano(
+                                    resultSetPlano.getInt("COD_PLANO"),
+                                    resultSetPlano.getString("NOME"),
+                                    resultSetPlano.getString("DESCRICAO"),
+                                    resultSetPlano.getString("RECURSOS"),
+                                    resultSetPlano.getFloat("PRECO"),
+                                    resultSetTipoPlano.getString(1)
+                            ));
+                        }
+                    }
+                }
+
+
+
                 Produto produto = new Produto();
-                produto.setId(rs.getInt("ID"));
+                produto.setId(rs.getInt("COD_PRODUTO"));
                 produto.setNomeProduto(rs.getString("NOME"));
                 produto.setDescricaoProduto(rs.getString("DESCRICAO"));
-
-                String jsonPlanoPagamento = rs.getString("PLANO_PAGAMENTO");
-                if (jsonPlanoPagamento != null) {
-                    produto.setPlanoPagamento(gson.fromJson(jsonPlanoPagamento, new TypeToken<ArrayList<Plano>>(){}.getType()));
+                if (planosPagamento.isEmpty()){
+                    produto.setPlanoPagamento(null);
                 }
-
-                String jsonSuccessPlans = rs.getString("SUCESS_PLANS");
-                if (jsonSuccessPlans != null) {
-                    produto.setSucessPlans(gson.fromJson(jsonSuccessPlans, Plano.class));
+                else {produto.setPlanoPagamento(planosPagamento);}
+                if (planosSucesso.isEmpty()){
+                    produto.setSucessPlans(null);
                 }
+                else {produto.setSucessPlans(planosSucesso.get(0));}
+
                 logInfo("Lendo produto: " + produto);
                 return Optional.of(produto);
 
@@ -240,32 +240,25 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
         return Optional.empty();
     }
 
-
+    //TESTAR FUNCAO
     public void update(int id, Produto produto){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
-            var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?, PLANO_PAGAMENTO = ?, SUCESS_PLANS = ?  WHERE ID = ?");
+            var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?  WHERE COD_PRODUTO = ?");
 
             stmt.setString(1, produto.getNomeProduto());
             stmt.setString(2, produto.getDescricaoProduto());
+            stmt.setInt(3, id);
 
-            if (produto.getPlanoPagamento()==null){
-                stmt.setNull(3, Types.CLOB);
-            }
-            //manter o id dos planos ao atualizar o produto, caso contrario o plano não vai ser atualizado
-            else {
-                produto.getPlanoPagamento().forEach(pln -> new PlanosRepository().update(pln.getId(), pln));
-                stmt.setString(3, gson.toJson(produto.getPlanoPagamento()));
+            if (produto.getPlanoPagamento()!=null){
+
             }
 
-            if (produto.getSucessPlans()==null){
-                stmt.setNull(4, Types.CLOB);
-            }
-            else {
-                new PlanosRepository().update(produto.getSucessPlans().getId(), produto.getSucessPlans());
-                stmt.setString(4, gson.toJson(produto.getSucessPlans()));
+            if (produto.getSucessPlans()!=null){
+
             }
 
-            stmt.setInt(5, id);
+
+
             stmt.executeUpdate();
             logWarn("Produto atualizado com sucesso!");
             conn.close();

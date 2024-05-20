@@ -240,7 +240,6 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
         return Optional.empty();
     }
 
-    //TESTAR FUNCAO
     public void update(int id, Produto produto){
         try{var conn = new OracleDatabaseConfiguration().getConnection();
             var stmt = conn.prepareStatement("UPDATE "+ TB_NAME + " SET NOME = ?, DESCRICAO = ?  WHERE COD_PRODUTO = ?");
@@ -250,11 +249,33 @@ public class ProdutosRepository extends Starter implements _BaseRepository<Produ
             stmt.setInt(3, id);
 
             if (produto.getPlanoPagamento()!=null){
-
+                produto.getPlanoPagamento().forEach(plano -> {
+                            try {
+                                var stmtPlanoPagamento = conn.prepareStatement("UPDATE "+ PlanosRepository.TB_NAME + " SET NOME = ?, DESCRICAO = ?, RECURSOS = ?, PRECO = ?  WHERE COD_PRODUTO = ? AND COD_TIPO_PLANO = 1");
+                                stmtPlanoPagamento.setString(1, plano.getNomePlano());
+                                stmtPlanoPagamento.setString(2, plano.getDescricaoPlano());
+                                stmtPlanoPagamento.setString(3, plano.getRecursosPlano());
+                                stmtPlanoPagamento.setFloat(4, plano.getPrecoPlano());
+                                stmtPlanoPagamento.setInt(5, id);
+                                stmtPlanoPagamento.executeUpdate();
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                });
             }
 
             if (produto.getSucessPlans()!=null){
-
+                try {
+                    var stmtPlanoSucesso = conn.prepareStatement("UPDATE "+ PlanosRepository.TB_NAME + " SET NOME = ?, DESCRICAO = ?, RECURSOS = ?, PRECO = ?  WHERE COD_PRODUTO = ? AND COD_TIPO_PLANO = 2");
+                    stmtPlanoSucesso.setString(1, produto.getSucessPlans().getNomePlano());
+                    stmtPlanoSucesso.setString(2, produto.getSucessPlans().getDescricaoPlano());
+                    stmtPlanoSucesso.setString(3, produto.getSucessPlans().getRecursosPlano());
+                    stmtPlanoSucesso.setFloat(4, produto.getSucessPlans().getPrecoPlano());
+                    stmtPlanoSucesso.setInt(5, id);
+                    stmtPlanoSucesso.executeUpdate();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
 

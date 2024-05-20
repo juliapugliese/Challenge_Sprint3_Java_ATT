@@ -5,6 +5,7 @@ import org.example.entities.ServicoModel.Produto;
 import org.example.entities.UsuarioModel.Administrador;
 import org.example.entities.UsuarioModel.Cliente;
 import org.example.entities.UsuarioModel.Empresa;
+import org.example.infrastructure.CorsFilter;
 import org.example.repositories.PlanosRepository;
 import org.example.repositories.ProdutosRepository;
 import org.example.repositories.Starter;
@@ -34,6 +35,7 @@ public class Main {
         // create a resource config that scans for JAX-RS resources and providers
         // in org.example package
         final ResourceConfig rc = new ResourceConfig().packages("org.example.resources");
+        rc.register(CorsFilter.class);
 
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI

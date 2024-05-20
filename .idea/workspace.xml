@@ -5,15 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Finalização do método delete da classe ProdutosRepository">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/ProdutosRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/UsuariosRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/_BaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/_BaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/resources/AdministradorResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/resources/AdministradorResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/resources/ClienteResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/resources/ClienteResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/resources/PlanoResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/resources/PlanoResource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/resources/ProdutoResource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/resources/ProdutoResource.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

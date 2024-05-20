@@ -91,7 +91,7 @@ cd Challenge_Sprint3_Java_ATT
 
 Após a execução bem-sucedida do aplicativo, abra um navegador da web e acesse a URL fornecida no código do projeto para testar a conexão web.
 
-### Tabela de End-Points
+## Tabela de End-Points
 ### Explicação dos Códigos de Status
 
 - *200 OK*: A solicitação foi bem-sucedida.

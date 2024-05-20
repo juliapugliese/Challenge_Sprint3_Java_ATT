@@ -137,9 +137,6 @@ public class Plano extends _BaseEntity {
         if (descricaoPlano == null || descricaoPlano.isBlank())
             errors.add("Descrição do plano não pode ser vazia");
 
-        if (recursosPlano == null || recursosPlano.isBlank())
-            errors.add("Os recursos do plano não podem estar em branco");
-
         if (precoPlano < 0)
             errors.add("Preço do plano não pode ser menor que zero");
 

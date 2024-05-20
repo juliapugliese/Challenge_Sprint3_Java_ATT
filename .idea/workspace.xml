@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="442b4ac4-7bbd-4704-b9f0-51fdc6ac7f29" name="Changes" comment="Finalização da classe ProdutosRepository">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Documentacao/arquivos_relacionados/challengeclasses.svg" beforeDir="false" afterPath="$PROJECT_DIR$/Documentacao/arquivos_relacionados/challengeclasses.svg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -487,6 +486,21 @@
     <MESSAGE value="Finalização do método read da classe ProdutosRepository" />
     <MESSAGE value="Finalização da classe ProdutosRepository" />
     <option name="LAST_COMMIT_MESSAGE" value="Finalização da classe ProdutosRepository" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/repositories/PlanosRepository.java</url>
+          <line>147</line>
+          <properties class="org.example.repositories.PlanosRepository" method="update">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

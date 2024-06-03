@@ -82,7 +82,7 @@ public class Usuario extends _BaseEntity{
             errors.add("Senha não pode ser vazia");
 
         if (nomeCompleto == null || nomeCompleto.isBlank())
-            errors.add("Nome de Administrador não pode ser vazio");
+            errors.add("Nome não pode ser vazio");
 
         if (email == null || email.isBlank())
             errors.add("Email não pode ser vazio");
